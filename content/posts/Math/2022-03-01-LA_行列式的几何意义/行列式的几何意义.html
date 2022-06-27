@@ -1,0 +1,210 @@
+---
+title: "行列式的几何意义"
+author: "Guangyao Zhao"
+date: '2022-03-05T21:09:12-05:00'
+image: math.jpg
+tags:
+- math
+- linear algebra
+categories: Math
+---
+
+
+
+<div id="行列式的定义" class="section level1">
+<h1>行列式的定义</h1>
+<p>行列式是由一些数据排列形成的方阵经过规定的计算方法而得到的一个<strong>数</strong>，这点需要和矩阵区别开来，矩阵是一个<strong>数表</strong>。行列式需要对这个数表按照规则进一步计算，最终得到一个实数，复数或者多项式（含有未知数时）。<span class="math inline">\(n\)</span>阶行列式的计算如下：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\left|\begin{array}{cccc}
+a_{11} &amp; a_{12} &amp; a_{13} \cdots &amp; a_{1 n} \\
+a_{21} &amp; a_{22} &amp; a_{23} \cdots &amp; a_{2 n} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+a_{n 1} &amp; a_{n 2} &amp; a_{n 3} \cdots &amp; a_{n n}
+\end{array}\right|=&amp; a_{11} \cdot\left|\begin{array}{ccc}
+a_{22} &amp; a_{23} \ldots &amp; a_{2 n} \\
+\vdots &amp; \vdots &amp; \vdots \\
+a_{n 2} &amp; a_{n 3} \ldots &amp; a_{n n}
+\end{array}\right|-a_{12} \cdot\left|\begin{array}{ccc}
+a_{22} &amp; a_{23} \ldots &amp; a_{2 n} \\
+\vdots &amp; \vdots &amp; \vdots \\
+a_{n 1} &amp; a_{n 3} \ldots &amp; a_{n n}
+\end{array}\right|+\\
+&amp;\cdots+(-1)^{n+1} a_{1 n} \cdot\left|\begin{array}{ccc}
+a_{21} &amp; a_{22} \ldots &amp; a_{2 n-1} \\
+\vdots &amp; \vdots \\
+a_{n 1} &amp; a_{n 2} \ldots &amp; a_{n n-1}
+\end{array}\right|\\
+=&amp;\sum_{\left(j_{1} j_{2} \cdots j_{n}\right)}(-1)^{t} a_{1 j_{1}} a_{2 j_{2}} \cdots a_{n j_{n}}
+\end{aligned}
+\]</span></p>
+<p>行列式的几何意义是什么？</p>
+<ol style="list-style-type: decimal">
+<li>行列式中的行或列向量所构成的超平面的有向面积或有向体积。</li>
+<li>矩阵<span class="math inline">\(A\)</span>的行列式<span class="math inline">\(\mathrm{det}A\)</span>就是线性变换<span class="math inline">\(A\)</span>的图形面积或体积的伸缩因子。</li>
+</ol>
+</div>
+<div id="二阶行列式的几何意义" class="section level1">
+<h1>二阶行列式的几何意义</h1>
+<p>二阶行列式的几何意义<span class="math inline">\(\begin{vmatrix}  a_1 &amp; a_2\\ b_1 &amp; b_2 \end{vmatrix}=(a_1b_2-a_2b_1)\)</span>是<span class="math inline">\(xoy\)</span>平面上以行向量<span class="math inline">\(\boldsymbol{a}=(a_1,a_2)\)</span>和<span class="math inline">\(\boldsymbol{b}=(b_1,b_2)\)</span>为邻边的平行四边形的有向面积。下面给出证明过程：</p>
+<p>在二维几何空间<span class="math inline">\(\mathbb{R}^2\)</span>中取得一个直角坐标系<span class="math inline">\(\{0;e_1,e_2\}\)</span>，设<span class="math inline">\(\boldsymbol{a}=a_1e_1+a_2e_2\)</span>和<span class="math inline">\(\boldsymbol{b}=b_1e_1+b_2e_2\)</span>，则以<span class="math inline">\(\boldsymbol{a}\)</span>和<span class="math inline">\(\boldsymbol{b}\)</span>为边的四边形面积为：</p>
+<p><span class="math display">\[
+S(\boldsymbol{a},\boldsymbol{b})=ab\sin&lt;a,b&gt;
+\]</span></p>
+<p>其中：</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\boldsymbol{a}=\sqrt{a_1^2+a_2^2}\)</span>，<span class="math inline">\(\boldsymbol{b}=\sqrt{b_1^2+b_2^2}\)</span></li>
+<li><span class="math inline">\(ab\sin&lt;a,b&gt;=\sin(\alpha-\beta)=\sin\alpha\cos\beta-\cos\alpha\sin\beta=\frac{a_1}{a}\frac{b_2}{b}-\frac{a_2}{a}\frac{b_1}{b}=\frac{a_1b_2-a_2b_1}{ab}\)</span></li>
+</ol>
+<p>综上<span class="math inline">\(S(\boldsymbol{a},\boldsymbol{b})=ab\sin&lt;a,b&gt;\)</span>得以证明，即二阶行列式是平行四边形的有向面积，也是两个向量的外积。</p>
+<div id="二阶行列式性质的几何解释" class="section level2">
+<h2>二阶行列式性质的几何解释</h2>
+<p>性质一：</p>
+<p><span class="math display">\[
+k\begin{vmatrix}
+a_1 &amp; a_2\\
+b_1  &amp; b_2
+\end{vmatrix}=
+\begin{vmatrix}
+ka_1 &amp; ka_2\\
+b_1  &amp; b_2
+\end{vmatrix}
+\]</span></p>
+<p>两个行向量<span class="math inline">\(\boldsymbol{a}\)</span>和<span class="math inline">\(\boldsymbol{b}\)</span>所组成的平行四边形的<span class="math inline">\(k\)</span>倍面积等于这样两个向量<span class="math inline">\(\boldsymbol{ka}\)</span>和<span class="math inline">\(\boldsymbol{b}\)</span>所组成的平行四边形面积，即：<span class="math inline">\(S(k\boldsymbol{a},\boldsymbol{b})=kS(\boldsymbol{a},\boldsymbol{b})\)</span></p>
+<p>性质二：</p>
+<p><span class="math display">\[
+\begin{vmatrix}
+a_1 &amp; a_2\\
+b_1+c_1  &amp; b_2+c_2
+\end{vmatrix}=
+\begin{vmatrix}
+a_1 &amp; a_2\\
+b_1  &amp; b_2
+\end{vmatrix}+
+\begin{vmatrix}
+a_1 &amp; a_2\\
+c_1  &amp; c_2
+\end{vmatrix}
+\]</span></p>
+<p>一个行列式可以通过拆分为某一行向量而得到两个行列式之和：<span class="math inline">\(S(\boldsymbol{a},\boldsymbol{b}+\boldsymbol{c})=S(\boldsymbol{a},\boldsymbol{b})+S(\boldsymbol{a},\boldsymbol{c})\)</span></p>
+<p>性质三：</p>
+<p><span class="math display">\[
+\begin{vmatrix}
+a_1 &amp; a_2\\
+ka_1  &amp; ka_2
+\end{vmatrix}=0
+\]</span></p>
+<p>显然两个向量<span class="math inline">\(\boldsymbol{a}\)</span>和<span class="math inline">\(k\boldsymbol{a}\)</span>重线，即组成的平行四边形面积为<span class="math inline">\(0\)</span></p>
+<p>性质四：</p>
+<p><span class="math display">\[
+\begin{vmatrix}
+a_1 &amp; a_2\\
+b_1  &amp; b_2
+\end{vmatrix}=-
+\begin{vmatrix}
+b_1 &amp; b_2\\
+a_1  &amp; a_2
+\end{vmatrix}
+\]</span></p>
+<p>显然根据外积定义：<span class="math inline">\(\boldsymbol{a}\times\boldsymbol{b}=\boldsymbol{b}\times\boldsymbol{a}\)</span></p>
+<p>性质五：</p>
+<p><span class="math display">\[
+\begin{vmatrix}
+a_1 &amp; a_2\\
+b_1  &amp; b_2
+\end{vmatrix}=
+\begin{vmatrix}
+a_1 &amp; a_2\\
+b_1+ka_1  &amp; b_2+ka_2
+\end{vmatrix}
+\]</span></p>
+<p>在同一平面上，两个平行四边形的底高分别相同，则面积相等。此性质相当于将原平行四边形扭转了一定的角度，面积不变。</p>
+<p>性质六：</p>
+<p><span class="math display">\[
+\begin{vmatrix}
+a_1 &amp; a_2\\
+b_1  &amp; b_2
+\end{vmatrix}=
+\begin{vmatrix}
+a_1 &amp; b_2\\
+a_2  &amp; b_2
+\end{vmatrix}
+\]</span></p>
+<p>即转置前后所组成的平行四边形面积相等。</p>
+</div>
+</div>
+<div id="行列式化为对角形的几何解释" class="section level1">
+<h1>行列式化为对角形的几何解释</h1>
+</div>
+<div id="一类行列式的几何意义" class="section level1">
+<h1>一类行列式的几何意义</h1>
+<div id="最后一列为1的行列式" class="section level2">
+<h2>最后一列为<span class="math inline">\(1\)</span>的行列式</h2>
+<p>某一类行列式如下：</p>
+<p><span class="math display">\[
+\left|\begin{array}{ccccc}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1 n-1} &amp; 1 \\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2 n-1} &amp; 1 \\
+\vdots &amp; \vdots &amp; &amp; \vdots &amp; \vdots \\
+a_{n 1} &amp; a_{n 2} &amp; \cdots &amp; a_{n n-1} &amp; 1
+\end{array}\right|
+\]</span></p>
+<p>在之前提到过，比如三阶行列式是由三维向量所组成的平行多面体的有向体积，那么对于最后一列的元素全部为<span class="math inline">\(1\)</span>的三阶行列式至少也有同样的意义。</p>
+<p>对于二阶行列式：</p>
+<p><span class="math display">\[
+\begin{vmatrix}
+a_{11} &amp; 1\\
+a_{21} &amp; 1
+\end{vmatrix}
+\]</span></p>
+<p>的意义为<span class="math inline">\(\overrightarrow{a_{21}a_{11}}\)</span>的有向长度。</p>
+<p>对于三阶行列式：</p>
+<p><span class="math display">\[
+\begin{vmatrix}
+a_{11} &amp; a_{12} &amp; 1\\
+a_{21} &amp; a_{22} &amp; 1\\
+a_{31} &amp; a_{32} &amp; 1\\
+\end{vmatrix}
+\]</span></p>
+<p>的意义为<span class="math inline">\(\Delta A_1A_2A_3\)</span>面积的<span class="math inline">\(2\)</span>倍。</p>
+<p>对于四阶行列式：</p>
+<p><span class="math display">\[
+\begin{vmatrix}
+a_{11}&amp; a_{12} &amp; a_{13} &amp; 1\\
+a_{21}&amp;a_{22}&amp;a_{23} &amp; 1\\
+a_{31}&amp;a_{32}&amp;a_{33}&amp;1\\
+a_{41}&amp;a_{42}&amp;a_{43}&amp;1\\
+\end{vmatrix}
+\]</span></p>
+<p>是以<span class="math inline">\(A_1A_2A_3A_4\)</span>为顶点的四面体体积的<span class="math inline">\(6\)</span>倍。</p>
+</div>
+<div id="一列为1的行列式的应用" class="section level2">
+<h2>一列为<span class="math inline">\(1\)</span>的行列式的应用</h2>
+<p>在解析几何中常常应用等式：</p>
+<p><span class="math display">\[
+D_{n}=\left|\begin{array}{ccccc}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1 n-1} &amp; 1 \\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2 n-1} &amp; 1 \\
+\vdots &amp; \vdots &amp; &amp; \vdots &amp; \vdots \\
+a_{n 1} &amp; a_{n 2} &amp; \cdots &amp; a_{n n-1} &amp; 1
+\end{array}\right|=0
+\]</span></p>
+<p>来判断空间中点之间的关系，比如：</p>
+<p><span class="math display">\[
+D_n=0 \Rightarrow\begin{cases}
+n=2,\text{一位数轴上两点重合}\\
+n=3,\text{二维平面上三点共线}\\
+n=4,\text{三维空间中四点共面}
+\end{cases}
+\]</span></p>
+<p>来看一下此类行列式在几何上的零活应用。比如，有行列式：</p>
+<p><span class="math display">\[
+\begin{vmatrix}
+x &amp; y &amp; 1\\
+a_1 &amp; a_2 &amp;1\\
+b_1 &amp; b_2 &amp;1\\
+\end{vmatrix}=0
+\]</span></p>
+<p>此行列式表示平面两点<span class="math inline">\(A(a_1,a_2)\)</span>和<span class="math inline">\(B(b_1,b_2)\)</span>的直线，其中<span class="math inline">\((x,y)\)</span>为直线上的任意一点。同理推广到四维中，<span class="math inline">\((x,y,z)\)</span>是过三点<span class="math inline">\(A(a_1,a_2,a_3)\)</span>，<span class="math inline">\(B(b_1,b_2)\)</span>和<span class="math inline">\(C(c_1,c_2,c_3)\)</span>平面的任意一点。</p>
+</div>
+</div>

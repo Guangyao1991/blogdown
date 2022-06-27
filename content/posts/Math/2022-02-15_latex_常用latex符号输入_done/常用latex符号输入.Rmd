@@ -1,0 +1,171 @@
+---
+title: "常用latex符号输入"
+author: "Guangyao Zhao"
+date: '2022-02-15T21:09:12-05:00'
+image: latex.jpg
+categories: math
+tags:
+- latex
+- math
+---
+
+
+## 希腊字母
+
+### 希腊字母
+
+| 读音     | 小写                   | 大写                   | 读音     | 小写                   | 大写                   |
+| -------- | ---------------------- | ---------------------- | -------- | ---------------------- | ---------------------- |
+| 阿尔法   | `\alpha`($\alpha$)     | `\Alpha`($\Alpha$)     | 纽       | `\nu`($\nu$)           | `\Nu`($\Nu$)           |
+| 贝塔     | `\beta`($\beta$)       | `\Beta`($\Beta$)       | 柯西     | `\xi`($\xi$)           | `\Xi`($\Xi$)           |
+| 伽马     | `\gamma`($\gamma$)     | `\Gamma`($\Gamma$)     | 奥密克戎 | `\omicro`($\omicron$)  | `\Omicron`($\Omicron$) |
+| 德尔塔   | `\delta`($\delta$)     | `\Delta`($\Delta$)     | 派       | `\pi`($\pi$)           | `\Pi`($\Pi$)           |
+| 艾普西隆 | `\epsilon`($\epsilon$) | `\Epsilon`($\Epsilon$) | 柔       | `\rho`($\rho$)         | `\Rho`($\Rho$)         |
+| 截塔     | `\zeta`($\zeta$)       | `\Zeta`($\zeta$)       | 西格玛   | `\sigma`($\sigma$)     | `\Sigma`($\Sigma$)     |
+| 艾塔     | `\eta`($\eta$)         | `\Eta`($\Eta$)         | 淘       | `\tau`($\tau$)         | `\Tau`($\Tau$)         |
+| 西塔     | `\theta`($\theta$)     | `\Theta`($\Theta$)     | 宇普西隆 | `\upsilon`($\upsilon$) | `\Upsilon`($\Upsilon$) |
+| 约塔     | `\iota`($\iota$)       | `\Iota`($\Iota$)       | 斐       | `\phi`($\phi$)         | `\Phi`($\Phi$)         |
+| 卡帕     | `\kappa`($\kappa$)     | `\Kappa`($\Kappa$)     | 西       | `chi`($\chi$)          | `\Chi`($\Chi$)         |
+| 拉姆达   | `\lambda`($\lambda$)   | `\Lambda`($\Lambda$)   | 普西     | `\psi`($\psi$)         | `\Psi`($\Psi$)         |
+| 米尤     | `\mu`($\mu$)           | `\Mu`($\Mu$)           | 奥米伽   | `\omega`($\omega$)     | `\Omega`($\Omega$)     |
+
+
+
+### 希腊字母的一些变化
+
+#### 变量
+
+|                          |                            |                              |                          |
+| ------------------------ | -------------------------- | ---------------------------- | ------------------------ |
+| `\varGamma`($\varGamma$) | `\varlambda`($\varLambda$) | `\varSigma`($\varSigma$)     | `\varPsi`($\varPsi$)     |
+| `\varDelta`($\varDelta$) | `\varXi`($\varXi$)         | `\varUpsilon`($\varUpsilon$) | `\varOmega`($\varOmega$) |
+| `\varTheta`($\varTheta$) | `\varPi`($\varPi$)         | `\varPhi`($\varPhi$)         |
+
+
+#### 直立
+
+在 latex 中需要添加`upgreek`宏包。
+
+1. `\upalpha`($\upalpha$)
+2. `\upbeta`($\upbeta$)
+
+#### 重音
+
+1. `\tilde{\alpha}`($\tilde{\alpha}$)
+2. `\hat{\alpha}`($\hat{\alpha}$)
+3. `\bar{\alpha}`($\bar{\alpha}$)
+
+## 数学表达
+
+### 运算符
+1. `\times`($\times$), `cdot`($\cdot$), `\div`($\div$)
+2. `\pm`($\pm$), `\mp`(($\mp$))
+3. `\approx`($\approx$), `\equiv`($\equiv$)
+4. `\cap`($\cap$), `\cup`($\cup$), `\in`($\in$), `\notin`($\notin$), `\varnothing`($\varnothing$)
+5. `\forall`($\forall$), `\exists`($\exists$)
+6. `\because`($\because$), `\therefore`($\therefore$)
+7. `\mathbb{R}`($\mathbb{R}$), `\mathbb{Q}`($\mathbb{Q}$), `\mathbb{N}`($\mathbb{N}$), `\mathbb{Z_+}`($\mathbb{Z_+}$)
+8. `\mathcal{F}`($\mathcal{F}$), `\mathscr{F}`($\mathscr{F}$)
+9. `\dots`($\dots$), `vdots`($\vdots$), `\ddots`($\ddots$)
+10. `\infty`($\infty$), `\partial`($\partial$), `\nabla`($\nabla$), `\propto`($\propto$)
+11. `\sin{x}`($\sin{x}$), `\sec{x}`($\sec{x}$)
+12. `\log_2{x}`($\log_2{x}$), `\ln{x}`($\ln{x}$), `\lg{x}`($\lg{x}$)
+13. `\lim_{x \to 0} \frac{x}{\sin x}`($\lim_{x \to 0} \frac{x}{\sin x}$)
+14. `\int`($\int$), `\iint`($\iint$), `\oint`($\oint$), `\oiint`($\oiint$), `\int_{-\infty}^{0}f(x)\textrm{d} x`($\int_{-\infty}^{0}f(x)\textrm{d} x$)
+
+
+### 标注符号
+1. `\vec{x}`($\vec{x}$), `\overrightarrow{AB}`($\overrightarrow{AB}$)
+2. `\bar{x}`($\bar{x}$), `\overline{AB}`($\overline{AB}$)
+3. `\leftarrow`($\leftarrow$), `\longleftarrow`($\longleftarrow$), `\Rightarrow`($\Rightarrow$), `\Leftrightarrow`($\Leftrightarrow$)
+4. `\left.\frac{\partial f}{\partial x}\right|_{x=0}`($\left.\frac{\partial f}{\partial x}\right|_{x=0}$)，此处的`\left.`只是个虚拟括号，不起实际作用。
+5. `\overbrace{a+b+c}`($\overbrace{a+b+c}$), `\underbrace{a+b+c}`($\underbrace{a+b+c}$)
+6. `\sum_{\substack{0<i<n\\ 0<j<i}}A_{ij}`($\sum_{\substack{0<i<n\\ 0<j<i}}A_{ij}$)
+
+
+
+### 大括号
+```latex
+\begin{cases} 
+  \sin x, & -\pi \le \pi\\
+   0, & \rm{otherwise}
+\end{cases}
+```
+
+$$
+\begin{cases} 
+  \sin x, & -\pi \le \pi\\
+   0, & \rm{otherwise}
+\end{cases}
+$$
+
+### 矩阵
+
+```latex
+\begin{matrix} 
+  a & b & \dots & c\\
+  \vdots & \vdots & \ddots & \vdots \\
+  e & f & \dots & g
+\end{matrix}
+```
+
+$$
+\begin{matrix} 
+  a & b & \dots & c\\
+  \vdots & \vdots & \ddots & \vdots \\
+  e & f & \dots & g
+\end{matrix}
+$$
+
+```latex
+\begin{vmatrix} %% vertical bar
+  a & b & \dots & c\\
+  \vdots & \vdots & \ddots & \vdots \\
+  e & f & \dots & g
+\end{vmatrix}
+```
+
+$$
+\begin{vmatrix} 
+  a & b & \dots & c\\
+  \vdots & \vdots & \ddots & \vdots \\
+  e & f & \dots & g
+\end{vmatrix}
+$$
+
+```latex
+\begin{pmatrix} %% parenthesis
+  a & b & \dots & c\\
+  \vdots & \vdots & \ddots & \vdots \\
+  e & f & \dots & g
+\end{pmatrix}
+```
+
+$$
+\begin{pmatrix} 
+  a & b & \dots & c\\
+  \vdots & \vdots & \ddots & \vdots \\
+  e & f & \dots & g
+\end{pmatrix}
+$$
+
+```latex
+\begin{bmatrix} %% bracket
+  a & b & \dots & c\\
+  \vdots & \vdots & \ddots & \vdots \\
+  e & f & \dots & g
+\end{bmatrix}
+```
+
+$$
+\begin{bmatrix} 
+  a & b & \dots & c\\
+  \vdots & \vdots & \ddots & \vdots \\
+  e & f & \dots & g
+\end{bmatrix}
+$$
+
+矩阵规范写法：
+
+1. `\bf{A}`($\bf{A}$)
+2. `\bf{B^{\rm{T}}}`($\bf{B^{\rm{T}}}$)

@@ -1,0 +1,161 @@
+---
+title: "向量概念的几何意义"
+author: "Guangyao Zhao"
+date: '2022-03-01T21:09:12-05:00'
+image: math.jpg
+tags:
+- math
+- linear algebra
+categories: Math
+---
+
+
+
+<div id="自由向量的概念" class="section level2">
+<h2>自由向量的概念</h2>
+<ol style="list-style-type: decimal">
+<li>向量是一个既有大小又有方向的量，这个量本身就是个几何的概念。</li>
+<li>在物理学中把向量叫做矢量。矢就是箭，向量如同一根箭一样有头部和尾部，箭在空间自由的飞行中箭杆的长度不会变，这一点和向量相同；同时箭在无重力作用的理想情况下方向不会改变。也就是说长度和方向不变的理想之箭就是一个向量。所以向量的”飞行”称之为平移，这种允许在一条直线上平移的向量称为自由向量。</li>
+<li>物理界将 vector 称之为矢量，数学界称之为向量。</li>
+<li>向量的几何表示为<span class="math inline">\(\boldsymbol{AB}\)</span>；代数表示为<span class="math inline">\(\boldsymbol{a}\)</span>；手写时因为表示困难，所以写为<span class="math inline">\(\boldsymbol{a}\)</span></li>
+<li>虽然向量独立于任何坐标系之外，但是为了与解析技术联系起来实现对向量的计算，数学上还是必须将向量放在某一个坐标系下研究。<em>如果把空间中所有的向量的尾部都拉到坐标原点，这样</em><span class="math inline">\(n\)</span>维空间就可以和<span class="math inline">\(n\)</span>维向量空间建立一一对应的关系。</li>
+<li>一旦确定好坐标系，一个向量就是与一个点对应，而点是所谓坐标的有序数组表示的，因此就可以把向量用有序数组表示，有了有序数组就可以运算了。使用有序数组表述的向量是以原点为起点的向量末端的坐标值表示，并把坐标值用圆括号括起来，如<span class="math inline">\(\boldsymbol{a}=(x,y,z)\)</span>。在此处的有序数组<span class="math inline">\((x,y,z)\)</span>就是向量。</li>
+<li>一个向量可以分解为三个单位坐标向量的线性表示，比如向量<span class="math inline">\((1,1,1)\)</span>分解如下：<span class="math inline">\((1,1,1)=(1,0,0)+(0,1,0)+(0,0,1)=\boldsymbol{i}+\boldsymbol{j}+\boldsymbol{k}\)</span></li>
+<li>任意一个向量都可以表示为<span class="math inline">\(\boldsymbol{a}=(x,y,z)=x\boldsymbol{i}+y\boldsymbol{j}+z\boldsymbol{k}\)</span></li>
+<li>向量的运算有加法、减法和乘法。乘法又分为点积和叉积。除法少有提及，后面会解释原因。</li>
+<li>向量被看做线性空间或向量空间中的一个元素，但是与点不同。向量表示的是两点之间的位移而不是具体的空间的物理位置，是独立于坐标系的，这就是为什么在描述向量的运算法则的时候不需要画出坐标系，但一个点离开坐标系就无法表示。</li>
+<li>向量实际上使用一个<em>点对</em>表示的，比如<span class="math inline">\(\boldsymbol{AB}\)</span>表示起点为<span class="math inline">\(A\)</span>终点为<span class="math inline">\(B\)</span>，<em>之所以把一个点与一个向量相对应，是因为默认所有的向量都是从原点出发的。</em></li>
+</ol>
+</div>
+<div id="向量内积的几何和物理意义" class="section level2">
+<h2>向量内积的几何和物理意义</h2>
+<div id="向量内积的几何解释" class="section level3">
+<h3>向量内积的几何解释</h3>
+<ol style="list-style-type: decimal">
+<li>向量的内积(dot product)也称之为数量积、标积、点积。内积的结果是个标量，定义如下：</li>
+</ol>
+<p><span class="math display">\[
+    \begin{aligned}
+    \boldsymbol{a}\cdot\boldsymbol{b}&amp;=ab\cos \theta\\
+    \boldsymbol{a}\cdot\boldsymbol{b}&amp;=a_xb_x+a_yb_y+a_zb_z
+    \end{aligned}
+\]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li>根据内积的定义可对向量求长度：</li>
+</ol>
+<p><span class="math display">\[
+a = \sqrt{\boldsymbol{a}\cdot\boldsymbol{a}}=\sqrt{a_xa_x+a_ya_y+a_za_z}=\sqrt{a_x^2+a_y^2+a_z^2}
+\]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>那么内积的两个定义有几何关系吗？答案是有的。假设<span class="math inline">\(a_y\)</span>和<span class="math inline">\(a_z\)</span>均为<span class="math inline">\(0\)</span>，那么：<span class="math inline">\(\boldsymbol{a}\cdot\boldsymbol{b}=ab_x\)</span>，其中<span class="math inline">\(ab_x\)</span>的含义为<span class="math inline">\(\boldsymbol{a}\)</span>的长度乘以<span class="math inline">\(\boldsymbol{b}\)</span>在<span class="math inline">\(\boldsymbol{a}\)</span>方向上的分量，即投影。投影表示为<span class="math inline">\(b_x=b\cos \theta\)</span>。因此<span class="math inline">\(\boldsymbol{a}\cdot\boldsymbol{b}=ab\cos \theta\)</span>得以证明。</p></li>
+<li><p>向量内积的几何解释就是一个向量在另一个向量上的投影的积，也就是同方向的积。</p></li>
+<li><p>如果想要将一个向量变换到新的坐标系，只需要对新坐标系轴向量进行内积运算即可（这个理论极其重要）。</p></li>
+<li><p>内积还有一种比较直观的解释：</p>
+<ol style="list-style-type: decimal">
+<li>当两个向量的内积<span class="math inline">\(&gt;0\)</span>时，同方向</li>
+<li>当两个向量的内积<span class="math inline">\(=0\)</span>时，互相垂直</li>
+<li>当两个向量的内积<span class="math inline">\(&lt;0\)</span>时，反方向</li>
+</ol></li>
+</ol>
+</div>
+<div id="向量内积的物理解释" class="section level3">
+<h3>向量内积的物理解释</h3>
+<ol style="list-style-type: decimal">
+<li>生活中的内积：比如食物的价格分别为蔬菜<span class="math inline">\(2\)</span>元；大米<span class="math inline">\(1.5\)</span>元；牛肉<span class="math inline">\(10\)</span>元，那么价格向量为<span class="math inline">\(p=(2,1.5,10)\)</span>。重量分别为蔬菜<span class="math inline">\(3.5\)</span>斤；大米<span class="math inline">\(5\)</span>斤；牛肉<span class="math inline">\(2\)</span>斤，那么重量向量为<span class="math inline">\(d=(3.5,5,2)\)</span>。饮食消费的内积为：</li>
+</ol>
+<p><span class="math display">\[
+\boldsymbol{p}\cdot\boldsymbol{d}=(2,1.5,10)\cdot(3.5,5,2)=34.5
+\]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li>向量求解余弦插角公式：假设<span class="math inline">\(\boldsymbol{A}=(\cos \alpha, \sin\alpha)\)</span>，<span class="math inline">\(\boldsymbol{B}=(\cos \beta, \sin\beta)\)</span>，则：</li>
+</ol>
+<p><span class="math display">\[
+\begin{aligned}
+    \boldsymbol{OA}\cdot\boldsymbol{OB}=|\boldsymbol{OA}|\cdot|\boldsymbol{OB}|\cos(\beta-\alpha)=\cos\alpha\cos\beta+\sin\alpha\sin\beta\\
+    \cos(\beta-\alpha) = \cos\alpha\cos\beta+\sin\alpha\sin\beta \quad (|\boldsymbol{OA}|=\boldsymbol{OB}=1)
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+<div id="向量叉积的几何和物理意义" class="section level2">
+<h2>向量叉积的几何和物理意义</h2>
+<div id="叉积的定义及其几何解释" class="section level3">
+<h3>叉积的定义及其几何解释</h3>
+<ol style="list-style-type: decimal">
+<li>叉积(cross
+product)也称之为外积，因为叉积或产生新的一维向量。两个向量确定了一个二维的平面，叉积会产生垂直于这个平面的向量。</li>
+<li>叉积的定义也有两个：</li>
+</ol>
+<p><span class="math display">\[
+\begin{aligned}
+    \boldsymbol{a}\times \boldsymbol{b}&amp;=(ab\sin\theta)\boldsymbol{n_0}\\
+    \boldsymbol{a}\times \boldsymbol{b}&amp;=(a_yb_z-a_zb_y,a_zb_x-a_xb_z,a_xb_y-z_yb_x)
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(\boldsymbol{a}\times \boldsymbol{b}\)</span>为一个新生成的向量，这个向量垂直于<span class="math inline">\(\boldsymbol{a}\)</span>和<span class="math inline">\(\boldsymbol{b}\)</span>展成的平面，向量的大小等于以<span class="math inline">\(\boldsymbol{a}\)</span>和<span class="math inline">\(\boldsymbol{b}\)</span>为邻边所张成的平行四边形的面积<span class="math inline">\(S\)</span>；这一点很重要，在矩阵变换中有很多应用。</p>
+<p>垂直于平面的有两个方向，规定用右手法则来确定叉积的方向：按照<span class="math inline">\(\boldsymbol{a}\times \boldsymbol{b}\)</span>的运算顺序，右手的四指平直指向第一个向量<span class="math inline">\(\boldsymbol{a}\)</span>，然后弯曲指向向量<span class="math inline">\(\boldsymbol{b}\)</span>，右手大拇指的指向为<span class="math inline">\(\boldsymbol{a}\times \boldsymbol{b}\)</span>的方向。<span class="math inline">\(\boldsymbol{b}\times \boldsymbol{a}\)</span>与其相反。</p>
+</div>
+<div id="叉积的物理意义" class="section level3">
+<h3>叉积的物理意义</h3>
+</div>
+</div>
+<div id="向量积和张量之间的关系" class="section level2">
+<h2>向量积和张量之间的关系</h2>
+<p>从以上来看，向量的内积定义和外积定义确有意义，但为什么向量的乘积不能像两个多项式的乘法一样定义两个向量的乘积呢？其实完全可行。</p>
+<div id="二维向量的内积外积和张量" class="section level3">
+<h3>二维向量的内积、外积和张量</h3>
+<p>如果对向量<span class="math inline">\(\boldsymbol{a}\)</span>和<span class="math inline">\(\boldsymbol{b}\)</span>就像普通的多项式乘法分配律一样展开运算：</p>
+<p><span class="math display">\[
+\boldsymbol{a}\boldsymbol{b}=(a_x\boldsymbol{i}+a_y\boldsymbol{j})(b_x\boldsymbol{i}+b_y\boldsymbol{j})=(a_xb_x\boldsymbol{i}\boldsymbol{i}+a_yb_y\boldsymbol{i}\boldsymbol{i})+(a_xb_y\boldsymbol{i}\boldsymbol{i}+a_yb_x\boldsymbol{i}\boldsymbol{i})
+\]</span></p>
+<p>这里存在一个关键问题，该如何定义<span class="math inline">\(\boldsymbol{i}\)</span>和<span class="math inline">\(\boldsymbol{j}\)</span>之间的运算呢？不同的规定，就会得到不同的结论：</p>
+<p>第一种：<span class="math inline">\(\boldsymbol{i}\boldsymbol{i}=\boldsymbol{j}\boldsymbol{j}=1\)</span>，<span class="math inline">\(\boldsymbol{i}\boldsymbol{j}=\boldsymbol{j}\boldsymbol{i}=0\)</span>则：</p>
+<p><span class="math display">\[
+\boldsymbol{a}\boldsymbol{b}=a_xb_x+a_yb_y=\boldsymbol{a}\cdot\boldsymbol{b}
+\]</span></p>
+<p>这正是两个向量作内积运算的定义式。</p>
+<p>第二种：<span class="math inline">\(\boldsymbol{i}\boldsymbol{i}=\boldsymbol{j}\boldsymbol{j}=0\)</span>，<span class="math inline">\(\boldsymbol{i}\boldsymbol{j}=-\boldsymbol{j}\boldsymbol{i}=\boldsymbol{k}\)</span>则：</p>
+<p><span class="math display">\[
+\boldsymbol{a}\boldsymbol{b}=(a_xb_y-a_yb_x)\boldsymbol{k}=\boldsymbol{a}\times \boldsymbol{b}
+\]</span></p>
+<p>这正是两个向量作外积运算的定义式，在二维向量空间外又生成了一个第三维向量。</p>
+<p>第三种：当定义<span class="math inline">\(\boldsymbol{i}\)</span>和<span class="math inline">\(\boldsymbol{j}\)</span>只是作为一个顺序的记好时，即当<span class="math inline">\(\boldsymbol{i}\boldsymbol{i}=\boldsymbol{j}\boldsymbol{j}=0\)</span>，<span class="math inline">\(\boldsymbol{i}\boldsymbol{j}=1\)</span>，<span class="math inline">\(\boldsymbol{j}\boldsymbol{i}=-1\)</span>时：</p>
+<p><span class="math display">\[
+\boldsymbol{a}\boldsymbol{b}=a_xb_y\boldsymbol{i}\boldsymbol{j}+a_yb_x\boldsymbol{j}\boldsymbol{i}=a_xb_y-a_yb_x=
+\begin{vmatrix}
+a_x &amp; a_y\\
+b_x&amp;b_y
+\end{vmatrix}=
+\begin{vmatrix}
+\boldsymbol{a}\\
+\boldsymbol{b}
+\end{vmatrix}
+\]</span></p>
+<p>从以上结论来看，向量的内积运算、外积运算覆盖了二维向量及其复数（此处不考虑）的所有乘积模式的结果。实际上，像上述多项式一样的向量乘法叫做向量的直积，向量的直积是向量之间最简单的一种乘法运算，其结果是张量，所以也叫做向量的张量积。三维向量同理，此处不给出证明。</p>
+</div>
+</div>
+<div id="向量除法的几何意义" class="section level2">
+<h2>向量除法的几何意义</h2>
+<ol style="list-style-type: decimal">
+<li>由<span class="math inline">\(\boldsymbol{a}\cdot\boldsymbol{b}=\boldsymbol{a}\boldsymbol{b}\cos \theta=c\)</span>可知，<span class="math inline">\(\boldsymbol{a}\)</span>和<span class="math inline">\(c\)</span>只能确定<span class="math inline">\(\boldsymbol{b}\)</span>在<span class="math inline">\(\boldsymbol{a}\)</span>上的投影，并不能直接确定<span class="math inline">\(\boldsymbol{b}\)</span>，所以内积没有除法。</li>
+<li>由<span class="math inline">\(\boldsymbol{a}\times\boldsymbol{b}=(ab\sin \theta)\boldsymbol{n}=\boldsymbol{c}\)</span>可知，<span class="math inline">\(\boldsymbol{a}\)</span>和<span class="math inline">\(c\)</span>只能确定<span class="math inline">\(\boldsymbol{b}\sin\theta\)</span>
+的大小，并不能
+分别直接确定<span class="math inline">\(\boldsymbol{b}\)</span>和<span class="math inline">\(\theta\)</span>，所以外积没有除法。</li>
+</ol>
+<p>不妨尝试将两者联系：</p>
+<p><span class="math display">\[
+\begin{cases}
+\boldsymbol{a} \cdot \boldsymbol{b}=c\\
+\boldsymbol{a}\times\boldsymbol{b}=\boldsymbol{c}
+\end{cases}
+\]</span></p>
+<p>对于<span class="math inline">\(\boldsymbol{a}\times\boldsymbol{b}=\boldsymbol{c}\)</span>两边左叉乘<span class="math inline">\(\boldsymbol{a}\)</span>得到<span class="math inline">\(\boldsymbol{a}\times\boldsymbol{b}=\boldsymbol{c}\)</span>并用<span class="math inline">\(\boldsymbol{a} \times(\boldsymbol{b} \times \boldsymbol{c})=\boldsymbol{b}(\boldsymbol{a} \cdot \boldsymbol{c})-\boldsymbol{c}(\boldsymbol{a} \cdot \boldsymbol{b})\)</span>得到：</p>
+<p><span class="math display">\[
+\boldsymbol{a} \times(\boldsymbol{a} \times \boldsymbol{b})=\boldsymbol{a}(\boldsymbol{a} \cdot \boldsymbol{b})-\boldsymbol{b}(\boldsymbol{a} \cdot \boldsymbol{a})
+\]</span></p>
+<p>联立以上两个方程得到：</p>
+<p><span class="math display">\[
+\boldsymbol{b}=\frac{\boldsymbol{c}\boldsymbol{a}-\boldsymbol{a}\boldsymbol{c}}{\boldsymbol{a}\cdot\boldsymbol{a}}
+\]</span></p>
+<p>至此，<span class="math inline">\(\boldsymbol{b}\)</span>得到了唯一确定的值。也就是说同时知道内积和外积的结果才能进行向量的除法运算。</p>
+</div>

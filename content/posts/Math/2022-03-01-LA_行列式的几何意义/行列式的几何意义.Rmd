@@ -1,0 +1,257 @@
+---
+title: "行列式的几何意义"
+author: "Guangyao Zhao"
+date: '2022-03-05T21:09:12-05:00'
+image: math.jpg
+tags:
+- math
+- linear algebra
+categories: Math
+---
+
+# 行列式的定义
+
+行列式是由一些数据排列形成的方阵经过规定的计算方法而得到的一个**数**，这点需要和矩阵区别开来，矩阵是一个**数表**。行列式需要对这个数表按照规则进一步计算，最终得到一个实数，复数或者多项式（含有未知数时）。$n$阶行列式的计算如下：
+
+$$
+\begin{aligned}
+\left|\begin{array}{cccc}
+a_{11} & a_{12} & a_{13} \cdots & a_{1 n} \\
+a_{21} & a_{22} & a_{23} \cdots & a_{2 n} \\
+\vdots & \vdots & \vdots & \vdots \\
+a_{n 1} & a_{n 2} & a_{n 3} \cdots & a_{n n}
+\end{array}\right|=& a_{11} \cdot\left|\begin{array}{ccc}
+a_{22} & a_{23} \ldots & a_{2 n} \\
+\vdots & \vdots & \vdots \\
+a_{n 2} & a_{n 3} \ldots & a_{n n}
+\end{array}\right|-a_{12} \cdot\left|\begin{array}{ccc}
+a_{22} & a_{23} \ldots & a_{2 n} \\
+\vdots & \vdots & \vdots \\
+a_{n 1} & a_{n 3} \ldots & a_{n n}
+\end{array}\right|+\\
+&\cdots+(-1)^{n+1} a_{1 n} \cdot\left|\begin{array}{ccc}
+a_{21} & a_{22} \ldots & a_{2 n-1} \\
+\vdots & \vdots \\
+a_{n 1} & a_{n 2} \ldots & a_{n n-1}
+\end{array}\right|\\
+=&\sum_{\left(j_{1} j_{2} \cdots j_{n}\right)}(-1)^{t} a_{1 j_{1}} a_{2 j_{2}} \cdots a_{n j_{n}}
+\end{aligned}
+$$
+
+行列式的几何意义是什么？
+
+1. 行列式中的行或列向量所构成的超平面的有向面积或有向体积。
+2. 矩阵$A$的行列式$\mathrm{det}A$就是线性变换$A$的图形面积或体积的伸缩因子。
+
+
+# 二阶行列式的几何意义
+
+二阶行列式的几何意义$\begin{vmatrix}
+ a_1 & a_2\\
+b_1  & b_2
+\end{vmatrix}=(a_1b_2-a_2b_1)$是$xoy$平面上以行向量$\boldsymbol{a}=(a_1,a_2)$和$\boldsymbol{b}=(b_1,b_2)$为邻边的平行四边形的有向面积。下面给出证明过程：
+
+在二维几何空间$\mathbb{R}^2$中取得一个直角坐标系$\{0;e_1,e_2\}$，设$\boldsymbol{a}=a_1e_1+a_2e_2$和$\boldsymbol{b}=b_1e_1+b_2e_2$，则以$\boldsymbol{a}$和$\boldsymbol{b}$为边的四边形面积为：
+
+$$
+S(\boldsymbol{a},\boldsymbol{b})=ab\sin<a,b>
+$$
+
+其中：
+
+1. $\boldsymbol{a}=\sqrt{a_1^2+a_2^2}$，$\boldsymbol{b}=\sqrt{b_1^2+b_2^2}$
+2. $ab\sin<a,b>=\sin(\alpha-\beta)=\sin\alpha\cos\beta-\cos\alpha\sin\beta=\frac{a_1}{a}\frac{b_2}{b}-\frac{a_2}{a}\frac{b_1}{b}=\frac{a_1b_2-a_2b_1}{ab}$
+
+综上$S(\boldsymbol{a},\boldsymbol{b})=ab\sin<a,b>$得以证明，即二阶行列式是平行四边形的有向面积，也是两个向量的外积。
+
+## 二阶行列式性质的几何解释
+
+性质一：
+
+$$
+k\begin{vmatrix}
+ a_1 & a_2\\
+b_1  & b_2
+\end{vmatrix}=
+\begin{vmatrix}
+ ka_1 & ka_2\\
+b_1  & b_2
+\end{vmatrix}
+$$
+
+两个行向量$\boldsymbol{a}$和$\boldsymbol{b}$所组成的平行四边形的$k$倍面积等于这样两个向量$\boldsymbol{ka}$和$\boldsymbol{b}$所组成的平行四边形面积，即：$S(k\boldsymbol{a},\boldsymbol{b})=kS(\boldsymbol{a},\boldsymbol{b})$
+
+
+性质二：
+
+$$
+\begin{vmatrix}
+ a_1 & a_2\\
+b_1+c_1  & b_2+c_2
+\end{vmatrix}=
+\begin{vmatrix}
+ a_1 & a_2\\
+b_1  & b_2
+\end{vmatrix}+
+\begin{vmatrix}
+ a_1 & a_2\\
+c_1  & c_2
+\end{vmatrix}
+$$
+
+一个行列式可以通过拆分为某一行向量而得到两个行列式之和：$S(\boldsymbol{a},\boldsymbol{b}+\boldsymbol{c})=S(\boldsymbol{a},\boldsymbol{b})+S(\boldsymbol{a},\boldsymbol{c})$
+
+
+性质三：
+
+$$
+\begin{vmatrix}
+ a_1 & a_2\\
+ka_1  & ka_2
+\end{vmatrix}=0
+$$
+
+显然两个向量$\boldsymbol{a}$和$k\boldsymbol{a}$重线，即组成的平行四边形面积为$0$
+
+性质四：
+
+$$
+\begin{vmatrix}
+ a_1 & a_2\\
+b_1  & b_2
+\end{vmatrix}=-
+\begin{vmatrix}
+b_1 & b_2\\
+a_1  & a_2
+\end{vmatrix}
+$$
+
+显然根据外积定义：$\boldsymbol{a}\times\boldsymbol{b}=\boldsymbol{b}\times\boldsymbol{a}$
+
+性质五：
+
+$$
+\begin{vmatrix}
+ a_1 & a_2\\
+b_1  & b_2
+\end{vmatrix}=
+\begin{vmatrix}
+ a_1 & a_2\\
+b_1+ka_1  & b_2+ka_2
+\end{vmatrix}
+$$
+
+
+在同一平面上，两个平行四边形的底高分别相同，则面积相等。此性质相当于将原平行四边形扭转了一定的角度，面积不变。
+
+
+
+性质六：
+
+$$
+\begin{vmatrix}
+ a_1 & a_2\\
+b_1  & b_2
+\end{vmatrix}=
+\begin{vmatrix}
+a_1 & b_2\\
+a_2  & b_2
+\end{vmatrix}
+$$
+
+即转置前后所组成的平行四边形面积相等。
+
+
+# 行列式化为对角形的几何解释
+
+
+# 一类行列式的几何意义
+
+## 最后一列为$1$的行列式
+
+某一类行列式如下：
+
+$$
+\left|\begin{array}{ccccc}
+a_{11} & a_{12} & \cdots & a_{1 n-1} & 1 \\
+a_{21} & a_{22} & \cdots & a_{2 n-1} & 1 \\
+\vdots & \vdots & & \vdots & \vdots \\
+a_{n 1} & a_{n 2} & \cdots & a_{n n-1} & 1
+\end{array}\right|
+$$
+
+在之前提到过，比如三阶行列式是由三维向量所组成的平行多面体的有向体积，那么对于最后一列的元素全部为$1$的三阶行列式至少也有同样的意义。
+
+对于二阶行列式：
+
+$$
+\begin{vmatrix}
+a_{11} & 1\\
+a_{21} & 1
+\end{vmatrix}
+$$
+
+的意义为$\overrightarrow{a_{21}a_{11}}$的有向长度。
+
+对于三阶行列式：
+
+$$
+\begin{vmatrix}
+a_{11} & a_{12} & 1\\
+a_{21} & a_{22} & 1\\
+a_{31} & a_{32} & 1\\
+\end{vmatrix}
+$$
+
+的意义为$\Delta A_1A_2A_3$面积的$2$倍。
+
+对于四阶行列式：
+
+$$
+\begin{vmatrix}
+a_{11}& a_{12} & a_{13} & 1\\
+a_{21}&a_{22}&a_{23} & 1\\
+a_{31}&a_{32}&a_{33}&1\\
+a_{41}&a_{42}&a_{43}&1\\
+\end{vmatrix}
+$$
+
+是以$A_1A_2A_3A_4$为顶点的四面体体积的$6$倍。
+
+## 一列为$1$的行列式的应用
+
+在解析几何中常常应用等式：
+
+$$
+D_{n}=\left|\begin{array}{ccccc}
+a_{11} & a_{12} & \cdots & a_{1 n-1} & 1 \\
+a_{21} & a_{22} & \cdots & a_{2 n-1} & 1 \\
+\vdots & \vdots & & \vdots & \vdots \\
+a_{n 1} & a_{n 2} & \cdots & a_{n n-1} & 1
+\end{array}\right|=0
+$$
+
+来判断空间中点之间的关系，比如：
+
+$$
+D_n=0 \Rightarrow\begin{cases}
+n=2,\text{一位数轴上两点重合}\\
+n=3,\text{二维平面上三点共线}\\
+n=4,\text{三维空间中四点共面}
+\end{cases}
+$$
+
+来看一下此类行列式在几何上的零活应用。比如，有行列式：
+
+$$
+\begin{vmatrix}
+x & y & 1\\
+a_1 & a_2 &1\\
+b_1 & b_2 &1\\
+\end{vmatrix}=0
+$$
+
+ 此行列式表示平面两点$A(a_1,a_2)$和$B(b_1,b_2)$的直线，其中$(x,y)$为直线上的任意一点。同理推广到四维中，$(x,y,z)$是过三点$A(a_1,a_2,a_3)$，$B(b_1,b_2)$和$C(c_1,c_2,c_3)$平面的任意一点。
+ 
+ 
+ 
