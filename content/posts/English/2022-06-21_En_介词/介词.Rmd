@@ -1,0 +1,76 @@
+---
+title: "第十章：介系词"
+author: "Guangyao Zhao"
+date: '2022-06-21T21:09:12-05:00'
+image: english.jpg
+categories: language
+tags:
+- English
+- grammar
+---
+
+> 介系词难点在于缺乏观念性，不能以一套观念来涵盖所有介系词用法。
+
+
+## 介系词短语
+
+介系词短语为介系词加上一个名词短语构成的单元，在句子中常用作修饰语，修饰名词、动词、形容词和副词等，位置通常在修饰对象后面：
+
+- Cherries are **in** season now：名词
+- Eggs are sold **by** the dozen：动词
+- The box is full **of** chocolates：形容词
+- He'll return tomorrow **at** the latest：副词
+
+
+## 空间副词
+
+将介系词分为点、线、面、体来讨论。
+
+### 点：at
+
+Let's meet **at** the railway station：火车站虽然是立体的建筑，但是在这句话中火车站只表示双方约定的碰面地点。
+
+### 线：on, along
+
+- Then we can go over the project **on** our way to Beijing：去北京的火车路线是线。
+- We may go walking through the windy park, or drive **along** the bench：沿线前进。
+
+### 面：on
+Several boats can be seen **on** the lake：湖泊虽然有立体有深度，可是这里指的是湖面。
+
+### 体：in
+
+It's cool **in** the railway station because they have air-conditioning there：火车站里面有冷气。
+
+
+## 时间介系词
+
+At 表示点，in 表示长时间，on 表示特定日期：
+- The earthquake struck at 6:00.
+- Typhoons seldom come in winter.
+- There'll be a concert on New Year's Day.
+
+
+## 介系词的分辨
+
+- On one's way and in one's way.
+    - **On** one's way to Beijing：出发去某地，线型。
+    - You're **in** my way：别人挡住了自己的路，已经不是一个线型的空间，而是体的概念。
+- Arrive in and arrive at.
+    - We'll **arrive at** Beijing in 5 mins, where we'll refuel before flying on to Hangzhou：Beijing 不可谓不大，但是此处的 Beijing 只是一个中途点，所以仍用 at。
+    - The home-coming hero **arrived in** town and was greeted by the crowd gathered along Main Street：小镇很小，但那是它是英雄进的地方，因而被看做立体空间。
+- Made of and made from.
+    - These shoes were **made from** rubber tires：of 的意思比较直接，接近于中文的「……的」。A chair **made of** wood 是木头做的椅子，直接可以看到木头材料，关系很直接，可以用 of。如果说 wine **made from** grapes，那表示关系不那么直接：from 有出自于的意思。
+- Between and among.
+    - Hangzhou lies **between** Beijing and Shanghai：between 有位置标记功能。
+    - **Among** the major cities in Japan, Sapporo is the cleanest：among 没有标记功能。
+    - Taibei lies **between** Taoyuann, Yilan and Jilong：三个地点，却还是要用 between，因为需要位置标记。
+- Throw to and throw at.
+    - I forget my eyes. Please throw them **to** me：to 代表方向。
+    - The kids are throwing rocks **at** the poor dog：at 代表一个点，希望能打中。
+- From to and from through.
+    - The circus will be here four months, from May **to** September：没有讲明日期，可能是五月中到九月中，所以大概是四个月。
+    - The circus will be here five months, from May **through** September：头尾都包括，5,6,7,8,9。
+- Above(below) and over(under).
+    - He soars **above** all other peaks in the Alps：above 只表示高度超过，比较高。
+    - The little child couldn't keep the umbrella **over** his head and soon got wet：over 有标示定点的功能。小孩不是雨伞举不高，而是拿不稳，无法一直遮在头顶，所以会淋湿。

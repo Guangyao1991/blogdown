@@ -1,0 +1,105 @@
+---
+title: "第二章：名词短语与冠词"
+author: "Guangyao Zhao"
+date: '2022-05-26T21:09:12-05:00'
+image: english.jpg
+categories: language
+tags:
+- English
+- grammar
+---
+
+## 什么时候不需要用限定词
+
+如果把 many good students 中的限定词 many 拿掉，剩下的 good students 仍然正确。但是把 a new book 中的限定词 a 拿掉，只剩下 new book 就变成了错误的名词短语。
+
+A 代表的就是 one 一字的弱化效果，即 a 就是一个的意思，只是语气较弱而已，如果后面所接的名词不适合以「一个」来交代，那也就不适合加 a 。比如：
+
+Unmarried men are a rare species these days，此处 men 已经清楚的交代了名词是复数。但是在 a new book 中，book 是单数形态，所以需要限定词来配合。除了复数外，抽象名词没有具体形状，不能用「一个」来表示，即不可以用 a 限定词：
+
+- **Honesty** is not necessarily the best policy.
+- **Fresh water** is a precious resource in Saudi Arabia.
+
+
+## 专有名词与补语位置
+
+用 a 表示一件物品的同时，在暗示着有另一个同样的物品存在。所以如果只有一件物品的时候，就不可以用 a 了，因为大家都知道在世界上只有一个这样的物品。当提到该物品的时候，大家都知道指的是什么，比如 earth, sun, moon 都只有一个。但有时候要判断一个名词是否是专有名词并不是一件容易的事情。像 Sunday 这种字，一个月中可能会有四五天，所以可以说：
+
+There are five Sundays this month.
+
+这时候它就不算专有名词，可是在一周中只有一天，所以可以说：
+
+I have an appointment on Sunday.
+
+此时它就是唯一的一天，就算是专有名词。
+
+放在补语的专有名词最难判断，**如果主语是专有名词，那么补语应该同等是专有名词**，条件是在补语位置上的名词也必须具有唯一性质，比如：
+
+Mr. Elson was president of the high school.
+
+主语 Mr. Elson 是人名，没有第二个存在，所以是专有名词。补语 president 本来只是普通名词，因为并不是这所高中才有校长。所以此句中主语和补语并不是一类词。但是因为在此「president」是 Mr. Elson 的补语，可以和 Mr. Elson 划等号所以可以用专有名词诠释它。接下来，再看个例子：
+
+Some say he was a better president than Mr. Robert.
+
+主语是 he，也就是 Mr. Elson，此时 president 仍然是主语补语，但此处需要加上 a，因为学校可能有多个校长，此时 president 就不能和 Mr. Elson 划等号了。
+
+Mattin Wales, who was head of the football team, at the time, wore a mustache.
+
+Who was Head of the football team 称之为同位语，其中 who 代表的是 Mattin Wales， 而 head 是主语补语，和 Mattin Wales 划等号，所以算是专有名词，不必用限定词。
+
+写主语补语的时候，一定要注意是否为专有名词。写宾语补语时也是一样，比如：
+
+Clinton made Gorle campaign partner of the Presidential election.
+
+campaign partner 是宾语 Gorle 的补语，和其为同等关系。而副总统搭档只有一人，故它成为专有名词的用法。
+
+
+## 定冠词 the 的用法
+
+The 可以看作是 that 和 those 的弱化形式。而 that 和 those 是指示性形容词，有明确的指示功能。所以 the 也可以从这个角度解释：但凡上下文中有指示意思的，也就是有「那个」的指示功能时，便要用定冠词 the：
+
+- I need a book to read on my trip.
+- I have finished the book you lent me.
+
+再比较：
+
+- Modern history is my favorite subject.
+- The history of recent China is a sorry record.
+
+History 是抽象名词，所以不可用 a，而在形容词上的 modern 只是附在 history 上的修饰语，并不算明确的指示，所以不用 the。而 the history of recent China 则有 of recent China 附在后面，用来特指那一段历史，所以需要加 the.
+
+
+## 定冠词与专有名词
+
+专有名词指的是只有一个对象存在的名词，既然只有一个存在，就没「这个和那个」的区别，即不用定冠词 the。所以定冠词和专有名词有冲突，不可以并存。如果加了 the，就表示这个东西有两个以上，也就不是专有名词了：
+
+- This is not **the** John Smith I know.
+- This is photography show of **the** Taibei 50 years ago.
+
+第一句暗示还有一个 John Smith 存在；第二句表示还有一个「50 年前那个台北」 存在。
+
+最后，比较以下说法：
+
+- The Pacific (Ocean)
+- The Atlantic (Ocean)
+- The India (Ocean)
+- The Dead Sea
+
+太平洋的 the Pacific 一词中，Pacific 是放在形容词的位置，字尾 -ic 是明显的形容词字尾。在名词位置上的 Ocean 其实是普通名词，因为世界上有四个大洋，只要有两个以上就不算是专有名词，在此处被省略掉。另外：
+
+- The Philippine Islands $\rightarrow$ the Philippines
+- The Alp Mountains $\rightarrow$ the Alps
+
+在此处，复数的群山群岛也都是普通名词。可是名词部分被省略掉，以形容词代替并把 -s 移动到前面来。这也不是例外，只是很合理的省略方式罢了。同理：
+
+- The Mississippi (River)
+- The Titanic (Ship)
+- The United States of America：America 是专有名词，State 是普通名词。
+- The United Nations
+
+综上，重要的观念有三：
+
+- 名词短语包括：限定词，形容词，名词三个部分，任何部分都可省略。
+- 如果名词短语中不用限定词，是因为该名词不适合加 a。
+- A 是 one 弱化结果，the 是 that/those 的弱化结果。
+

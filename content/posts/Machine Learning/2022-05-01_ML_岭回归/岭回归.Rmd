@@ -1,0 +1,58 @@
+---
+title: "岭回归(Ridge regression)"
+author: "Guangyao Zhao"
+date: '2022-05-01T21:09:12-05:00'
+image: ML.jpg
+categories: machine learning
+tags:
+- machine learning
+- algorithm
+---
+
+当样本数较小的时候，模型容易过拟合，此时一般有三种办法解决：
+
+1. 增加样本量
+2. 提取出有效特征，减少维度
+3. 正则化
+
+线性回归中，$\mathrm{L}_2$正则的代价函数如下：
+
+$$
+\mathrm{J}(w) =\sum_{i=1}^{n}\Vert w^\mathrm{T}x_i-y_i\Vert^2 +\lambda w^\mathrm{T}w
+$$
+
+在线性回归一节中，推导出：
+
+$$
+\begin{aligned}
+\mathrm{J}(w)&=\left ( w^\mathrm{T}\mathbf{X}^\mathrm{T}-y^\mathrm{T} \right ) \left ( \mathbf{X}w-y \right )\\
+& = w^\mathrm{T} \mathbf{X}^\mathrm{T} \mathbf{X}w - 2w^\mathrm{T}\mathbf{X}^\mathrm{T}y+y^\mathrm{T}y
+\end{aligned}
+$$
+
+代入包含$\mathrm{L}_2$正则的代价函数中：
+
+$$
+\begin{aligned}
+\mathrm{J}(w)& = w^\mathrm{T} \mathbf{X}^\mathrm{T} \mathbf{X}w - 2w^\mathrm{T}\mathbf{X}^\mathrm{T}y+y^\mathrm{T}y+\lambda w^\mathrm{T}w\\
+&= w^\mathrm{T}\left ( \mathbf{X}^\mathrm{T}\mathbf{X}+\lambda \mathrm{I} \right ) w - 2w^\mathrm{T}\mathbf{X}^\mathrm{T}y+y^\mathrm{T}y
+\end{aligned}
+$$
+
+对上式求导得到：
+
+$$
+\frac{\partial\, \mathrm{J}(w)}{\partial\, w} = 2\left (\mathbf{X} ^\mathrm{T}\mathbf{X}+\lambda\mathrm{I}  \right ) w-2\mathbf{X}^\mathrm{T}y
+$$
+
+求解可得到解析解：$w=\left ( \mathbf{X}^\mathrm{T}\mathbf{X} +\lambda\mathrm{I}\right )^{-1}\mathbf{X}^\mathrm{T}y$。在进行梯度下降的时候也是利用该公式，$w$的更新公式为：
+
+$$
+w := w-\left(\alpha \mathbf{X} ^\mathrm{T}\left( \mathbf{X}w-y\right)-\lambda w\right)
+$$
+
+非矩阵形式的更新公式如下：
+
+$$
+w_j := w_j - \left(\alpha\frac{1}{n}\sum_{i=1}^{n}(w^\mathrm{T}x_i-y_i)x_{ij} -\lambda w_j\right)
+$$

@@ -1,0 +1,115 @@
+---
+title: "逻辑回归(Logistic regression)"
+author: "Guangyao Zhao"
+date: '2022-01-25T21:09:12-05:00'
+image: ML.jpg
+categories: machine learning
+tags:
+- machine learning
+- algorithm
+---
+
+
+
+<div id="二分类问题" class="section level1">
+<h1>二分类问题</h1>
+<p>逻辑回归的原理是用逻辑函数把线性回归的结果<span class="math inline">\((-\infty, +\infty)\)</span>映射到<span class="math inline">\((0,1)\)</span>。逻辑函数(sigmoid function)：</p>
+<p><span class="math display">\[
+g(z) = \frac{1}{1+e^{-z}}
+\]</span></p>
+<p>对 sigmoid 函数求导可得（求解的时候用）：</p>
+<p><span class="math display">\[
+\begin{aligned}
+g&#39;(z) &amp;= \left ( \frac{1}{1+e^{-x}} \right )&#39;  =\left ( \frac{e^x}{e^{x}+1} \right ) &#39;\\
+&amp;=\frac{e^x(e^x+1)-e^{2x}}{(e^x+1)^2}\\
+&amp; = \frac{e^x}{(e^x+1)^2}\\
+&amp; = \frac{1}{e^x+1}\frac{e^x}{e^x+1}\\
+&amp; = g(z)\left ( 1-g(z) \right )
+\end{aligned}
+\]</span>
+对预测结果定义如下：</p>
+<ul>
+<li>正例：<span class="math inline">\(p(y=1|x)=g(w^\mathrm{T}x)=\frac{1}{1+e^{-w^\mathrm{T}x}}\)</span></li>
+<li>反例：<span class="math inline">\(p(y=0|x)=1-g(w^\mathrm{T}x)=\frac{e^{-w^\mathrm{T}x}}{1+e^{-w^\mathrm{T}x}}\)</span></li>
+</ul>
+<p>将两个式子合并成一个，即：</p>
+<p><span class="math display">\[
+p(y|x) = p_1^{y}p_0^{1-y}
+\]</span></p>
+<p>利用最大似然函数：</p>
+<p><span class="math display">\[
+\begin{aligned}
+w^*&amp;=\underset{w}{\mathrm{argmax} }\ln p(Y|X)\\
+&amp; = \underset{w}{\mathrm{argmax} }\ln \prod_{i=1}^{n}p(y_i|x_i)\\
+&amp; = \underset{w}{\mathrm{argmax} }\sum_{i=1}^{n}\left ( y_i\ln {p_1} + (1-y_i) \ln {p_0} \right ) \\
+&amp; = \underset{w}{\mathrm{argmax} }\sum_{i=1}^{n}\left ( y_i \ln {g(w^\mathrm{T}x_i)} + (1-y_i) \ln \left ( {1-g(w^\mathrm{T}x_i)} \right )  \right )
+\end{aligned}
+\]</span>
+所以，逻辑回归的损失函数可定义为：</p>
+<p><span class="math display">\[
+\mathrm{J}(w)=-\frac{1}{n}\sum_{i=1}^{n}\left ( y_i \ln {g(w^\mathrm{T}x_i)} + (1-y_i) \ln \left ( {1-g(w^\mathrm{T}x_i)} \right )  \right )
+\]</span></p>
+<p>其中<span class="math inline">\(g(z)=\frac{1}{1+e^{-z}}\)</span>。从上式可看出，其实逻辑回归的表达式是交叉熵(cross entropy)。</p>
+<p>对损失函数进行求导：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial \mathrm{J}(w) }{\partial w_j} &amp;= -\frac{1}{n}\sum_{i=1}^{n}\left [ y_i\frac{1}{g(z)}
+- (1-y_i)\frac{1}{1-g(z)}  \right ] \frac{\partial g(z)}{\partial w_j}\\
+&amp; = -\frac{1}{n}\sum_{i=1}^{n}\left [ \frac{y_i-g(z)}{g(z)\left ( 1-g(z) \right ) } \right ] \frac{\partial g(z)}{\partial w_j}\\
+&amp; = -\frac{1}{n}\sum_{i=1}^{n}\left ( y_i-g(z) \right ) x_{ij}\\
+&amp; = \frac{1}{n}\sum_{i=1}^{n}\left ( g(z) - y_i\right ) x_{ij}
+\end{aligned}
+\]</span></p>
+<p>由上式子和线性回归<span class="math inline">\(w\)</span>更新相比，仅仅是多了一个 sigmoid 变换。</p>
+<p>非矩阵形式权值更新如下：</p>
+<p><span class="math display">\[
+w_j := w_j-\alpha\frac{1}{n}\sum_{i=1}^{n}\left ( g(w^\mathrm{T}x_i) - y_i\right ) x_{ij}
+\]</span></p>
+<p>矩阵形式权值更新如下：</p>
+<p><span class="math display">\[
+w := w-\alpha\frac{1}{n}\mathbf{X}^\mathrm{T}(g \left (\mathbf{X}w)-y \right)
+\]</span></p>
+</div>
+<div id="多分类问题" class="section level1">
+<h1>多分类问题</h1>
+<div id="非矩阵化" class="section level2">
+<h2>非矩阵化</h2>
+<p>多分类问题就要用到 softmax 函数，在人工神经网络一节中已经推导得出结论：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\delta _q&amp;= \frac{\partial L}{\partial z_q}\\
+&amp;=\begin{cases}
+y_qa_p,\,p\ne q\\
+y_q(a_p-1),\,p= q\\
+\end{cases}
+\end{aligned}
+\]</span></p>
+<p>特别注意，在 softmax 中系数<span class="math inline">\(w\)</span>为一个矩阵，形状为<code>(分类个数k,特征m)</code>。<span class="math inline">\(w\)</span>更新如下：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial L}{w_{ij}}&amp;=\frac{\partial L}{\partial a_{j}}\frac{\partial a_j}{\partial z_{j}}\frac{\partial z_j}{\partial w_{ij}}\\
+&amp;=\delta_jx_j
+\end{aligned}
+\]</span></p>
+<p>其中<span class="math inline">\(i\)</span>为<span class="math inline">\(w\)</span>的行数，<span class="math inline">\(j\)</span>为输出层的神经元序数。</p>
+</div>
+<div id="矩阵化" class="section level2">
+<h2>矩阵化</h2>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial L}{w_{ij}}&amp;=\frac{\partial L}{\partial a_{j}}\frac{\partial a_j}{\partial z_{j}}\frac{\partial z_j}{\partial w_{ij}}\\
+&amp;=\delta_jx_j
+\end{aligned}
+\]</span></p>
+<p>矩阵化表示：</p>
+<ol style="list-style-type: decimal">
+<li><code>x.shape=(n,m)</code></li>
+<li><code>w.shape=(k,m)</code>，<span class="math inline">\(z=wx^{\mathrm{T}}\)</span>的形状为<code>(k,n)</code></li>
+<li><code>z.shape=(k,n)</code>, 损失求平均<code>z.shape=(k,1)</code></li>
+</ol>
+<p>更新公式：</p>
+<p><span class="math display">\[
+w :=w-\delta x^{\mathrm{T}}
+\]</span></p>
+</div>
+</div>

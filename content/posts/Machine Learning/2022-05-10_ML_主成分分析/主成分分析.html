@@ -1,0 +1,150 @@
+---
+title: "主成分分析(principle component ananlysis)"
+author: "Guangyao Zhao"
+date: '2022-05-10T21:09:12-05:00'
+image: ML.jpg
+categories: machine learning
+tags:
+- machine learning
+- algorithm
+---
+
+
+
+<p>样本表示：</p>
+<p><span class="math display">\[
+\mathrm{X} = (x_1;x_2;...;x_3) = \begin{pmatrix}
+  x_{11}&amp; x_{11} &amp; \cdots  &amp; x_{1m}\\
+  x_{21}&amp; x_{21} &amp; \cdots &amp; x_{2m}\\
+  \vdots &amp;  &amp;  &amp; \\
+  x_{n1}&amp; x_{n1} &amp; \cdots &amp;x_{nm}
+\end{pmatrix}
+\]</span>
+其中<span class="math inline">\(n\)</span>个样本，<span class="math inline">\(m\)</span>个维度。</p>
+<div id="样本均值" class="section level2">
+<h2>样本均值</h2>
+<p><span class="math display">\[
+\bar{\mathrm{X}} = \frac{1}{n}\sum_{i=1}^{n}x_i = \frac{1}{n}\left(x_1,x_2,...,x_n \right)\begin{pmatrix}
+1\\
+1\\
+\vdots\\
+1
+\end{pmatrix}_n=\frac{1}{n}\mathrm{X}^\mathrm{T}1_n
+\]</span>
+其中：</p>
+<p><span class="math display">\[
+1_n=\begin{pmatrix}
+1\\
+1\\
+\vdots\\
+1
+\end{pmatrix}_n
+\]</span></p>
+</div>
+<div id="样本方差矩阵" class="section level2">
+<h2>样本方差矩阵</h2>
+<p><span class="math display">\[
+\begin{aligned}
+S &amp;= \frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x}) (x_i-\bar{x})^\mathrm{T}\\
+&amp; = \frac{1}{n}\left ( x_1-\bar{x}, x_2-\bar{x},...,x_n-\bar{x} \right ) \begin{pmatrix}
+(x_1-\bar{x})^\mathrm{T}\\
+(x_2-\bar{x})^\mathrm{T}\\
+\vdots\\
+(x_n-\bar{x})^\mathrm{T}
+\end{pmatrix}\\
+&amp; = \frac{1}{n}\mathrm{X}^\mathrm{T}\left ( \mathrm{I}_n-\bar{\mathrm{X}}1_n1_n^{\mathrm{T}} \right )\left ( \mathrm{X}^\mathrm{T}\left ( \mathrm{I}_n-\bar{\mathrm{X}}1_n1_n^{\mathrm{T}} \right ) \right )^\mathrm{T}  
+\end{aligned}
+\]</span></p>
+<p>将<span class="math inline">\(\bar{\mathrm{X}}=\frac{1}{n}\mathrm{X}^\mathrm{T}1_n\)</span>代入上式子：</p>
+<p><span class="math display">\[
+\begin{aligned}
+S &amp;= \frac{1}{n}\left [ \mathrm{X}^\mathrm{T}\left ( \mathrm{I}_n - \frac{1}{n}1_n1_n^\mathrm{T} \right ) \right ]  \left [\mathrm{X}^\mathrm{T} \left ( \mathrm{I}_n - \frac{1}{n}1_n1_n^\mathrm{T} \right ) \right ] ^\mathrm{T}\\
+&amp;= \frac{1}{n}\mathrm{X}^\mathrm{T}\mathrm{H}\mathrm{H}^\mathrm{T}\mathrm{X}\\
+&amp;= \frac{1}{n}\mathrm{X}^\mathrm{T}\mathrm{H}\mathrm{X}
+\end{aligned}
+\]</span></p>
+<p>其中：<span class="math inline">\(\mathrm{H}= \mathrm{I}_n - \frac{1}{n}1_n1_n^\mathrm{T}\)</span>。<span class="math inline">\(\mathrm{H}\)</span>为中心矩阵。</p>
+<p>由以上可证明协方差矩阵<span class="math inline">\(S\)</span>是对称矩阵，可对角化。</p>
+</div>
+<div id="最大投影差" class="section level2">
+<h2>最大投影差</h2>
+<ul>
+<li>一个中心：将一组可能线性相关的变量，变成一组线性无关的变量。即，对原始特征的重构。</li>
+<li>两个基本点：最大投影方差；最小重构距离。</li>
+</ul>
+<p>向量<span class="math inline">\(a\)</span>在向量<span class="math inline">\(u\)</span>方向的投影计算公式为：</p>
+<p><span class="math display">\[
+d = \frac{au}{u}
+\]</span>
+其中<span class="math inline">\(u\)</span>为单位向量，即<span class="math inline">\(u^\mathrm{T}u=1\)</span>。</p>
+<p>PCA 的思想是将原有空间的样本尽可能分散地映射到一个子空间，即各维度应该最大。且尽可能的各维度线性无关，即使基向量正交。根据线性代数，我们可以知道同一元素的协方差就表示该元素的方差，不同元素之间的协方差就表示它们的相关性。</p>
+<p>此时就可将问题转化为（首先需要中心化）：</p>
+<p><span class="math display">\[
+\begin{aligned}
+J &amp;= \sum_{i=1}^{n}\left( (x_i-\bar{x})^\mathrm{T}u_1 \right)^2, \\
+&amp; = \sum_{i=1}^{n} u_1^\mathrm{T} (x_i-\bar{x}) (x_i-\bar{x})^\mathrm{T}u_1\\
+&amp; = u_1^\mathrm{T} \left ( \frac{1}{n}\sum_{i=1}^{n} (x_i-\bar{x}) (x_i-\bar{x})^\mathrm{T} \right ) u_1\\
+&amp; = u_1^\mathrm{T} \mathrm{S} u_1
+\end{aligned}
+\]</span></p>
+<p>求<span class="math inline">\(J\)</span>最大值，将其转化为优化问题：</p>
+<p><span class="math display">\[
+u_1^* = \underset{u_1}{\mathrm{argmax}}\,u_1^\mathrm{T} \mathrm{S} u_1
+\]</span></p>
+<p>上式子满足：<span class="math inline">\(s.t. u^\mathrm{T}u=1\)</span>。引入拉格朗日乘子法：</p>
+<p><span class="math display">\[
+\begin{aligned}
+L(u_1,\lambda) &amp;= u_1^\mathrm{T} \mathrm{S} u_1 + \lambda (1-u_1^\mathrm{T}u_1)\\
+\frac{\partial L(u_1,\lambda)}{\partial u_1} &amp; = 2Su_1 - 2\lambda u_1=0
+\end{aligned}
+\]</span></p>
+<p>即：<span class="math inline">\(Su_1=\lambda u_1\)</span>。其中<span class="math inline">\(\lambda\)</span>为特征值，<span class="math inline">\(u_1\)</span>为特征向量。</p>
+<p>以上推导过程说明：信息量保存能力最大的基向量一定是样本矩阵<span class="math inline">\(\mathrm{X}\)</span>的协方差矩阵的特征向量，并且这个特征向量保存的信息量就是它对应的特征值的绝对值。这个推导过程就解释了为什么PCA算法要利用样本协方差的特征向量矩阵来降维。</p>
+</div>
+<div id="代码" class="section level2">
+<h2>代码</h2>
+<pre class="python"><code>##Python实现PCA
+import numpy as np
+import matplotlib.pyplot as plt
+
+def pca(X, k):
+
+    m = X.shape[1]
+    norm_X = X - np.mean(X, axis=0)  # 中心化
+    scatter_matrix = np.dot(np.transpose(norm_X), norm_X)  # 协方差矩阵
+
+    #Calculate the eigenvectors and eigenvalues
+    eig_val, eig_vec = np.linalg.eig(scatter_matrix)
+    eig_pairs = [(np.abs(eig_val[i]), eig_vec[:, i]) for i in range(m)]
+    print(&#39;eig_vec:&#39;, eig_vec)
+    print(&#39;eig_pairs: &#39;, eig_pairs)
+
+    eig_pairs.sort(reverse=True)  # 按照特征值从大到小排序
+    feature = np.array([ele[1] for ele in eig_pairs[:k]])  # 选择最大的 k 个特征向量
+
+    #get new data
+    data = np.dot(norm_X, feature.T)  # 降维
+
+    # 绘图
+    x = X[:, 0].flatten()
+    y = X[:, 1].flatten()
+    plt.scatter(x, y)
+    plt.plot([eig_vec[:, 0][0], 0], [eig_vec[:, 0][1], 0],
+             color=&#39;red&#39;)  # 特征向量 1
+    plt.plot([eig_vec[:, 1][0], 0], [eig_vec[:, 1][1], 0], color=&#39;y&#39;)  # 特征向量 2
+    plt.show()
+    return data
+
+X = np.array([[-1, 1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+print(pca(X, 1))</code></pre>
+<pre><code>## eig_vec: [[ 0.8549662  -0.51868371]
+##  [ 0.51868371  0.8549662 ]]
+## eig_pairs:  [(37.70674550364642, array([0.8549662 , 0.51868371])), (1.6265878296869243, array([-0.51868371,  0.8549662 ]))]
+## [[-0.50917706]
+##  [-2.40151069]
+##  [-3.7751606 ]
+##  [ 1.20075534]
+##  [ 2.05572155]
+##  [ 3.42937146]]</code></pre>
+<p><img src="/posts/Machine Learning/2022-05-10_ML_主成分分析/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>

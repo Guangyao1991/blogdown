@@ -1,0 +1,136 @@
+---
+title: "Oh my zsh & iterm2"
+author: "Guangyao Zhao"
+date: '2022-06-14T21:09:12-05:00'
+image: setting.jpg
+categories: setting
+tags:
+- setting
+- code
+---
+
+
+
+<blockquote>
+<p>Oh My Zsh is a delightful, open source, community-driven framework for managing your Zsh configuration. It comes bundled with thousands of helpful functions, helpers, plugins, themes, and a few things that make you shout…</p>
+<p>iTerm2 is a replacement for Terminal and the successor to iTerm. It works on Macs with macOS 10.14 or newer. iTerm2 brings the terminal into the modern age with features you never knew you always wanted.</p>
+</blockquote>
+<div id="安装oh-my-zsh" class="section level2">
+<h2>安装oh my zsh</h2>
+<div id="安装方法1" class="section level3">
+<h3>安装方法1</h3>
+<pre class="bash"><code># 下载oh my zsh 
+sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;
+
+# 改变位置
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc</code></pre>
+<p>如果报错：<code>curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused</code>，有两种解决办法：</p>
+<ol style="list-style-type: decimal">
+<li>将DNS设置为：<code>8.8.8.8</code>或者<code>114.114.114.114</code>（参考文章：<a href="https://blog.csdn.net/bryong/article/details/108374261">https://blog.csdn.net/bryong/article/details/108374261</a></li>
+<li>使用安装方法2</li>
+</ol>
+</div>
+<div id="安装方法2" class="section level3">
+<h3>安装方法2</h3>
+<pre class="bash"><code># 下载oh my zsh
+git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+
+# 改变位置
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+
+# 清理缓存
+brew cleanup</code></pre>
+</div>
+</div>
+<div id="基本配置" class="section level2">
+<h2>基本配置</h2>
+<div id="修改主题" class="section level3">
+<h3>修改主题</h3>
+<ul>
+<li>主题文件位置：/Users/你的用户名/.oh-my-zsh/themes</li>
+<li>主题样式：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fohmyzsh%2Fohmyzsh%2Fwiki%2FThemes">https://github.com/ohmyzsh/ohmyzsh/wiki/Themes</a></li>
+</ul>
+<pre class="bash"><code># 下载主题
+/Users/daxiong/.oh-my-zsh/themes
+git clone https://github.com/bhilburn/powerlevel9k.git
+
+vim ~/.zshrc
+
+# 修改
+ZSH_THEME=&quot;agnoster&quot;</code></pre>
+<div class="figure">
+<img src="https://tva1.sinaimg.cn/large/008eGmZEly1gocm0ppje4j30xc0lujw5.jpg" alt="" />
+<p class="caption">修改主题</p>
+</div>
+</div>
+<div id="终端命令高亮和补全" class="section level3">
+<h3>终端命令高亮和补全</h3>
+<pre class="bash"><code>cd ~/.oh-my-zsh/custom/plugins/
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ## 下载高亮
+git clone https://github.com/zsh-users/zsh-autosuggestions
+vim ~/.zshrc  ## 下载补全
+
+# 修改
+plugins=(git
+         zsh-autosuggestions 
+         zsh-syntax-highlighting)</code></pre>
+<div class="figure">
+<img src="https://tva1.sinaimg.cn/large/008eGmZEly1gocm2jxk4vj30xc0mx77e.jpg" alt="" />
+<p class="caption">命令高亮和补全</p>
+</div>
+</div>
+</div>
+<div id="zsh下的环境变量配置" class="section level2">
+<h2>zsh下的环境变量配置</h2>
+<p>Mac的环境变量配置文件如下：</p>
+<ol style="list-style-type: decimal">
+<li><code>/etc/profile</code></li>
+<li><code>/etc/paths</code></li>
+<li><code>~/.bash_profile</code></li>
+<li><code>~/.bash_login</code></li>
+<li><code>~/.profile</code></li>
+<li><code>~/.bashrc</code></li>
+</ol>
+<p>前两个是系统级别的，系统启动就会加载。后面3个是当前用户级别的环境变量。后面几个按照从前往后的顺序读取，如果<code>~/.bash_profile</code>存在，则后面的几个文件就会被忽略不读了，如果不存在，才会依次读取后面的文件。<code>~/.bashrc</code>没有上述规则，它是bash shell打开的时候载入的。</p>
+<p>也就是说在当前用户的目录下，如果有了<code>.bash_profile</code>文件就不会去加载<code>.bashrc</code>文件。所以如果要能正常加载，需要在<code>.bash_profile</code>文件的最末尾上加入如下语句：</p>
+<pre class="bash"><code>if [ -f ~/.bashrc ]; then
+   source ~/.bashrc
+fi</code></pre>
+<p>如果你没有修改过，上面的方法默认重启后就能生效。</p>
+<p>但是，现在的mac上有些使用zsh这个作为默认的，所以在启动shell时默认不会按上面的套路去加载。如果想要正常加载.bashrc文件时，就要找到用户目录下.zshrc文件加入如下代码：</p>
+<pre class="bash"><code>if [ -f ~/.bashrc ]; then
+   source ~/.bashrc
+fi</code></pre>
+</div>
+<div id="iterm2远程控制" class="section level2">
+<h2>iterm2远程控制</h2>
+<div id="方法一" class="section level3">
+<h3>方法一</h3>
+<pre class="bash"><code>ssh -p22 root@slave1
+ssh -p22 root@192.168.247.133</code></pre>
+</div>
+<div id="方法二" class="section level3">
+<h3>方法二</h3>
+<p>创建shell脚本文件：我的文件路径：<code>/Users/kuma/hadoop_cluster/login.sh</code>
+注意：要赋予文件执行权限：<code>chmod +x /Users/kuma/hadoop_cluster/login.sh</code></p>
+<pre class="bash"><code>#!/usr/bin/expect
+set timeout 30
+spawn ssh -p [lindex $argv 0] [lindex $argv 1]@[lindex $argv 2]
+expect {
+        &quot;(yes/no)?&quot;
+        {send &quot;yes\n&quot;;exp_continue}
+        &quot;password:&quot;
+        {send &quot;[lindex $argv 3]\n&quot;}
+}
+interact</code></pre>
+</div>
+<div id="配置iterm2" class="section level3">
+<h3>配置iterm2</h3>
+<p>Send text at start的格式：脚本路径+端口号+服务器用户名+hostname+密码</p>
+<p>例如：<code>/Users/kuma/hadoop_cluster/login.sh 22 yowai slave1 00000000</code></p>
+<div class="figure">
+<img src="https://tva1.sinaimg.cn/large/008eGmZEly1gocm8i0p6uj30xc0i176l.jpg" alt="" />
+<p class="caption">iterm2设置</p>
+</div>
+</div>
+</div>

@@ -1,0 +1,118 @@
+---
+title: "第九章：语气"
+author: "Guangyao Zhao"
+date: '2022-06-20T21:09:12-05:00'
+image: english.jpg
+categories: language
+tags:
+- english
+- grammar
+---
+
+语气分为四种：
+
+- 叙述事实语气
+- 条件语气
+- 假设语气
+- 祈使语气
+
+
+## 叙述事实语气
+
+一般的句子都属于叙述事实语气。其中只有未来式需要说明：
+
+- I will go to the US next year to study for an MBA degree：现在、过去的事情都已经确定，都可以使用叙述事实语气。可是未来式还未发生，严格意义上并不能确定真假。这也就是为什么未来式动词要加上助动词 will。因为助动词都带有或多或少不确定语气。
+- The weatherman says sunrise tomorrow is at 5:00：虽然是明天的日出，但是日出的时间可以用公式算出来。
+- The movie starts in 5 mins：时间表安排好了，所以不必使用 will。
+- I’ll be ready when he comes：同时叙述两件未来的事情，而且两者之间有关联性时，往往其中一件要改为现在时。因为了两件未来的事情都不确定，需要先假定一件是事实，已经在发生，在这个确定的基础上，才能推论另一件事。此处 when he comes 假定是确定的。
+- If your are late again, you’ll be fired：假定迟到，然后会被炒鱿鱼。
+
+
+## 条件语气
+
+句子中一旦有 must, should, will, would, can, could, may, might 等，就产生了不确定语气。
+
+表达时间的功能不完整：
+
+Will/would, can/could, may/might 并不表示时间的变化，而是语气，每一对的后者比前者更不确定：
+
+- The doctor thinks it can be AIDS.
+- It could be anything --- AIDS or a common cold.
+
+语气词都无法明确表示过去式。助动词后面要用原形动词，同样缺乏时间变化的动词，所以语气助词需要另辟蹊径，寻找表示过去式的方法。用完成式表示对过去的猜测：
+
+- It may **rain** any minute now.
+- It may **have rained** a little last night.
+
+
+## 假设语气
+
+### 现在时间
+
+If I **were** you, I wouldn’t do it.
+
+当然了，我不可能是你，所以不可以使用叙述事实的语气 I am you 来表达。因为**我不是你**，所以后面的从句也用**过去形态但又不代表过去时间**的 would 来表示非事实。
+
+### 过去时间
+
+If I **had known** earlier, I might have done something.
+
+「假如知道的话」代表非事实，因为时间本就是过去的，现在又要对过去的事情进行假设，就必须用『过去完成式』。这句话用非事实的假设语气来说，是为了表达惋惜
+
+
+### 未来时间
+
+If an asteroid **should** hit the earth, man could die out.
+
+未来的事情，严格的说并不确定，但是发生的可能性很低，所以需要用非事实语气来叙述。用过去形态但不是过去式的 should hit 表示非事实，主要从句中的 could die 也表示非事实。如果一件绝对不可能发生的，则：
+
+If I **were to** take the bribe. I could never look at other people in the eye again.
+
+用 be going to 的过去形态 were to 表示未来也不会做，如果用的 should，则语气较弱。
+
+
+### 句型的规律性
+
+- 动词都是过去形态。
+- 主要从句中都会有过去拼法的助动词存在：might, could。
+- 表示现在和过去的都无助动词存在。
+- 表示将来的，因为还未发生，并不能完全排除不确定因素：
+    - Should：语气较弱，可能性极小。
+    - Were to：绝无可能。
+
+### 动词的规律性
+
+- 现在时态变为过去时态。
+- 过去时态变为过去完成式。
+- 未来时态用 should 或者 were to。
+
+### 混合时间的变化
+
+假设两个从句之间时间不同，则需要分别判断：
+
+If I **had studied** harder in school, I **could** qualify the job now.
+
+条件从句是过去时间的假设语气，使用过去完成时。主要从句是现在时，需要用过去时。
+
+### 混合真假的变化
+
+两个从句间的真假也可能不同：
+
+I could **have contributed** to the fund drive then, only that I **didn’t** have any money with me.
+
+都是过去时间，从句非事实，需要用**过去+完成**。
+
+### 句型的变化
+
+It’s time you kids **were** in bed.
+
+从属从句(不是条件从句)非事实，因为**小孩子没上床**。所以需要用 were in bed 表示非事实语气。
+
+
+## 祈使语气
+
+可以看作条件语气中，省略助动词来表示**希望能成真，但尚未实现**。比如：come in 可以看作为 You may come in:
+
+- The court demands that the witness leave the courtroom：间接的命令句。
+- Leave the courtroom：直接命令句。
+- There is a strong expectation among the public that someone take responsibility for the disaster：是一种期望而不是事实。所以用动词原形。

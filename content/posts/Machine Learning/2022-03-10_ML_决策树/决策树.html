@@ -1,0 +1,125 @@
+---
+title: "决策树(Decision Tree)"
+author: "Guangyao Zhao"
+date: '2022-03-10T21:09:12-05:00'
+image: ML.jpg
+categories: machine learning
+tags:
+- machine learning
+- algorithm
+---
+
+
+
+<div id="基本流程" class="section level1">
+<h1>基本流程</h1>
+<div id="信息增益" class="section level2">
+<h2>信息增益</h2>
+<p>信息熵(information
+entropy)是度量样本集合纯度最常用的一种指标。假设当前样本集合<span class="math inline">\(D\)</span>中第<span class="math inline">\(i\)</span>类样本所占的比例为<span class="math inline">\(p_i\)</span>，则信息熵定义为：</p>
+<p><span class="math display">\[
+\mathbf{Ent}(D)=-\sum_{i=1}^{k}p_i\ln{p_i}
+\]</span></p>
+<p>其中<span class="math inline">\(\mathbf{Ent}(D)\)</span>的值越小，<span class="math inline">\(D\)</span>的纯度就越高。</p>
+<p>假设离散属性<span class="math inline">\(a\)</span>有<span class="math inline">\(V\)</span>个可能的取值<span class="math inline">\(\{a^1,a^2,...,a^V \}\)</span>，若使用<span class="math inline">\(a\)</span>对样本集进行划分，则会产生<span class="math inline">\(V\)</span>个分支结点，其中第<span class="math inline">\(v\)</span>个支点包含了<span class="math inline">\(D\)</span>中所有在属性<span class="math inline">\(a\)</span>上取值为<span class="math inline">\(a^v\)</span>的样本，记作<span class="math inline">\(D^v\)</span>。再考虑到不同的分支结点所包含的样本数不同，给分支结点赋予权重<span class="math inline">\(\frac{D^v}{D}\)</span>，即样本数越多，对分支结点的影响越大，于是计算出用属性<span class="math inline">\(a\)</span>对样本集进行划分所获得的信息增益(information
+gain)：</p>
+<p><span class="math display">\[
+\mathbf{Gain}(D,a)=\mathbf{Ent}(D)-\sum_{v=1}^{V}\frac{|D^{v}|}{|D|}\mathbf{Ent}(D^v)
+\]</span></p>
+<p>注意：在选择好一个属性后，要更新数据集<span class="math inline">\(D\)</span>，直到满足以下条件停止划分：</p>
+<ol style="list-style-type: decimal">
+<li>所剩样本标签相同，无需划分。</li>
+<li>无属性可用，少数服从多数。</li>
+<li>样本量为 0，无需划分。</li>
+</ol>
+<div class="figure">
+<img src="fig/Decision%20Tree.png" width="300" alt="" />
+<p class="caption">Decision Tree</p>
+</div>
+<p>在此例子中：</p>
+<ol style="list-style-type: decimal">
+<li>样本个数为<span class="math inline">\(25\)</span>，样本类型为<span class="math inline">\(2\)</span>，即：<span class="math inline">\(13\)</span>个正方形(S)、<span class="math inline">\(12\)</span>个圆形(C)</li>
+<li>在属性<span class="math inline">\(a\)</span>中有三个结点，分别用绿色、红色、蓝色表示</li>
+<li>结点<span class="math inline">\(D^{1}\)</span>中：<span class="math inline">\(3\)</span>个正方形，<span class="math inline">\(4\)</span>个圆形</li>
+<li>结点<span class="math inline">\(D^{2}\)</span>中：<span class="math inline">\(3\)</span>个正方形，<span class="math inline">\(3\)</span>个圆形</li>
+<li>结点<span class="math inline">\(D^{3}\)</span>中：<span class="math inline">\(7\)</span>个正方形，<span class="math inline">\(3\)</span>个圆形</li>
+</ol>
+<p>总信息熵为：</p>
+<p><span class="math display">\[
+\mathbf{Ent}(D)= - \left ( \frac{12}{25}\ln\frac{12}{25} + \frac{13}{25}\ln\frac{13}{25} \right)
+\]</span> 三个结点的信息熵：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf{Ent}(D^1) &amp;= -\left(\frac{3}{7}\ln\frac{3}{7} + \frac{4}{7}\ln\frac{4}{7} \right)\\
+\mathbf{Ent}(D^2) &amp;= -\left(\frac{3}{6}\ln\frac{3}{6} + \frac{3}{6}\ln\frac{3}{6}  \right)\\
+\mathbf{Ent}(D^3) &amp;= -\left(\frac{7}{10}\ln\frac{3}{10} + \frac{3}{10}\ln\frac{3}{10}  \right)\\
+\end{aligned}
+\]</span></p>
+<p>信息增益：</p>
+<p><span class="math display">\[
+\mathbf{Gain}(D,a) = \mathbf{Ent}(D) - \left(\mathbf{Ent}(D^1) + \mathbf{Ent}(D^2) + \mathbf{Ent}(D^3)\right )
+\]</span></p>
+</div>
+<div id="信息增益率" class="section level2">
+<h2>信息增益率</h2>
+<p>信息增益会对数目多的属性有所偏好，为减少这种偏好的影响，著名的<span class="math inline">\(\mathrm{C4.5}\)</span>采用增益率(gain
+ratio)来选择最优属性：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf{Gain\_ratio}(D,a)&amp;=\frac{\mathbf{Gain}(D,a)}{\mathbf{IV}(a)}\\
+\mathbf{IV}(a)&amp; = \sum_{v=1}^{V}\frac{|D^{v}|}{|D|}\ln\frac{D^v}{D}
+\end{aligned}
+\]</span>
+从中可以看出<span class="math inline">\(\mathbf{IV}(a)\)</span>是属性的固有值，属性<span class="math inline">\(a\)</span>的可能取值数目越大，<span class="math inline">\(\mathbf{IV}(a)\)</span>值就会越大。但是需要注意的是，增益率对可取值较少的属性有所偏好，因此<span class="math inline">\(\mathrm{C4.5}\)</span>算法并不是直接选择增益率大的候选划分属性，而是先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
+<p>在上个例子中：</p>
+<p><span class="math display">\[
+\sum_{v=1}^{V}\frac{|D^{v}|}{|D|}\ln\frac{D^v}{D}=\frac{8}{25} + \frac{6}{25} + \frac{11}{25}
+\]</span></p>
+<p>信息增益和信息增益率：</p>
+<pre class="python"><code>import numpy as np
+
+x1 = np.array([[3, 5], [2, 7], [1, 3]])  # 不同值多
+x2 = np.array([[2, 8], [4, 7]])  # 不同值少
+
+# 信息增益
+p1 = x1 / np.sum(x1, axis=1).reshape(-1, 1)
+y1 = -np.sum(p1 * np.log(p1), axis=1)
+y1 = np.sum(np.sum(x1, axis=1) / np.sum(x1) * y1)
+
+p2 = x2 / np.sum(x2, axis=1).reshape(-1, 1)
+y2 = -np.sum(p2 * np.log(p2), axis=1)
+y2 = np.sum(np.sum(x2, axis=1) / np.sum(x2) * y2)
+
+print(y1)</code></pre>
+<pre><code>## 0.586152489297999</code></pre>
+<pre class="python"><code>print(y2)
+
+# 信息增益率</code></pre>
+<pre><code>## 0.5816344642046285</code></pre>
+<pre class="python"><code>iv1 = np.sum(-np.sum(x1, axis=1) / np.sum(x1) *
+             np.log(np.sum(x1, axis=1) / np.sum(x1)))
+iv2 = np.sum(-np.sum(x2, axis=1) / np.sum(x2) *
+             np.log(np.sum(x2, axis=1) / np.sum(x2)))
+
+y1 = y1 / iv1
+y2 = y2 / iv2
+
+print(y1)</code></pre>
+<pre><code>## 0.5600376606757592</code></pre>
+<pre class="python"><code>print(y2)</code></pre>
+<pre><code>## 0.8404964845506009</code></pre>
+</div>
+<div id="基尼指数" class="section level2">
+<h2>基尼指数</h2>
+<p>Classification and Regression (CART)决策树使用的是基尼指数(Gini
+index)来划分属性。数据集<span class="math inline">\(D\)</span>的纯度可用基尼值度量：</p>
+<p><span class="math display">\[
+\mathbf{Gini}(D) = 1-\sum_{i=1}^{k}p_k^2
+\]</span></p>
+<p>直观来说，<span class="math inline">\(\mathbf{Gini}(D)\)</span>反应的是从数据集中随机抽取两个样本，其类别标记不一致的概率，因此<span class="math inline">\(\mathbf{Gini}(D)\)</span>越小，数据集<span class="math inline">\(D\)</span>的纯度越高。属性<span class="math inline">\(a\)</span>的基尼指数定义为：</p>
+<p><span class="math display">\[
+\mathbf{Gini\_index}(D,a)=\sum_{v=1}^{V}\frac{|D^{v}|}{|D|}\mathbf{Gini}(D^v)
+\]</span></p>
+<p>因此在候选属性集合<span class="math inline">\(A\)</span>中，选择那个使得划分后基尼指数最小的属性作为最优划分属性。</p>
+</div>
+</div>

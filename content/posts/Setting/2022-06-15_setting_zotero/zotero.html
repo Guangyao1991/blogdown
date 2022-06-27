@@ -1,0 +1,117 @@
+---
+title: "zotero"
+author: "Guangyao Zhao"
+date: '2022-06-14T21:09:12-05:00'
+image: setting.jpg
+categories: setting
+tags:
+- setting
+- academic
+---
+
+
+
+<div id="常用快捷键" class="section level2">
+<h2>常用快捷键</h2>
+<ol style="list-style-type: decimal">
+<li>展开/折叠文献列表或者文献集：<code>shift + +</code></li>
+</ol>
+</div>
+<div id="zotero-nutstore同步" class="section level2">
+<h2>Zotero + Nutstore同步</h2>
+<ol style="list-style-type: decimal">
+<li><p>首先在坚果云里为 Zotero 设置应用密码，在<a href="https://www.jianguoyun.com">坚果云官网</a>登录你的坚果云账号后打开「账户信息」：
+<img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h38vrxfbiqj20es0dsgm1.jpg" alt="坚果云设置" /></p></li>
+<li><p>选择「安全选项」 - 「添加应用密码」 - 输入名称 - 「生成密码」。此密码就是后面会在 Zoteoro 里需要输入的专门的应用密码：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghx8vdbdgyj31420u07at.jpg" alt="坚果云密码" /></p></li>
+<li><p>打开 Zotero 的首选项，打开「同步」，Zotero 同步服务器里登录的是你的 Zotero 账号和密码，在下面的文件同步里选择使用「WebDav」。在这里填写你的坚果云的服务器地址：<a href="https://dav.jianguoyun.com/dav/" class="uri">https://dav.jianguoyun.com/dav/</a> ，用户名是坚果云账号，密码是一开始设置的应用密码（非坚果云账号登录密码），设置好后点击 Verify Server 即可：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghx8xrokdaj30u012en2v.jpg" /></p></li>
+<li><p>回到首页，点击右边的绿色的圈就可以同步更新，如果是第一次设置，会提示在坚果云里自动创建一个名叫：Zotero 的文件夹，用于存放同步更新的文件：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghx902dpzfj30w80n0jz7.jpg" /></p></li>
+</ol>
+</div>
+<div id="zeoterosafari" class="section level2">
+<h2>Zeotero+Safari</h2>
+<p><a href="https://www.zotero.org/support/dev_builds">https://www.zotero.org/support/dev_builds</a></p>
+<p>安装之后，去 Safari 打开插件：<img src="https://tva1.sinaimg.cn/large/0081Kckwly1gk5z1rwmh0j316f0u0nbf.jpg" /></p>
+</div>
+<div id="zotero-sci-hub" class="section level2">
+<h2>Zotero + Sci-Hub</h2>
+<p>参考来源：<a href="https://mp.weixin.qq.com/s?__biz=MzAxNzgyMDg0MQ==&amp;mid=2650457482&amp;idx=1&amp;sn=3f9c3151cd92303ed7151c9b0feaab2f&amp;chksm=83d1d84cb4a6515ac12e43cf92d842009912b5016e626e9377781ef49a5aa24ebce489162ea4&amp;scene=21#wechat_redirect">Zotero搭配Sci-Hub，真香！</a></p>
+<ol style="list-style-type: decimal">
+<li>设置Sci-Hub作为PDF解析器：
+PDF resolvers 的设置在Zotero的 Config Editor 中。我们打开 Zotero 的首选项，进入<code>Advanced--&gt;Config Editor</code>：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghx9f95bnmj30js0jagn2.jpg" /></li>
+<li>搜索<code>extensions.zotero.findPDFs.resolvers</code>，如下：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghx9fogmmhj30lq0dogmf.jpg" /></li>
+<li>双击<code>extensions.zotero.findPDFs.resolvers</code>，默认情况下是只有一对<code>[]</code>：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghx9fzown2j30lq0dot9f.jpg" /></li>
+<li>删除<code>[]</code>并将以下代码粘贴进去：</li>
+</ol>
+<pre class="json"><code>{
+    &quot;name&quot;:&quot;Sci-Hub&quot;,
+    &quot;method&quot;:&quot;GET&quot;,
+    &quot;url&quot;:&quot;https://sci-hub.se/{doi}&quot;,
+    &quot;mode&quot;:&quot;html&quot;,
+    &quot;selector&quot;:&quot;#pdf&quot;,
+    &quot;attribute&quot;:&quot;src&quot;,
+    &quot;automatic&quot;:true
+}</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>到此就成功将 Sci-Hub 配置为 PDF 解析器了，也就是说替代了默认的 Unpaywall。</li>
+</ol>
+</div>
+<div id="中国知网期刊和硕博论文pdf下载" class="section level2">
+<h2>中国知网「期刊和硕博论文」PDF下载</h2>
+<p>参考来源：<a href="https://mp.weixin.qq.com/s?__biz=MzAxNzgyMDg0MQ==&amp;mid=2650456725&amp;idx=1&amp;sn=2f6e6fb3036933dfd71fde74556aded5&amp;chksm=83d1df53b4a656456fb129c8a56ad80d819005d94e9cc9ac689387093100b067aa1dbcde63a2&amp;scene=158#rd">中国知网「期刊和硕博论文」PDF下载</a></p>
+<ol style="list-style-type: decimal">
+<li>首先下载<a href="https://github.com/Zotero-CN/translators_CN/tree/master/translators">GitHub网页</a>中的 CNKI.js 文件：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghxe8qdwrhj30u00i8gnf.jpg" /></li>
+<li>然后将下载好的 CNKI.js 拷贝到<code>/Users/kuma/Zotero/translators</code>的目录，进行覆盖：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghxe9y3lq0j30oe0gnjur.jpg" /></li>
+<li>接着，打开 Chrome 浏览器中 Zotero Connector 首选项，点击“Update Translators”：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghxeawfk76j30u00hugno.jpg" /></li>
+<li>最后，重新启动 Zotero 客户端以及 Chrome 浏览器。</li>
+</ol>
+</div>
+<div id="zotero监控downloads" class="section level2">
+<h2>Zotero监控DownLoads</h2>
+<ol style="list-style-type: decimal">
+<li>打开ZotFile的首选项：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghy74myjckj30vq0g24mj.jpg" /></li>
+<li>选择下载文件的默认路径，此处我设置的是「/Users/kuma/Downloads」：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghy767haedj30u00wxwj9.jpg" /></li>
+<li>在论文上点击右键，选择：「Attach New File」：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghy78qhu5xj314o0oiwml.jpg" /></li>
+<li>至此，Zotero 会监控 Mac 的下载文件，会自动添加 pdf 到 Zotero 中。</li>
+</ol>
+</div>
+<div id="设置zotero的搜索引擎" class="section level2">
+<h2>设置Zotero的搜索引擎</h2>
+<p>找到配置搜索引擎的文件：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghy88fqx4bj31580u0dlp.jpg" />
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghy89ne45qj30oo0i041f.jpg" /></p>
+</div>
+<div id="zotero-pdf-expert" class="section level2">
+<h2>Zotero + PDF Expert</h2>
+<p>参考来源：<a href="https://zhuanlan.zhihu.com/p/110574277">https://zhuanlan.zhihu.com/p/110574277</a></p>
+<ol style="list-style-type: decimal">
+<li>下载<a href="http://zotfile.com/index.html#changelog">zotfile</a>，打开 Zotero，点击菜单栏 Tools –&gt; Zotfile Preferences，在下方窗口中点击 Tablet Settings，即可对 Tablet 功能进行设置：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghze0omf8aj30k60lv416.jpg" /></li>
+<li>接着在下图的 Location of Files on Tablet 设置为电脑上 iCloud 中 PDF Expert 的路径：
+<img src="https://pic1.zhimg.com/80/v2-21e6dd851c9deda213dd8b2d5e2b06f8_1440w.jpg" /></li>
+<li>接着，我们在 Zotero 中，选中想要在平板上阅读的文献，然后右键选择Manage Attachments–&gt;Send to Tablet：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghze2xpwmdj31400obq7o.jpg" /></li>
+<li>此时Zotero左侧会自动生成 Tablet Files 和 Tablet Files (modified) 文件夹（准确来说叫做搜索集）：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghze36nwv8j31400obgoo.jpg" /></li>
+</ol>
+</div>
+<div id="zotero预览" class="section level2">
+<h2>Zotero预览</h2>
+<p>参考来源：<a href="https://mp.weixin.qq.com/s/Cc1Y0QcDzePHWUkKp_MPIQ">https://mp.weixin.qq.com/s/Cc1Y0QcDzePHWUkKp_MPIQ</a></p>
+<ol style="list-style-type: decimal">
+<li>去<a href="https://github.com/mronkko/ZoteroQuickLook/releases">Github</a>下载插件：<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghzeajc780j31gw0s0wia.jpg" /></li>
+<li>拖动 zoteroquicklook.zoteroplugin 到 Add-ons 窗口。如下图：
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghzeaxjptcj30u00h6q4e.jpg" /></li>
+</ol>
+</div>

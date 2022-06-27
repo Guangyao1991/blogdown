@@ -1,0 +1,322 @@
+---
+title: "特征增强：数据清洗"
+author: "Guangyao Zhao"
+date: '2022-04-15T21:09:12-05:00'
+categories: machine learning
+tags:
+- machine learning
+- feature engineering
+---
+
+
+
+<p>我们会深入了解以下内容：</p>
+<ul>
+<li>结构化数据和非结构化数据</li>
+<li>定量数据和定性数据</li>
+<li>数据的四个等级</li>
+<li>探索性数据分析和数据可视化</li>
+<li>描述性统计</li>
+</ul>
+<div id="数据结构的有无" class="section level2">
+<h2>数据结构的有无</h2>
+<p>拿到数据后，首先要确认下数据是结构化还是非结构化的：</p>
+<ul>
+<li>结构化数据：可分为观察值和特征的数据，一般以表格的形式组织（行是观察值，列是特征）。</li>
+<li>非结构化数据：无规则，但通常情况下可采用特殊的办法转化为结构化数据。</li>
+</ul>
+</div>
+<div id="定量数据和定性数据" class="section level2">
+<h2>定量数据和定性数据</h2>
+<p>在处理表格化数据集时第一个问题要考虑的便是数据是定量还是定性：</p>
+<ul>
+<li>定量数据：本质上是数值，衡量数量。比如温度，身高。</li>
+<li>定性数据：本质上是类别，描述性质。比如性别，国籍。</li>
+</ul>
+<div id="按工作分类的工资" class="section level3">
+<h3>按工作分类的工资</h3>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.style.use(&#39;fivethirtyeight&#39;)
+
+salary_ranges = pd.read_csv(&#39;data/Salary_Ranges_by_Job_Classification.csv&#39;)
+salary_ranges.head()</code></pre>
+<pre><code>##    SetID Job Code                Eff Date  ... Union Code Extended Step Pay Type
+## 0  COMMN     0109  07/01/2009 12:00:00 AM  ...        330             0        C
+## 1  COMMN     0110  07/01/2009 12:00:00 AM  ...        323             0        D
+## 2  COMMN     0111  07/01/2009 12:00:00 AM  ...        323             0        D
+## 3  COMMN     0112  07/01/2009 12:00:00 AM  ...        323             0        D
+## 4  COMMN     0114  07/01/2009 12:00:00 AM  ...        323             0        M
+## 
+## [5 rows x 13 columns]</code></pre>
+<pre class="python"><code>salary_ranges.info()  # 查看下数据信息：行数、类型</code></pre>
+<pre><code>## &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+## RangeIndex: 1356 entries, 0 to 1355
+## Data columns (total 13 columns):
+##  #   Column              Non-Null Count  Dtype 
+## ---  ------              --------------  ----- 
+##  0   SetID               1356 non-null   object
+##  1   Job Code            1356 non-null   object
+##  2   Eff Date            1356 non-null   object
+##  3   Sal End Date        1356 non-null   object
+##  4   Salary SetID        1356 non-null   object
+##  5   Sal Plan            1356 non-null   object
+##  6   Grade               1356 non-null   object
+##  7   Step                1356 non-null   int64 
+##  8   Biweekly High Rate  1356 non-null   object
+##  9   Biweekly Low Rate   1356 non-null   object
+##  10  Union Code          1356 non-null   int64 
+##  11  Extended Step       1356 non-null   int64 
+##  12  Pay Type            1356 non-null   object
+## dtypes: int64(3), object(10)
+## memory usage: 137.8+ KB</code></pre>
+<pre class="python"><code>salary_ranges.describe()  # 默认描述定量列，如果无定量列，也会描述定性列。</code></pre>
+<pre><code>##               Step   Union Code  Extended Step
+## count  1356.000000  1356.000000    1356.000000
+## mean      1.294985   392.676991       0.150442
+## std       1.045816   338.100562       1.006734
+## min       1.000000     1.000000       0.000000
+## 25%       1.000000    21.000000       0.000000
+## 50%       1.000000   351.000000       0.000000
+## 75%       1.000000   790.000000       0.000000
+## max       5.000000   990.000000      11.000000</code></pre>
+<p>Pandas 判断的定量列为：<code>Step</code>, <code>Union Code</code>和<code>Extended Step</code>。很明显工会代码不是定量的。最值得注意的是定量列<code>Biweekly High Rate</code>和<code>Grade</code></p>
+<pre class="python"><code>salary_ranges = salary_ranges[[&#39;Biweekly High Rate&#39;, &#39;Grade&#39;]]
+salary_ranges.head()</code></pre>
+<pre><code>##   Biweekly High Rate  Grade
+## 0              $0.00  00000
+## 1             $15.00  00000
+## 2             $25.00  00000
+## 3             $50.00  00000
+## 4            $100.00  00000</code></pre>
+<p>清楚工资前面的美元符号，保证数据类型正确：</p>
+<pre class="python"><code>salary_ranges[&#39;Biweekly High Rate&#39;] = salary_ranges[&#39;Biweekly High Rate&#39;].map(
+    lambda x: x.replace(&#39;$&#39;, &#39;&#39;))
+
+salary_ranges.head()</code></pre>
+<pre><code>##   Biweekly High Rate  Grade
+## 0               0.00  00000
+## 1              15.00  00000
+## 2              25.00  00000
+## 3              50.00  00000
+## 4             100.00  00000</code></pre>
+<p>将<code>Biweekly High Rate</code>的类型转化为浮点类型，将<code>Grade</code>转化为字符串：</p>
+<pre class="python"><code>salary_ranges[&#39;Biweekly High Rate&#39;] = salary_ranges[
+    &#39;Biweekly High Rate&#39;].astype(float)
+
+salary_ranges[&#39;Grade&#39;] = salary_ranges[&#39;Grade&#39;].astype(str)
+
+salary_ranges.info()</code></pre>
+<pre><code>## &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+## RangeIndex: 1356 entries, 0 to 1355
+## Data columns (total 2 columns):
+##  #   Column              Non-Null Count  Dtype  
+## ---  ------              --------------  -----  
+##  0   Biweekly High Rate  1356 non-null   float64
+##  1   Grade               1356 non-null   object 
+## dtypes: float64(1), object(1)
+## memory usage: 21.3+ KB</code></pre>
+</div>
+</div>
+<div id="数据的四个等级" class="section level2">
+<h2>数据的四个等级</h2>
+<p>数据的四个等级为：</p>
+<ul>
+<li>定类</li>
+<li>定序</li>
+<li>定距</li>
+<li>定比</li>
+</ul>
+<p>对于每个等级，接下来都会介绍可进行的数学操作和不可执行的数学操作。</p>
+<div id="定类" class="section level3">
+<h3>定类</h3>
+<p>定类数据的结构最弱，只能描述类别：</p>
+<ul>
+<li>血型（ABCD）</li>
+<li>国籍</li>
+</ul>
+<div id="可执行的数学操作" class="section level4">
+<h4>可执行的数学操作</h4>
+<p>定类数据不可执行任何数学操作，比如加减乘除等。但是可以进行计数，统计其分布：</p>
+<pre class="python"><code>salary_ranges[&#39;Grade&#39;].value_counts().head()</code></pre>
+<pre><code>## 00000    61
+## 07450    12
+## 06870     9
+## 07420     9
+## 07170     9
+## Name: Grade, dtype: int64</code></pre>
+<p>绘制统计图表：</p>
+<pre class="python"><code>salary_ranges[&#39;Grade&#39;].value_counts().sort_values(
+    ascending=False).head(20).plot(kind=&#39;bar&#39;)
+
+salary_ranges[&#39;Grade&#39;].value_counts().sort_values(
+    ascending=False).head(5).plot(kind=&#39;pie&#39;)</code></pre>
+<p><img src="/posts/Machine Learning/2022-04-07_FE_特征理解/%E7%89%B9%E5%BE%81%E7%90%86%E8%A7%A3_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+<div id="定序" class="section level3">
+<h3>定序</h3>
+<p>定序继承了定类的所有属性，也带来了一些附加属性：</p>
+<ul>
+<li>可自然排序</li>
+<li>数据可以做好坏的比较</li>
+</ul>
+<div id="可执行的数学操作-1" class="section level4">
+<h4>可执行的数学操作</h4>
+<p>因为定序数据具有排序属性，所以可以计算中位数、百分位数。对于这两者，可绘制茎叶图和箱线图</p>
+<pre class="python"><code>customer = pd.read_csv(&#39;data/2013_SFO_Customer_survey.csv&#39;)
+customer.shape</code></pre>
+<pre><code>## (3535, 95)</code></pre>
+<p>该数据集有<span class="math inline">\(95\)</span>列，我们在此关注<code>Q7A_ART</code>，这是关于艺术品和展览的。含义如下：</p>
+<ol start="0" style="list-style-type: decimal">
+<li>空</li>
+<li>不可接受</li>
+<li>低于平均</li>
+<li>平均</li>
+<li>不错</li>
+<li>特别好</li>
+<li>从未有人使用或参观</li>
+</ol>
+<pre class="python"><code>art_rating = customer[&#39;Q7A_ART&#39;]
+art_rating.describe()</code></pre>
+<pre><code>## count    3535.000000
+## mean        4.300707
+## std         1.341445
+## min         0.000000
+## 25%         3.000000
+## 50%         4.000000
+## 75%         5.000000
+## max         6.000000
+## Name: Q7A_ART, dtype: float64</code></pre>
+<p>从上面可看出 Pandas 将其看做数值处理了。这是不恰当的，应将其转化为字符串：</p>
+<pre class="python"><code>art_rating = art_rating.astype(str)
+art_rating.describe()
+
+# art_rating.value_counts().plot(kind=&#39;pie&#39;)  # 饼图
+# art_rating.value_counts().plot(kind=&#39;bar&#39;)  # 条形图
+# art_rating.value_counts().plot(kind=&#39;box&#39;)  # 箱线图</code></pre>
+<pre><code>## count     3535
+## unique       7
+## top          4
+## freq      1066
+## Name: Q7A_ART, dtype: object</code></pre>
+</div>
+</div>
+<div id="定距" class="section level3">
+<h3>定距</h3>
+<p>从这里开始，数字就可以进行数学运算了，即加减。比如：A 地的温度是<span class="math inline">\(32\)</span>，B 地的温度是<span class="math inline">\(4\)</span>，则温差为<span class="math inline">\(28\)</span>。</p>
+<div id="可执行的数学操作-2" class="section level4">
+<h4>可执行的数学操作</h4>
+<p>在定距等级上可进行加减，可引入两个熟悉的概念：<strong>均值和标准差</strong> 。引入一个新的数据集：</p>
+<pre class="python"><code>climate = pd.read_csv(&#39;data/GlobalLandTemperaturesByCity.csv&#39;)
+climate.head()</code></pre>
+<pre><code>##            dt  AverageTemperature  ...  Latitude Longitude
+## 0  1743-11-01               6.068  ...    57.05N    10.33E
+## 1  1743-12-01                 NaN  ...    57.05N    10.33E
+## 2  1744-01-01                 NaN  ...    57.05N    10.33E
+## 3  1744-02-01                 NaN  ...    57.05N    10.33E
+## 4  1744-03-01                 NaN  ...    57.05N    10.33E
+## 
+## [5 rows x 7 columns]</code></pre>
+<p>这个数据集有<span class="math inline">\(860\)</span>万行，每行代表某个城市的平均温度。注意看，有数据缺失：</p>
+<pre class="python"><code>climate.dropna(axis=0, inplace=True)  # 移除缺失值
+climate.isnull().sum()  # 查看下是否有缺失值</code></pre>
+<pre><code>## dt                               0
+## AverageTemperature               0
+## AverageTemperatureUncertainty    0
+## City                             0
+## Country                          0
+## Latitude                         0
+## Longitude                        0
+## dtype: int64</code></pre>
+<pre class="python"><code>climate[&#39;AverageTemperature&#39;].nunique()  # 查看下独特值的数量</code></pre>
+<pre><code>## 103481</code></pre>
+<pre class="python"><code>climate[&#39;AverageTemperature&#39;].hist()  # 绘制直方图
+
+climate[&#39;AverageTemperature&#39;].describe()</code></pre>
+<pre><code>## count    8.235082e+06
+## mean     1.672743e+01
+## std      1.035344e+01
+## min     -4.270400e+01
+## 25%      1.029900e+01
+## 50%      1.883100e+01
+## 75%      2.521000e+01
+## max      3.965100e+01
+## Name: AverageTemperature, dtype: float64</code></pre>
+<p>接下来继续处理数据，假如<code>year</code>和<code>century</code>：</p>
+<pre class="python"><code>climate[&#39;dt&#39;] = pd.to_datetime(climate[&#39;dt&#39;])
+climate[&#39;year&#39;] = climate[&#39;dt&#39;].map(lambda x: x.year)
+
+climate_sub_us = climate[climate[&#39;Country&#39;] == &#39;United States&#39;]  # 将 US的数据提取出来
+
+climate_sub_us[&#39;century&#39;] = climate_sub_us[&#39;year&#39;].map(
+    lambda x: int(x / 100 + 1))  # 添加 century 列</code></pre>
+<pre><code>## &lt;string&gt;:1: SettingWithCopyWarning: 
+## A value is trying to be set on a copy of a slice from a DataFrame.
+## Try using .loc[row_indexer,col_indexer] = value instead
+## 
+## See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy</code></pre>
+<pre class="python"><code>climate_sub_us[&#39;AverageTemperature&#39;].hist(by=climate_sub_us[&#39;century&#39;],
+                                          sharex=True,
+                                          sharey=True,
+                                          figsize=(10, 10),
+                                          bins=20)</code></pre>
+<pre><code>## array([[&lt;AxesSubplot:title={&#39;center&#39;:&#39;18&#39;}&gt;,
+##         &lt;AxesSubplot:title={&#39;center&#39;:&#39;19&#39;}&gt;],
+##        [&lt;AxesSubplot:title={&#39;center&#39;:&#39;20&#39;}&gt;,
+##         &lt;AxesSubplot:title={&#39;center&#39;:&#39;21&#39;}&gt;]], dtype=object)</code></pre>
+<p>直方图显示平均温度随时间略微上升。确认下：</p>
+<pre class="python"><code>climate_sub_us.groupby(&#39;century&#39;)[&#39;AverageTemperature&#39;].mean().plot(
+    kind=&#39;line&#39;)</code></pre>
+<p><img src="/posts/Machine Learning/2022-04-07_FE_特征理解/%E7%89%B9%E5%BE%81%E7%90%86%E8%A7%A3_files/figure-html/unnamed-chunk-13-3.png" width="960" /></p>
+<div id="在定距等级绘制两列数据" class="section level5">
+<h5>在定距等级绘制两列数据</h5>
+<p>对美国每月的温度绘制散点图，其中横轴是年份，纵轴是温度。</p>
+<pre class="python"><code>x = climate_sub_us[&#39;year&#39;]
+y = climate_sub_us[&#39;AverageTemperature&#39;]
+
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.scatter(x, y)
+fig.show()</code></pre>
+<p>因为里面很多噪声。考虑到每年每个城镇都会报告好几个平均气温，有很多点也是理所当然的。可用<code>groupby</code>清楚年份的大部分噪声：</p>
+<pre class="python"><code>climate_sub_us.groupby(&#39;year&#39;).mean()[&#39;AverageTemperature&#39;].plot()</code></pre>
+<p><img src="/posts/Machine Learning/2022-04-07_FE_特征理解/%E7%89%B9%E5%BE%81%E7%90%86%E8%A7%A3_files/figure-html/unnamed-chunk-15-5.png" width="960" /></p>
+<p>可以看出气温随年份上升的趋势，但是可以使用滑动均值平滑一下：</p>
+<pre class="python"><code>climate_sub_us.groupby(&#39;year&#39;).mean()[&#39;AverageTemperature&#39;].rolling(
+    10).mean().plot()</code></pre>
+<p><img src="/posts/Machine Learning/2022-04-07_FE_特征理解/%E7%89%B9%E5%BE%81%E7%90%86%E8%A7%A3_files/figure-html/unnamed-chunk-16-7.png" width="960" /></p>
+</div>
+</div>
+</div>
+<div id="定比等级" class="section level3">
+<h3>定比等级</h3>
+<p>在这个等级上，可以说我们拥有最高程度的控制 和数学运算能力。和定距等级一样，我们在定比等级上处理的也是定量数据。这里不仅继承了定 距等级的加减运算，而且有了一个绝对零点的概念，可以做乘除运算。</p>
+<div id="可执行的数学操作-3" class="section level4">
+<h4>可执行的数学操作</h4>
+<p>在定比等级，我们可以进行乘除运算。虽然看起来没什么大不了，但是这些运算可以让我们 对这个等级上的数据进行独特的观察，而这在低等级上是无法做到的。</p>
+<p>回到旧金山的工资数据，可以看到<code>Biweekly High Rate</code>处于定比等级，因此可进行新的观察。</p>
+<pre class="python"><code>fig = plt.figure(figsize=(15,5))
+ax = fig.gca()
+
+salary_ranges.groupby(&#39;Grade&#39;)[[&#39;Biweekly High Rate&#39;]].mean().sort_values( &#39;Biweekly High Rate&#39;, ascending=False).head(20).plot.bar(stacked=False, ax=ax, color=&#39;darkorange&#39;)
+
+ax.set_title(&#39;Top 20 Grade by Mean Biweekly High Rate&#39;)</code></pre>
+<p><img src="/posts/Machine Learning/2022-04-07_FE_特征理解/%E7%89%B9%E5%BE%81%E7%90%86%E8%A7%A3_files/figure-html/unnamed-chunk-17-9.png" width="1440" /></p>
+<p>会发现，工资最高的是公共交通部总经理。用同样的方法查看下工资最低的工作：</p>
+<pre class="python"><code>fig = plt.figure(figsize=(15,5))
+ax = fig.gca()
+
+salary_ranges.groupby(&#39;Grade&#39;)[[&#39;Biweekly High Rate&#39;]].mean().sort_values( &#39;Biweekly High Rate&#39;, ascending=False).tail(20).plot.bar(stacked=False, ax=ax, color=&#39;darkorange&#39;)
+
+ax.set_title(&#39;Bottom 20 Grade by Mean Biweekly High Rate&#39;)</code></pre>
+<p><img src="/posts/Machine Learning/2022-04-07_FE_特征理解/%E7%89%B9%E5%BE%81%E7%90%86%E8%A7%A3_files/figure-html/unnamed-chunk-18-11.png" width="1440" /></p>
+<p>因为金钱处于定比等级，所以可以计算最高工资和最低工资的比值：</p>
+<pre class="python"><code>sorted_df = salary_ranges.groupby(&#39;Grade&#39;)[[&#39;Biweekly High Rate&#39;]].mean().sort_values( &#39;Biweekly High Rate&#39;, ascending=False) 
+sorted_df.iloc[0][0] / sorted_df.iloc[-1][0]</code></pre>
+<pre><code>## 13.931919540229886</code></pre>
+<p>工资最高的员工比工资最低的员工多赚近 <span class="math inline">\(13\)</span> 倍。</p>
+</div>
+</div>
+</div>

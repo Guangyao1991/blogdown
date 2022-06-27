@@ -1,0 +1,366 @@
+---
+title: "特征构建：我能生成新特征吗"
+author: "Guangyao Zhao"
+date: '2022-06-10T21:09:12-05:00'
+image: FE.jpg
+categories: machine learning
+tags:
+- machine learning
+- feature engineering
+---
+
+需要注意的是，之前使用的特征都是定量的。我们现在就开始转而研究分类数据。我们的主要目的是，使用现有特征构建全新的特征，让模型从中学习。
+
+## 检查数据集
+
+```{python}
+import pandas as pd
+
+X = pd.DataFrame({
+    'city': ['tokyo', None, 'london', 'seattle', 'san francisco', 'tokyo'],
+    'boolean': ['yes', 'no', None, 'no', 'no', 'yes'],
+    'ordinal_column': [
+        'somewhat like', 'like', 'somewhat like', 'like', 'somewhat like',
+        'dislike'
+    ],
+    'quantitative_column': [1, 11, -.5, 10, None, 20]
+})
+
+print(X)
+```
+
+观察每一列，并识别每列的类型和等级：
+
+- `boolean`：定类等级
+- `city`：定类等级
+- `ordinal_column`：定序等级
+- `quantitative_column`：定比等级
+
+## 填充分类特征
+
+查看是否含有缺失值，先用`isnull()`方法，然后使用`sum()`查看哪列含有缺失值。
+
+```{python}
+X.isnull().sum()
+```
+
+从上面结果可以看出，数据集中是含有空值的。可采用以下策略填补空值：
+- 定性：众数
+- 定量：平均值
+
+先对`city`进行填充：
+
+```{python}
+X['city'].fillna(X['city'].value_counts().index[0])
+```
+
+`boolean`依然有缺失值，使用同样的方法，构建一个自定义填充器，用来处理分类数据。
+
+机器学习流水线的中间步骤只能是转换，所以必须实现`fit`和`transform`方法，从而最终预测期还需要实现`fit`方法。
+
+## 自定义分类填充器
+
+首先使用`sklearn`的`TransformerMixin`基类创建我们的自定义分类填充器。
+
+```{python}
+from sklearn.base import TransformerMixin
+
+
+class CustomCategoryImputer(TransformerMixin):
+    def __init__(self, cols=None):
+        self.cols = cols
+
+    def transform(self, df):
+        X = df.copy()
+        for col in self.cols:
+            X[col].fillna(X[col].value_counts().index[0], inplace=True)
+        return X
+
+    def fit(self, *_):
+        return self
+
+
+# 应用上面的类进行数据填充
+cci = CustomCategoryImputer(cols=['city', 'boolean'])
+cci.fit_transform(X)
+```
+
+定性数据已经填充完毕，下面进行定量填充，同样地来重写一个类。
+
+```{python}
+from sklearn.impute import SimpleImputer
+
+
+class CustomQuantitativeImputer(TransformerMixin):
+    def __init__(self, cols=None, strategy='mean'):
+        self.cols = cols
+        self.strategy = strategy
+
+    def transform(self, df):
+        X = df.copy()
+        impute = SimpleImputer(strategy=self.strategy)
+        for col in self.cols:
+            X[col] = impute.fit_transform(X[[col]])
+        return X
+
+    def fit(self, *_):
+        return self
+
+
+cqi = CustomQuantitativeImputer(cols=['quantitative_column'], strategy='mean')
+cqi.fit_transform(X)
+```
+
+也可以不分别调用转换数据，可使用流水线一次解决：
+
+```{python}
+from sklearn.pipeline import Pipeline
+
+imputer = Pipeline([('quant', cqi), ('category', cci)])
+imputer.transform(X)
+```
+
+至此，缺失值已处理完毕。
+
+在算法中，输入的特征必须是数值形式。有几种可把非数值型特征转化为数值特征。
+
+## 定类等级的编码
+
+在 pandas 中有个很方便的`get_dummies`方法，可以找到所有的分类变量并转化为分类变量：
+
+```{python}
+pd.get_dummies(X, columns=['city', 'boolean'],
+               prefix_sep='_')  # 要转化为 one hot 形式，所以指定分隔符为_
+```
+
+也可以自定义填充器：
+
+```{python}
+class CustomDummifier(TransformerMixin):
+    def __init__(self, cols=None):  #
+        self.cols = cols
+
+    def transform(self, X):
+        return pd.get_dummies(X, columns=self.cols)
+
+    def fit(self, *_):
+        return self
+
+
+cd = CustomDummifier(cols=['boolean', 'city'])
+cd.fit_transform(X)
+```
+
+## 定序等级的编码
+
+定序等级的编码就要稍微复杂一些，因为要保证顺序。在此离子中，顺序(dislike, somewhat like, like)用$0$,$1$,$2$表示：
+
+```{python}
+ordering = ['dislike', 'somewhat like', 'like']
+X['ordinal_column'].map(lambda x: ordering.index(x))
+```
+
+将其放入流水线中：
+
+```{python}
+class CustomEncoder(TransformerMixin):
+    def __init__(self, cols, ordering=None):
+        self.cols = cols
+        self.ordering = ordering
+
+    def transform(self, df):
+        X = df.copy()
+        for col in self.cols:
+            X[col] = X[col].map(lambda x: ordering.index(x))
+
+        return X
+
+    def fit(self, *_):
+        return self
+
+
+ce = CustomEncoder(cols=['ordinal_column'], ordering=ordering)
+ce.fit_transform(X)
+print(X)
+```
+
+## 将连续特征分箱
+
+有时候如果数值数据是连续的，那么将其转化为分类变量可能是有意义的，比如手上的数据是年龄，但是年龄段可能更有意义。
+Pandas 有个函数叫`cut`，可以将数据分箱（也称之为分桶）。
+
+```{python}
+pd.cut(X['quantitative_column'], bins=3)
+```
+
+当然也可以定义自己的`CustomCutter`供流水线使用：
+
+```{python}
+class CustomCutter(TransformerMixin):
+    def __init__(self, cols, bins, labels=False):
+        self.cols = cols
+        self.bins = bins
+        self.labels = labels
+
+    def transform(self, df):
+        X = df.copy()
+        for col in self.cols:
+            X[col] = pd.cut(X[col], bins=self.bins)
+        return X
+
+    def fit(self, *_):
+        return self
+
+
+cc = CustomCutter(cols=['quantitative_column'], bins=3)
+cc.fit_transform(X)
+```
+
+设置流水线：
+
+1. 用`impute`填充缺失值
+2. 虚拟变量填充分类列
+3. 对`ordinal_column`进行编码
+4. 将`quantitative_column`分箱
+
+
+```{python}
+pipe = Pipeline([('imputer', imputer), ('dummify', cd), ('encode', ce),
+                 ('cut', cc)])
+pipe.fit(X)
+```
+
+创建流水线对象后，转化 DataFrame
+
+```{python}
+pipe.transform(X)
+```
+
+## 扩展数值特征
+
+### 根据胸部加速度计识别动作的数据集
+
+数据包含以下内容：
+
+- 序号
+- $x$轴加速度
+- $y$轴加速度
+- $z$轴加速度
+- 标签
+
+其中标签对应于：
+
+1. 电脑前工作
+2. 站立、走路和上下楼
+3. 站立
+4. 走路
+5. 上下楼梯
+6. 与人边走边聊
+7. 站立着讲话
+
+
+```{python}
+df = pd.read_csv('data/1.csv')
+df.columns = ['index', 'x', 'y', 'z', 'activity']
+df.head()
+```
+
+我们的目标是预测`activity`列。所以首先需要击败的是空准确率。调用`value_counts()`方法，将`normalize`选项设置为`True`，以百分比列出常见动作：
+
+```{python}
+df['activity'].value_counts(normalize=True)
+```
+
+空准确率为$51.54\%$，这就意味着我们的模型准确率必须超过它才算有效。
+
+```{python}
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import GridSearchCV
+
+X = df[['x', 'y', 'z']]
+y = df[['activity']]
+
+knn_params = {'n_neighbors': [3, 4, 5, 6]}  # 参数列表
+
+knn = KNeighborsClassifier()
+grid = GridSearchCV(knn, knn_params)
+grid.fit(X, y)
+
+print(grid.best_score_, grid.best_params_)  #获取最佳参数
+```
+
+即：当使用$5$个邻居作为参数时，KNN 模型准确率达到了$72.08\%$，远远高于基准准确率。
+
+### 多项式特征
+
+创建多个特征时，一个关键方法是使用 sklearn 的`PolynomialFeature`类。比如输入二维的`[a,b]`，那么二阶的多项式特征为`[1,a,b,a^2,ab,b^2]`。
+
+在实例化多项式特征时，需要了解三个参数：
+
+1. `degree`
+2. `interaction_only`：为布尔值，如果为真，则表示只生成互相影响的特征
+3. `include_bias`：如果为真，则生成一列阶数为$0$的偏列差，也就是说全是数字$1$
+
+```{python}
+from sklearn.preprocessing import PolynomialFeatures
+
+poly = PolynomialFeatures(degree=2, include_bias=False, interaction_only=False)
+
+X_poly = poly.fit_transform(X)
+pd.DataFrame(X_poly, columns=poly.get_feature_names()).head()
+```
+
+现在可以进行一些数据分析了。因为多项式特征的目的就是为了更好理解原始数据的特征交互情况，最好的可视化方法是关联热图：
+
+```{python}
+import seaborn as sns
+
+sns.heatmap(
+    pd.DataFrame(X_poly, columns=poly.get_feature_names()).head().corr())
+    
+poly = PolynomialFeatures(degree=2, include_bias=False,
+                          interaction_only=True)  # 将 interaction_only 改为 True
+
+X_poly = poly.fit_transform(X)
+pd.DataFrame(X_poly, columns=poly.get_feature_names()).head()
+
+sns.heatmap(
+    pd.DataFrame(X_poly, columns=poly.get_feature_names()).head().corr())
+```
+
+还可以使用含有多项式特征对 KNN 进行网格搜索。
+
+```{python}
+pipe_params = {
+    'poly_features__degree': [2],
+    'poly_features__interaction_only': [True, False],
+    'classify__n_neighbors': [3]
+}  # 设置流水线参数，注意poly_features__interaction_only中是两个下划线
+
+from sklearn.pipeline import Pipeline
+
+pipe = Pipeline([('poly_features', poly), ('classify', knn)])
+
+grid = GridSearchCV(pipe, pipe_params)
+grid.fit(X, y)
+print(grid.best_score_, grid.best_params_)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,312 @@
+---
+title: "人工神经网络(Artificial neural network, ANN)"
+author: "Guangyao Zhao"
+date: '2022-03-24T21:09:12-05:00'
+image: ML.jpg
+categories: machine learning
+tags:
+- machine learning
+- algorithm
+---
+
+
+
+<div id="后向传播back-propgation" class="section level2">
+<h2>后向传播(Back propgation)</h2>
+<div id="数学表示" class="section level3">
+<h3>数学表示</h3>
+<div id="数学符号" class="section level4">
+<h4>数学符号</h4>
+<ol style="list-style-type: decimal">
+<li>网络共<span class="math inline">\(l\)</span>层，输入层不算，输出层为第<span class="math inline">\(l\)</span>层。</li>
+<li><span class="math inline">\(z^{(k)}=w^{(k)}a^{(k-1)}+b^{(k)}\)</span>，<span class="math inline">\(a^{(k)}=\phi (z^{(k)})\)</span>，<span class="math inline">\(k\)</span>表示层数，假设第<span class="math inline">\(k\)</span>层神经元个数为<span class="math inline">\(3\)</span>，那么<span class="math inline">\(z^{(k)}\)</span>和<span class="math inline">\(a^{(k)}\)</span>的向量为<span class="math inline">\(3\)</span>维。</li>
+<li><span class="math inline">\(b_i^{(k)}\)</span>，<span class="math inline">\(z_i^{(k)}\)</span>，<span class="math inline">\(a_i^{(k)}\)</span>中，<span class="math inline">\(i\)</span>表示第<span class="math inline">\(k\)</span>层的第<span class="math inline">\(i\)</span>个分量。</li>
+<li><span class="math inline">\(b^{(k)}\)</span>的维数和第<span class="math inline">\(k\)</span>层的神经元一致。</li>
+<li><span class="math inline">\(w_{ij}^{k}\)</span>表示第<span class="math inline">\(k-1\)</span>层中第<span class="math inline">\(i\)</span>个神经元和第<span class="math inline">\(k\)</span>层中第<span class="math inline">\(j\)</span>个神经元的权值。假设第<span class="math inline">\(k-1\)</span>和第<span class="math inline">\(k\)</span>层分别有<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>个神经元，即<code>w.shape=(p,q)</code>。</li>
+<li>注意，<span class="math inline">\(z^{(k)}\)</span>是由第<span class="math inline">\(k\)</span>层的<span class="math inline">\(w^{(k)}\)</span>，<span class="math inline">\(b^{(k)}\)</span>和第<span class="math inline">\(k-1\)</span>层的<span class="math inline">\(a^{(k-1)}\)</span>求得而来。</li>
+</ol>
+</div>
+</div>
+<div id="运算过程" class="section level3">
+<h3>运算过程</h3>
+<div class="figure">
+<img src="fig/ANN.png" alt="" />
+<p class="caption">ANN</p>
+</div>
+<p><span class="math display">\[
+\begin{aligned}
+a^{(0)}w^{(1)} + b^{(1)} &amp;= z^{(1)} \xrightarrow[]{\phi(z^{(1)})}  a^{(1)}\\
+a^{(1)}w^{(2)} + b^{(2)} &amp;= z^{(2)} \xrightarrow[]{\phi(z^{(2)})}  a^{(2)}\\
+\vdots \\
+a^{(m-1)}w^{(m)} + b^{(m)} &amp;= z^{(m)} \xrightarrow[]{\phi(z^{(m)})}  a^{(m)}\\
+a^{(m)}w^{(m+1)} + b^{(m+1)} &amp;= z^{(m+1)} \xrightarrow[]{\phi(z^{(m+1)})}  a^{(m+1)}\\
+\vdots \\
+a^{(l-1)}w^{(l)} + b^{(l)} &amp;= z^{(l)} \xrightarrow[]{\phi(z^{(l)})}  a^{(l)} =y\\
+\end{aligned}
+\]</span></p>
+<p>其中，输入向量<span class="math inline">\(x=a^{(0)}\)</span>。注意，激活后的<span class="math inline">\(a\)</span>作为下一层的输入。</p>
+<div id="回归更新公式" class="section level4">
+<h4>回归更新公式</h4>
+<p>在反向求导中，最重要的是求出<span class="math inline">\(\frac{\partial E}{\partial z_i^{(m)}}\)</span>。假设<span class="math inline">\(\delta _i^{(m)} = \frac{\partial E}{\partial z_i^{m}}\)</span></p>
+<p>回归代价函数如下：</p>
+<p><span class="math display">\[
+L=-\frac{1}{2n}\sum_{i=1}^{n}(y_i-Y_i)^2
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\textbf{Special:} \delta _i^{(l)} &amp;=\frac{\partial E}{\partial z_i^{(l)}}= \frac{\partial E}{\partial y_i}\frac{\partial y_i}{\partial z_i^{l}}\\
+&amp;=(y_i-Y_i))\\
+\textbf{General:} \delta _i^{(m)} &amp;=\frac{\partial E}{\partial z_i^{(m)}}= \frac{\partial E}{\partial a_i^{(m)}} \frac{\partial a_i^{(m)}}{\partial z_i^{(m)}}\\
+&amp;= \left ( \left( \sum_{j=1}^{k}\delta _j^{(m+1)}\right)w_{ij}^{(m+1)} \right )  \cdot \phi^{&#39;}(z_i^{(m)})
+\end{aligned}
+\]</span></p>
+<p>其中<span class="math inline">\(k\)</span>为第<span class="math inline">\(m+1\)</span>层的神经元个数，<span class="math inline">\(1 \leq m+1 \leq l-1\)</span>。此处需要注意的是，在对<span class="math inline">\(a_{i}^{(m)}\)</span>进行求导的时候，凡是含有和<span class="math inline">\(a_{i}^{(m)}\)</span>项的都要包含在内，即<span class="math inline">\(z_{1}^{m+1} \to z_{k}^{m+1}\)</span>都要包括），<span class="math inline">\(\frac{\partial E}{\partial a_i^{(m)}}\)</span>的计算方法如下：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial E}{\partial a_i^{(m)}}&amp;=\frac{\partial \delta_{1}^{(m+1)}}{\partial a_i^{(m)}}
++\frac{\partial \delta_{2}^{(m+1)}}{\partial a_i^{(m)}}+...+\frac{\partial \delta_{k}^{(m+1)}}{\partial a_i^{(m)}}\\
+&amp;=\delta_{1}^{(m+1)}w_{i1}+\delta_{2}^{(m+1)}w_{i2}+...+\delta_{k}^{(m+1)}w_{ik}\\
+&amp; = \left( \sum_{j=1}^{k}\delta _j^{(m+1)} \right) w_{ij}^{(m+1)}
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(w\)</span>和<span class="math inline">\(b\)</span>的偏导公式如下：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial E}{\partial w_{ij}^{(m+1)}} &amp;=\delta _j{^{(m+1)}}a_i^{(m)}\\
+\frac{\partial E}{\partial b_{i}^{(m+1)}} &amp;=\delta _j{^{(m+1)}}
+\end{aligned}
+\]</span></p>
+<p>其中，<span class="math inline">\(i\)</span>为第<span class="math inline">\(m-1\)</span>层的第<span class="math inline">\(i\)</span>个神经元个数；<span class="math inline">\(j\)</span>为第<span class="math inline">\(m\)</span>层的第<span class="math inline">\(j\)</span>个神经元个数</p>
+<p>更新公式如下：</p>
+<p><span class="math display">\[
+\begin{aligned}
+w_{ij}^{(m)} &amp;:= w_{ij}^{(m)}-\frac{\partial E}{\partial w_{ij}^{(m)}}\\
+b_{i}^{(m)} &amp;:= b_{i}^{(m)}-\frac{\partial E}{\partial b_{i}^{(m)}}\\
+\end{aligned}
+\]</span></p>
+<p>参数更新矩阵化：</p>
+<ol style="list-style-type: decimal">
+<li>中间层有<span class="math inline">\(l_1\)</span>，<span class="math inline">\(l_2\)</span>两层，分别有<span class="math inline">\(p\)</span>，<span class="math inline">\(q\)</span>个神经元。</li>
+<li>输入层：<span class="math inline">\(n\)</span>个样本，<span class="math inline">\(m\)</span>个维度。即输入为<code>X.shape=(n,m)</code>。</li>
+<li>输出层：<span class="math inline">\(n\)</span>个样本，<span class="math inline">\(k\)</span>个分类。即输出为<code>Y.shape=(n,k)</code>。</li>
+<li>输入层到<span class="math inline">\(l_1\)</span>：<span class="math inline">\(w^{(1)}\)</span>的矩阵形状为<code>w1.shape=(m,p)</code>，其中<span class="math inline">\(w^{(1)}_{ij}\)</span>表示
+输入层的第<span class="math inline">\(i\)</span>个神经元和<span class="math inline">\(l_1\)</span>的第<span class="math inline">\(j\)</span>个神经元连接的系数值。
+此时矩阵的形状为<code>nmmp=(n,p)</code>。<span class="math inline">\(b\)</span>的形状为<code>(p,1)</code>。</li>
+<li><span class="math inline">\(l_1\)</span>到<span class="math inline">\(l_2\)</span>：<span class="math inline">\(w^{(2)}\)</span>的矩阵形状为<code>w2.shape=(p,q)</code>，其中<span class="math inline">\(w^{(2)}_{ij}\)</span>表示<span class="math inline">\(l_1\)</span>的第<span class="math inline">\(i\)</span>个神经元和<span class="math inline">\(l_2\)</span>的第<span class="math inline">\(j\)</span>个神经元连接的系数值。
+此时矩阵的形状为<code>nppq=(n,q)</code>。<span class="math inline">\(b^{(1)}\)</span>的形状为<code>(q,1)</code>。</li>
+<li><span class="math inline">\(l_2\)</span>到输出层：<span class="math inline">\(w^{(3)}\)</span>的矩阵形状为<code>w3.shape=(q,k)</code>，其中<span class="math inline">\(w^{(3)}_{ij}\)</span>表示<span class="math inline">\(l_2\)</span>的第<span class="math inline">\(i\)</span>个神经元和输出层的第<span class="math inline">\(j\)</span>个神经元连接的系数值。
+此时矩阵的形状为<code>nbbk=(n,k)</code>。<span class="math inline">\(b^{(2)}\)</span>的形状为<code>(k,1)</code>。</li>
+</ol>
+<p><span class="math display">\[
+\begin{aligned}
+\delta ^{(l)} &amp;=\frac{\partial E}{\partial z^{(l)}}= \frac{\partial E}{\partial y}\frac{\partial y_i}{\partial z^{(l)}}\\
+&amp;=(y-Y)\\
+\delta ^{(m)} &amp;=\frac{\partial E}{\partial z^{(m)}}= \frac{\partial E}{\partial a^{(m)}} \frac{\partial a^{(m)}}{\partial z^{(m)}}\\
+&amp;= \left ( w^{(m+1)}\delta^{(m+1)} \right )  \phi^{&#39;}(z^{(m)})
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(w\)</span>和<span class="math inline">\(b\)</span>的偏导公式如下：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial E}{\partial w^{(m)}} &amp;=\delta{^{(m)}}a^{(m-1)}\\
+\frac{\partial E}{\partial b^{(m)}} &amp;=\delta{^{(m)}}
+\end{aligned}
+\]</span></p>
+<p>更新公式如下：</p>
+<p><span class="math display">\[
+\begin{aligned}
+w^{(m)} &amp;:= w^{(m)}-\frac{\partial E}{\partial w^{(m)}}\\
+b^{(m)} &amp;:= b^{(m)}-\frac{\partial E}{\partial b^{(m)}}\\
+\end{aligned}
+\]</span></p>
+<p>具体流程可参考：<a href="https://www.cnblogs.com/charlotte77/p/5629865.html" class="uri">https://www.cnblogs.com/charlotte77/p/5629865.html</a></p>
+</div>
+<div id="分类更新公式" class="section level4">
+<h4>分类更新公式</h4>
+<p>softmax 公式如下：</p>
+<p><span class="math display">\[
+a_j^{(l)} = \frac{\exp{z_j^{(l)}}}{\sum_{i=1}^{k}\exp{z_i^{(l)}}}
+\]</span>
+其中<span class="math inline">\(k\)</span>为分类的个数，<span class="math inline">\(j\)</span>为第<span class="math inline">\(j\)</span>个类别。分类代价如下(softmax)：</p>
+<p><span class="math display">\[
+L=-\sum_{i=1}^{k}y_i\ln a_i^{(l)}
+\]</span></p>
+<p>和回归任务中一样，最重要的是求出在反向求导中，最重要的是求出<span class="math inline">\(\frac{\partial L}{\partial z_i^{(m)}}\)</span>。假设<span class="math inline">\(\delta _i^{(m)} = \frac{\partial L}{\partial z_i^{(m)}}\)</span></p>
+<p>对于最后一层求<span class="math inline">\(\frac{\partial L}{\partial a_q^{(l)}}\)</span>：</p>
+<p><span class="math display">\[
+\frac{\partial L}{\partial a_q^{(l)}}=-\frac{y_q}{a_q^{(l)}}
+\]</span></p>
+<p>对于最后一层求<span class="math inline">\(\frac{\partial a_q^{(l)}}{\partial z_p^{(l)}}\)</span>，其中<span class="math inline">\(q\)</span>为激活后的第<span class="math inline">\(q\)</span>个神经元，<span class="math inline">\(p\)</span>为激活前的第<span class="math inline">\(p\)</span>个神经元：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial a_q^{(l)}}{\partial z_p^{(l)}}&amp;=
+\frac{\partial \left(\frac{\exp{z_q^{(l)}}}{\sum_{i=1}^{k}\exp{z_i^{(l)}}}\right)}{\partial z_p^{(l)}}\\
+&amp;=\begin{cases}
+\frac{ -\exp{z_q^{(l)}}\exp{z_p^{(l)}}} {\left ( \sum_{i=1}^{k}\exp{z_i^{(l)}} \right )^2 }=-a_q^{(l)}a_p^{(l)},\,p^{(l)}\ne q^{(l)}\\
+\frac{ \exp{z_p^{(l)}}-\exp{z_q^{(l)}}\exp{z_p^{(l)}}} {\left ( \sum_{i=1}^{k}\exp{z_i^{(l)}} \right )^2 }=-a_q^{(l)}(a_q^{(l)}-1),\,p^{(l)}= q^{(l)}\\
+\end{cases}
+\end{aligned}
+\]</span></p>
+<p>至此，对于最后一层：<span class="math inline">\(\delta _i^{(l)} = \frac{\partial L}{\partial z_i^{(l)}}\)</span>已求出：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\delta _p^{(l)} &amp;= \frac{\partial L}{\partial z_p^{(l)}}\\
+&amp;=\begin{cases}
+y_qa_p^{(l)},\,p^{(l)}\ne q^{(l)}\\
+y_q(a_p^{(l)}-1),\,p^{(l)}= q^{(l)}\\
+\end{cases}
+\end{aligned}
+\]</span></p>
+<p>其余的部分和回归完全一样。</p>
+</div>
+</div>
+<div id="bp-算法流程" class="section level3">
+<h3>BP 算法流程</h3>
+<ol style="list-style-type: decimal">
+<li>随机初始化<code>(w,b)</code></li>
+<li>前后传播：根据训练样本<code>(X,Y)</code>，代入网络可求出所有的<code>(z,a,y)</code></li>
+<li>链式求偏导，最小化：<span class="math inline">\(E=\frac{1}{2}\Vert y-Y \Vert^2\)</span></li>
+</ol>
+</div>
+</div>
+<div id="参数设置" class="section level2">
+<h2>参数设置</h2>
+<div id="随机梯度下降stochstic-gradient-descent-sgd" class="section level3">
+<h3>随机梯度下降(stochstic gradient descent, SGD)</h3>
+<ol style="list-style-type: decimal">
+<li>不用每输入一个样本就去变换参数，而是输入一批样本（batch 或者
+mini-batch），求出这些样本的梯度平均值后，根据这个平均值改变参数。</li>
+<li>在神经网络训练中，batch 的样本数大致设置为 50-200.</li>
+</ol>
+<div id="batch-normalization" class="section level4">
+<h4>batch normalization</h4>
+<p>基本思想：既然希望每一层获得的值都在<span class="math inline">\(0\)</span>附近，从而避免梯度消失现象，那么为什么不直接把每一层的值做基于均值和方差的归一化呢。</p>
+</div>
+</div>
+<div id="正则项" class="section level3">
+<h3>正则项</h3>
+<p><span class="math display">\[
+L(w) = \frac{1}{2}\left( \sum_{i=1}^{batch\_size}\Vert y_i - Y_i \Vert ^2   + \lambda \sum_{}^{}w_{k,l}^2   \right)
+\]</span></p>
+</div>
+</div>
+<div id="神经网络的优缺点" class="section level2">
+<h2>神经网络的优缺点</h2>
+</div>
+<div id="代码" class="section level2">
+<h2>代码</h2>
+<div id="非矩阵化" class="section level3">
+<h3>非矩阵化</h3>
+<pre class="python"><code>import numpy as np
+
+def sigmoid(X): # 激活函数
+    return 1 / (1 + np.exp(-X))
+
+
+def deriv_sigmoid(X): # 激活函数求导
+    a = sigmoid(X)
+    return a * (1 - a)
+
+
+def mse_loss(y_pre, y): # 损失
+    return ((y_pre - y)**2).mean()
+
+
+class ANN:
+    def __init__(self):
+
+        # 第一层参数
+        self.w1 = np.random.normal()
+        self.w2 = np.random.normal()
+        self.w3 = np.random.normal()
+        self.w4 = np.random.normal()
+        self.b1 = np.random.normal()
+        self.b2 = np.random.normal()
+
+        # 第二层参数
+        self.w5 = np.random.normal()
+        self.w6 = np.random.normal()
+        self.b3 = np.random.normal()
+
+    def feed_forward(self, X):
+
+        a1 = sigmoid(self.w1 * X[0] + self.w2 * X[1] + self.b1)
+        a2 = sigmoid(self.w3 * X[0] + self.w4 * X[1] + self.b2)
+
+        y_pre = sigmoid(self.w5 * a1 + self.w6 * a2 + self.b3)
+        return y_pre
+
+    def train(self, X, Y, learning_rate=0.03, num=500):
+
+        for i in range(num):
+            for x, y in zip(X, Y):
+
+                # 前向传播
+                z1 = self.w1 * x[0] + self.w2 * x[1] + self.b1
+                a1 = sigmoid(z1)
+
+                z2 = self.w3 * x[0] + self.w4 * x[1] + self.b2
+                a2 = sigmoid(z2)
+
+                z3 = self.w5 * a1 + self.w6 * a2 + self.b3
+                y_pre = sigmoid(z3)  # 预测结果
+
+                # z 的偏导
+                Ez3 = 2 * (y_pre - y) * deriv_sigmoid(z3)
+
+                # 第二层 w 的偏导
+                Ew5 = Ez3 * a1
+                Ew6 = Ez3 * a2
+                Eb3 = Ez3
+                self.w5 -= learning_rate * Ew5
+                self.w6 -= learning_rate * Ew6
+                self.b3 -= learning_rate * Eb3
+
+                # z 的偏导
+                Ez1 = Ez3 * self.w5
+                Ez2 = Ez3 * self.w6
+
+                # 第一层 w 的偏导 (重点!!!)
+                Ew1 = (Ez1 + Ez2) * x[0]
+                Ew2 = (Ez1 + Ez2) * x[1]
+                Ew3 = (Ez1 + Ez2) * x[0]
+                Ew4 = (Ez1 + Ez2) * x[1]
+                Eb1 = (Ez1 + Ez2)
+                Eb2 = (Ez1 + Ez2)
+
+                # 更新参数
+                self.w1 -= learning_rate * Ew1
+                self.w2 -= learning_rate * Ew2
+                self.w3 -= learning_rate * Ew3
+                self.w4 -= learning_rate * Ew4
+                self.b1 -= learning_rate * Eb1
+                self.b2 -= learning_rate * Eb2
+                
+            if i % 10 == 0:
+                loss = mse_loss(Y, np.apply_along_axis(self.feed_forward, 1, X))
+                print(&quot;Epoch %d loss: %.3f&quot; % (i, loss))
+
+
+# Define dataset
+data = np.array([
+    [-2, -1],  
+    [25, 6],  
+    [17, 4],  
+    [-15, -6],  
+])
+
+Y = np.array([
+    1,  
+    0,  
+    0,  
+    1,  
+])
+
+# Train our neural network!
+network = ANN()
+network.train(data, Y)</code></pre>
+</div>
+<div id="矩阵化" class="section level3">
+<h3>矩阵化</h3>
+</div>
+</div>

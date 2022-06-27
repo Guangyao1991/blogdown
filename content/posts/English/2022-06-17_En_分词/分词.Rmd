@@ -1,0 +1,117 @@
+---
+title: "第六章：分词"
+author: "Guangyao Zhao"
+date: '2022-06-17T21:09:12-05:00'
+image: english.jpg
+categories: language
+tags:
+- english
+- grammar
+---
+
+> 传统语法所谓的动状词包含不定词和动名词。还有这一章的两种分词，现在分词和过去分词，这两种分词都可以看作为形容词。甚至出现于被动态和进行时的时候，仍然可以把过去分词和现在分词看做为形容词。
+
+
+## 分词和形容词的比较
+
+### 现在分词与形容词的比较
+
+形容词是用来形容名词的，在句子中有两个位置：
+
+- That black dog doesn't bite：名词短语中。
+- A barking dog doesn’t bite：补语位置。此时的 barking 是现在分词当形容词，有正在进行的暗示，解释为**正在叫**。
+- The dog is black.
+- The dog is barking：一般语法说 be +Ving 是进行式动词短语。可并不是 is barking 才能解释为进行意义的**正在叫**。a barking dog 不也是一样表示**正在叫**的狗吗？所以还是把 barking 一律解释为形容词比较有一致性。
+
+许多形容词词尾都有它的弦外之音：
+
+- -ful：很，full of
+- -ish：一点，grayish
+- -less：没、不，valueless
+
+
+
+### 过去分词和形容词的关系
+
+过去分词和现在分词一样，可以出现在两种形容词位置来形容名词，不过弦外之音是被动或者完成的暗示，要加上**被，已经**来解释：
+
+- Clean water is safe to drink.
+- Boiled water is safe to drink：boiled 使用过去分词的形式多了层**已经被煮过了**的暗示。除此之外和一般的形容词并无不同。
+- The water is clean.
+- The water is boiled：一般语法说 be + Ven 是被动态。可是离开了 be 动词， boiled water 也可以解释为**被煮过得水**。所以**被动**和 be 动词之间没有必然的关联性，倒不如直接把过去分词理解为形容词。况且，放在 be 动词后面的过去分词，往往也不是当作被动来解释，而要解释为**完成**。
+
+
+带有**完成**暗示而非**被动**的过去分词：
+
+- I can’t find my wallet. It’s gone：go 是不及物动词，没有被动态可言，所以此处是**完成**的意思。
+- The leaves are all fallen, now that winter is here：fall 是不及物动词，没有被动语态。
+- I’m done, It’s all yours：do 固然是及物动词，但不能解释为我被做了，只能说**我做完了**。
+
+
+### 现在分词和过去分词的区别
+
+表示**感觉**的分词：
+
+- He is disappointed at his scores：他对分数很失望。此句原形是 His scores disappoint him。如果 He 做主语，应该是被动语态。虽然是被动语态，可是被动的感觉并不是很强烈，都是形容词意味大于动作的意味，所以后面的介词也不用**by**，而是用其它介词
+- His scores are disappointing：他的分数令人失望。His scores 做主语，就可以看出来用主动态
+
+
+### 现在分词与过去分词混合的形态
+
+看到现在分词和过去分词一起的时候，可以将其看作为两个以上的形容词，分别解释就可以了：
+
+I have no comment to make while the case is being investigated by police.
+
+其中 be 动词看作为动词，being investigated 看做两个形容词就十分简单。being 是现在分词的形容词，解释为**正在**。investigated 是过去分词，加上被动的暗示，解释为**被调查**。
+
+
+## 形容词从句简化的结果
+
+
+形容词从句简化后往往只剩下分词。
+
+### Ven
+
+Toys made in Taiwan are much better now.
+
+过去分词短语 made in Taiwan 就是形容词从句的简化，原句是 Toys which are made in Taiwan are much better now。此处 which 和主语 Toys 相同，动词是空的 be 动词。直接去掉这两个部分剩下的分词 made in Taiwan 还是形容词类。
+
+### Ving
+
+Children living in orphanages make a lot of friends.
+
+过去分词短语 living in orphanages 就是形容词从句的简化，原句是 who are living in orphanages.
+
+### being Ven
+
+The vase being auctioned now is a Ming china.
+
+Being auctioned 是 which is being auctioned 的简化。加上 being 表示正在拍卖的意思，不可省略。
+
+
+## 副词从句简化的结果
+
+
+### Ven
+
+Wounded in war, the soldiers was sent home.
+
+这个分词短语是 After/Because he was wounded in war 这个副词从句的简化。简化的原因如下：
+
+- 从句中的主语 he 就是 the soldier，所以可以省略。
+- Be 动词可直接省略。
+- 主语动词都没有了，所以连接词(after/because)也不需要了。
+
+
+### Ving
+
+The pigeon, after flying 200 miles. was caught up in a net.
+
+这个分词短语是 after it was flying 200 miles 这个副词从句的简化。
+
+
+### having Ven
+
+Having finished the day's work, the secretary went home.
+
+这个分词短语是 She had finished the day’s work 这个副词从句的简化。主语相同，可省略。动词部分没有 be 动词就不可以进一步简化，因此改为 having finished 的现在分词形态。等于前面省去 be 动词，而留下补语部分。

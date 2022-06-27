@@ -1,0 +1,67 @@
+---
+title: "homebrew配置"
+author: "Guangyao Zhao"
+date: '2021-12-06T21:09:12-05:00'
+image: setting.jpg
+categories: setting
+tags:
+- setting
+- code
+---
+
+
+## 下载
+
+下载：`/bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"`
+
+1. 请选择一个下载镜像：选择「中科大下载源」即可
+2. 是否现在开始执行脚本：Y
+3. 如果电脑设置有开机密码，请输入开机密码
+
+![Homebrew安装成功界面](https://tva1.sinaimg.cn/large/008eGmZEly1gocnsshizyj318k0u0kbk.jpg)
+
+参考来源：[https://zhuanlan.zhihu.com/p/111014448](https://links.jianshu.com/go?to=https%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F111014448)
+
+## 常用命令
+
+1. 安装软件：`brew [cask] install 软件名`或`brew install --cask 软件名`
+2. 卸载软件：`brew uninstall 软件名`
+3. 搜索软件：`brew search 软件名`
+4. 更新homebrew：`brew update`
+5. 更新所有软件：`brew upgrade`
+6. 更新某个软件：`brew upgrade 软件名`
+7. 清理所有旧版本：`brew cleanup`
+8. 用浏览器打开某个软件包下载页面：`brew home 软件名`
+9. 查看homebrew版本：`brew -v`
+10. 查看安装过的软件包列表：`brew list`
+
+
+## Homebrew下载视频环境配置
+
+```bash
+# 下载you-get
+brew install you-get
+
+# 下载ffmpeg，如果不下载ffmpeg，视频和音频是分离的
+brew install ffmpeg
+```
+
+### you-get下载哔哩哔哩视频
+
+使用文档：[https://github.com/soimort/you-get/wiki/中文说明](https://github.com/soimort/you-get/wiki/%E4%B8%AD%E6%96%87%E8%AF%B4%E6%98%8E)
+
+参数说明：
+
+1. `--playlist`：列表视频
+2. `-i`：视频信息
+
+
+```bash
+you-get -i <视频网址>
+
+# 单个视频：
+you-get -i https://www.bilibili.com/video/BV1C7411q7QY\?from\=search\&seid\=16374646595656272271
+
+# 列表视频：
+you-get --playlist https://www.bilibili.com/video/BV1Kb41127gQ
+```

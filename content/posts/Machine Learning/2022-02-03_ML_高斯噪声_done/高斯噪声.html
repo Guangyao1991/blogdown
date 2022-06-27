@@ -1,0 +1,36 @@
+---
+title: "最小二乘法背后的高斯噪声(Gaussian method)思想"
+author: "Guangyao Zhao"
+date: '2022-02-03T21:09:12-05:00'
+image: ML.jpg
+categories: machine learning
+tags:
+- machine learning
+- method
+---
+
+
+
+<p>高斯噪声指的是概率密度函数服从高斯分布的一类噪声：<span class="math inline">\(\epsilon \sim N(0,\sigma^2)\)</span>。在线性回归中，隐藏的一个假设就是噪声（预测值和真实值之差）服从高斯分布：
+<span class="math display">\[
+\begin{aligned}
+y_i &amp;= \hat{y_i} + \epsilon\\
+&amp;= w^\mathrm{T}x_i + \epsilon
+\end{aligned}
+\]</span>
+即：<span class="math inline">\(y_i|x_i;w \sim N(w^\mathrm{T}x,\sigma^2)\)</span>。利用最大似然估计：
+<span class="math display">\[
+\begin{aligned}
+L(w|\mathbf{X})=\ln{p(\mathbf{X}|w)} &amp;=\ln{\prod_{i=1}^{n}{p(y_i|x_i;w)}}=\sum_{i=1}^{n}\ln{p(y_i|x_i;w)}\\
+&amp;=\sum_{i=1}^{n}\left (  \ln{\frac{1}{\sqrt{2\pi}\sigma}} -\frac{(y_i-w^\mathrm{T}x_i)^2}{2\sigma^2}\right )\\
+&amp;= -\sum_{i=1}^{n}{(y_i-w^\mathrm{T}x_i)^2}
+\end{aligned}
+\]</span>
+求得目标函数：
+<span class="math display">\[
+\begin{aligned}
+\hat{w}&amp;=\underset{w}{\mathrm{argmax}} -\sum_{i=1}^{n}{(y_i-w^\mathrm{T}x_i)^2}\\
+&amp;= \underset{w}{\mathrm{argmin}} \sum_{i=1}^{n}{(y_i-w^\mathrm{T}x_i)^2}\\
+&amp; = \underset{w}{\mathrm{argmin}} \sum_{i=1}^{n}{(y_i-\hat{y})^2}\\
+\end{aligned}
+\]</span></p>

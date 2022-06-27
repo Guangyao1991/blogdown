@@ -1,0 +1,78 @@
+---
+title: "Wordpress博客搭建和部署"
+author: "Guangyao Zhao"
+date: '2021-11-23T21:09:12-05:00'
+image: setting.jpg
+categories: setting
+tags:
+- setting
+- blog
+---
+
+
+
+<blockquote>
+<p>想搭建个人博客这个想法已经有很长时间了，一直都未付出行动。今天天气特别好，喝了一杯茶，突然萌生了“此刻动手”这个想法。</p>
+</blockquote>
+<div id="域名" class="section level2">
+<h2>域名</h2>
+<p>域名的申请方法有很多种，我用的是阿里云：</p>
+<ol style="list-style-type: decimal">
+<li>打开<a href="https://wanwang.aliyun.com">万网</a>
+<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go88g5xualj31510u07wh.jpg" alt="阿里云万网" /></li>
+<li>输入自己喜欢的域名，并查询是否可用：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go88fd3qt3j315k0u0u0x.jpg" alt="可用域名查询" /></li>
+<li>选一个可用的加入清单（在此以<code>daxiong2020.com</code>演示操作步骤）。<code>.com</code>域名是国际最广泛流行的通用域名格式；<code>.cn</code>域名是国家顶级域名，表示中国国家域名。在此推荐这两个中的其中一个：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go88k05bi0j31510u07wh.jpg" alt="域名购买" /></li>
+<li>按照下图操作步骤进入支付程序。如果第一次使用阿里云，需要先填写域名信息。如果之前填写过则可直接使用：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go88mlnn28j30y60u01kx.jpg" alt="域名购买订单支付" /></li>
+</ol>
+</div>
+<div id="云服务器" class="section level2">
+<h2>云服务器</h2>
+<div id="云服务器选择" class="section level3">
+<h3>云服务器选择</h3>
+<p>云服务器（Elastic Compute Service, ECS）是一种简单高效、安全可靠、处理能力可弹性伸缩的计算服务。其管理方式比物理服务器更简单高效。用户无需提前购买硬件，即可迅速创建或释放任意多台云服务器。</p>
+<p>国内著名的云服务器服务商有：阿里云；腾讯云；华为云。也推荐个人用户使用这三个。我个人使用的是<a href="http://www.cloudleft.com">云左科技</a>，虽然不能和以上三者相提并论，但它有以下几个优点：</p>
+<ol style="list-style-type: decimal">
+<li>便宜，入门型云虚拟主机仅99/年（初学者推荐）</li>
+<li>有日本、韩国等海外机房</li>
+<li>不限流量</li>
+</ol>
+<div class="figure">
+<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go88wtt9qrj310b0u0hc2.jpg" alt="" />
+<p class="caption">云左科技香港云虚拟机套餐详情</p>
+</div>
+</div>
+<div id="云服务器购买" class="section level3">
+<h3>云服务器购买</h3>
+<ol style="list-style-type: decimal">
+<li>点击「立即开通」</li>
+<li>根据刚申请的域名填写「域名选项」：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go88xxb3g9j316l0u0nm2.jpg" alt="域名配置" /></li>
+<li>点击「配置」，并添加购物车购买：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go890jeq0cj316l0u0txg.jpg" alt="添加购物车并支付" /></li>
+</ol>
+</div>
+</div>
+<div id="部署wordpress" class="section level2">
+<h2>部署Wordpress</h2>
+<div id="解析域名" class="section level3">
+<h3>解析域名</h3>
+<ol style="list-style-type: decimal">
+<li>云服务器购买成功之后，点击「产品管理」页面，并点击「管理」，获得 cnmae 解析地址：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go8bc9rarmj317d0u04qp.jpg" alt="获取cname解析地址" /></li>
+<li>打开阿里云，登录个人账户（确保刚才购买成功）：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go89d67kzhj316u0u0kgf.jpg" /></li>
+<li>点击「解析」：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go89e2p30yj316u0u0qsf.jpg" alt="在阿里云中解析域名" /></li>
+<li>按下图进行操作。记录值为步骤1的CNAME解析地址的值：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go89fnw8mvj316u0u0tsn.jpg" alt="填写解析域名配置信息" /></li>
+<li>点击确认。至此域名解析结束。</li>
+</ol>
+</div>
+<div id="绑定域名" class="section level3">
+<h3>绑定域名</h3>
+<ol style="list-style-type: decimal">
+<li>云服务器购买成功之后，点击「产品管理」页面，并点击「管理」。登录到「主机管理面板」：<img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h38p7juwp6j217d0u0djh.jpg" alt="主机管理面板" /></li>
+<li>点击「域名绑定」，填写域名地址并配置文件目录。注意目录的配置，因为想要将今后博客的文件都存放在<code>/wwwroot/daxiong2020.cn</code>路径下，所以将路径配置上述地址即可：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go89n09p0nj31700u0e81.jpg" alt="域名地址配置" /></li>
+<li>在<a href="https://cn.wordpress.org">Wordpress官网</a>下载压缩包。</li>
+<li>删除云服务器上<code>根目录/wwwroot/</code>路径下所有内容。</li>
+<li>上传Wordpress压缩包到云服务器。</li>
+<li>解压Wordpress压缩包，并重命名<code>daxiong2020.cn</code>。压缩包此时可删除：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go89u0azlaj31fp0u0b29.jpg" alt="云服务器文件目录" /></li>
+<li>此时，<code>根目录/wwwroot/daxiong2020.cn/</code>路径下的内容如下（因为我的博客中已有内容，所以和你的初始状态不完全相同）：<img src="https://tva1.sinaimg.cn/large/008eGmZEly1go89wkhjsfj314z0u0e5g.jpg" alt="Wordpress文件内容" /></li>
+<li>在浏览器中输入<code>www.daxiong2020.cn</code>，配置Wordpress即可使用。</li>
+</ol>
+</div>
+</div>

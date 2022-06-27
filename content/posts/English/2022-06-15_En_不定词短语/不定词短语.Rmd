@@ -1,0 +1,91 @@
+---
+title: "第四章：不定词短语"
+author: "Guangyao Zhao"
+date: '2022-06-15T21:09:12-05:00'
+image: english.jpg
+categories: language
+tags:
+- english
+- grammar
+---
+
+
+> 所谓不定词短语，就是 to 加上原形动词所形成的的短语。不定词最合理的解释就是把它视为助动词的变化。只要弄清楚不定词与助动词之间的关系，就可以了解不定词的变化以及与现在分词，过去分词和动名词的关系。
+
+## 不定词与动名词的共同点
+
+- I am glad to know you.
+- I am glad because I can know you.
+- I am glad because I am able to know you.
+
+在 I am glad because I am able to know you 中，在 because 所引导的副词从句中，主语 I 和前面主要从句的主语相同，是重复元素。动词 am 无意义。因此 I am 可省略。如此一来，副词从句中省略主语和动词之后，已经不是一个完整的从句结构，即「I am glad because able to know you.」中 because 也可不存在。剩下的 to know 有 able to 的暗示，综上，就变为「I am glad to know you」。从以上可看出，不定词与助动词的关系极为密切：
+
+1. 后面都要接原形动词：
+   - I will go.
+   - I want to go.
+2. 都有不确定的语气：
+   - He is right.
+   - He maybe right.
+   - He seems to be right.
+3. 都要完成式来表达相对的过去时间。助动词和不定词本身都无法完整表达过去的时间：
+   - It must be raining now.
+   - It may rain anytime.
+   - It might even snow.
+
+在此，might 并不是 may 的过去时，而是一种弱化的语气。从中可以看出 must, may, might 均只能表示现在或者未来时间的事情，助动词本身缺乏表达过去时间的能力。如果早上地面看起来湿湿的，则可以说：It must have rained last night.
+
+在猜测过去的事情时，无论是 must, may 还是 might 都只能表示语气强弱的差别，无法表达过去。助动词后面要接原形动词，也不能表示过去式，所以别无选择，只能用完成式来表示过去，即 must have rained 这种形态。从这点看，不定词仍然和助动词相同：It seems to have rained last night.
+
+综上，所有重要的语气助动词，都可以改为不定词：
+
+- Must $\rightarrow$ have to
+- Should $\rightarrow$ ought to
+- Will/would $\rightarrow$ be going to
+- Can/could $\rightarrow$ be able to
+- May/might $\rightarrow$ be likely to
+
+以上，不定词和助动词其实是一种意思的不同表达，但凡是不定词出现的地方，都可以看成另外一个从句的省略：把主语省略，把助动词改为不定词。
+
+## 不定词与动名词的区分
+
+动状词：
+
+- 现在分词：形容词
+- 过去分词：形容词
+- 动名词：名词
+- 不定词：形容词，副词，名词
+
+以上动名词和不定词都可以充当名词使用，那么有什么区别呢：
+
+- They plan to marry next month：to marry next month 就是 (that) they will marry next month 的变化，marry 是计划中的事情，所以用 they will marry，即 they are to marry，这时候如果把重复的 they 和 空的 be 动词省略，就成了不定词 to marry。
+- I avoid making the same mistake twice：此时 making 比 to make 恰当，因为 to make 是 will make 的省略，有未来的意思。
+- I hate to say this, but I think you’re mistaken.
+- I like to be the first：can be.
+- I don’t like to wait too long：will wait.
+- I dislike standing in long lines：dislike 本身是否定的，就不适合接 I will stand in long lines.
+- Try being late：你尝试下迟到，不迟到很难，但迟到很简单啊。所以可以表示为一种既定的事实的感觉。不可用 must, might 等语气助词，所以只能用动名词了。
+- I remember calling her at 6 last night：在描述一种事实，没有助动词存在，即不可用 must, might.
+- The speaker stopped talking at the second bell：talking 表示一种动作的持续。
+- The speaker stopped a second to drink some water：to drink 是 he could drink 的变化，可还原为：The speaker stopped a second so that he could drink some water.
+
+
+### 使役动词和原形动词
+
+The little girl asked her mother to come to the PTA meeting $\rightarrow$ The little girl asked if her mother would come to the PTA meeting.
+
+Ask 是普通动词，邀请人参加，但别人不一定愿意，所以会牵涉到语气助词，就会变为 to come 而不是 coming。
+
+使役动词与普通动词的差别就在于它又强制性，结果是确定的，无从选择的。所以排除了语气助词的存在，从而不可以用不定词。
+
+- The teacher made the little girl stay behind：表示强制性地让其留下来。
+- The teacher asked the girl to stay behind：此时小女孩可自由选择。
+
+
+### 感官动词与原形动词
+
+I heard her playing the violin.
+
+所谓感官动词就是 see, hear, watch 等等。它们后面不适合不定词，因为不定词是助动词的变化，有不确定语气。比如说 to play the violin，就表示 she would play the violin（她想要或将去拉小提琴），那么这是听不到的。所以看到，听到这些字眼只能配合确实发生过的事情使用。
+
+- I heard her cry out in pain：cry out 表示一瞬间的哭了出来，并不具有持续性
+- She was crying in pain：持续性

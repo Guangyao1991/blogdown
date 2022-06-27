@@ -1,0 +1,293 @@
+---
+title: "特征增强：数据清洗"
+author: "Guangyao Zhao"
+date: '2022-04-15T21:09:12-05:00'
+categories: machine learning
+tags:
+- machine learning
+- feature engineering
+---
+
+
+我们会深入了解以下内容：
+
+- 结构化数据和非结构化数据
+- 定量数据和定性数据
+- 数据的四个等级
+- 探索性数据分析和数据可视化
+- 描述性统计
+
+## 数据结构的有无
+
+拿到数据后，首先要确认下数据是结构化还是非结构化的：
+
+- 结构化数据：可分为观察值和特征的数据，一般以表格的形式组织（行是观察值，列是特征）。
+- 非结构化数据：无规则，但通常情况下可采用特殊的办法转化为结构化数据。
+
+## 定量数据和定性数据
+
+在处理表格化数据集时第一个问题要考虑的便是数据是定量还是定性：
+
+- 定量数据：本质上是数值，衡量数量。比如温度，身高。
+- 定性数据：本质上是类别，描述性质。比如性别，国籍。
+  
+### 按工作分类的工资
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.style.use('fivethirtyeight')
+
+salary_ranges = pd.read_csv('data/Salary_Ranges_by_Job_Classification.csv')
+salary_ranges.head()
+
+salary_ranges.info()  # 查看下数据信息：行数、类型
+
+salary_ranges.describe()  # 默认描述定量列，如果无定量列，也会描述定性列。
+```
+
+Pandas 判断的定量列为：`Step`, `Union Code`和`Extended Step`。很明显工会代码不是定量的。最值得注意的是定量列`Biweekly High Rate`和`Grade`
+
+```{python}
+salary_ranges = salary_ranges[['Biweekly High Rate', 'Grade']]
+salary_ranges.head()
+```
+
+清楚工资前面的美元符号，保证数据类型正确：
+
+```{python}
+salary_ranges['Biweekly High Rate'] = salary_ranges['Biweekly High Rate'].map(
+    lambda x: x.replace('$', ''))
+
+salary_ranges.head()
+```
+
+
+将`Biweekly High Rate`的类型转化为浮点类型，将`Grade`转化为字符串：
+
+```{python}
+salary_ranges['Biweekly High Rate'] = salary_ranges[
+    'Biweekly High Rate'].astype(float)
+
+salary_ranges['Grade'] = salary_ranges['Grade'].astype(str)
+
+salary_ranges.info()
+```
+
+## 数据的四个等级
+
+数据的四个等级为：
+
+- 定类
+- 定序
+- 定距
+- 定比
+
+对于每个等级，接下来都会介绍可进行的数学操作和不可执行的数学操作。
+
+### 定类
+
+定类数据的结构最弱，只能描述类别：
+
+- 血型（ABCD）
+- 国籍
+
+#### 可执行的数学操作
+
+定类数据不可执行任何数学操作，比如加减乘除等。但是可以进行计数，统计其分布：
+
+```{python}
+salary_ranges['Grade'].value_counts().head()
+```
+
+绘制统计图表：
+
+```{python}
+salary_ranges['Grade'].value_counts().sort_values(
+    ascending=False).head(20).plot(kind='bar')
+
+salary_ranges['Grade'].value_counts().sort_values(
+    ascending=False).head(5).plot(kind='pie')
+```
+
+
+### 定序
+
+定序继承了定类的所有属性，也带来了一些附加属性：
+
+- 可自然排序
+- 数据可以做好坏的比较
+
+#### 可执行的数学操作
+
+因为定序数据具有排序属性，所以可以计算中位数、百分位数。对于这两者，可绘制茎叶图和箱线图
+
+
+```{python}
+customer = pd.read_csv('data/2013_SFO_Customer_survey.csv')
+customer.shape
+```
+
+该数据集有$95$列，我们在此关注`Q7A_ART`，这是关于艺术品和展览的。含义如下：
+
+0. 空
+1. 不可接受
+2. 低于平均
+3. 平均
+4. 不错
+5. 特别好
+6. 从未有人使用或参观
+
+```{python}
+art_rating = customer['Q7A_ART']
+art_rating.describe()
+```
+
+从上面可看出 Pandas 将其看做数值处理了。这是不恰当的，应将其转化为字符串：
+
+```{python}
+art_rating = art_rating.astype(str)
+art_rating.describe()
+
+# art_rating.value_counts().plot(kind='pie')  # 饼图
+# art_rating.value_counts().plot(kind='bar')  # 条形图
+# art_rating.value_counts().plot(kind='box')  # 箱线图
+```
+
+### 定距
+
+从这里开始，数字就可以进行数学运算了，即加减。比如：A 地的温度是$32$，B 地的温度是$4$，则温差为$28$。
+
+#### 可执行的数学操作
+
+在定距等级上可进行加减，可引入两个熟悉的概念：**均值和标准差** 。引入一个新的数据集：
+
+```{python}
+climate = pd.read_csv('data/GlobalLandTemperaturesByCity.csv')
+climate.head()
+```
+
+这个数据集有$860$万行，每行代表某个城市的平均温度。注意看，有数据缺失：
+
+```{python, fig.show='asis'}
+climate.dropna(axis=0, inplace=True)  # 移除缺失值
+climate.isnull().sum()  # 查看下是否有缺失值
+
+climate['AverageTemperature'].nunique()  # 查看下独特值的数量
+
+climate['AverageTemperature'].hist()  # 绘制直方图
+
+climate['AverageTemperature'].describe()
+```
+
+接下来继续处理数据，假如`year`和`century`：
+
+```{python}
+climate['dt'] = pd.to_datetime(climate['dt'])
+climate['year'] = climate['dt'].map(lambda x: x.year)
+
+climate_sub_us = climate[climate['Country'] == 'United States']  # 将 US的数据提取出来
+
+climate_sub_us['century'] = climate_sub_us['year'].map(
+    lambda x: int(x / 100 + 1))  # 添加 century 列
+
+climate_sub_us['AverageTemperature'].hist(by=climate_sub_us['century'],
+                                          sharex=True,
+                                          sharey=True,
+                                          figsize=(10, 10),
+                                          bins=20)
+```
+
+直方图显示平均温度随时间略微上升。确认下：
+
+```{python}
+climate_sub_us.groupby('century')['AverageTemperature'].mean().plot(
+    kind='line')
+```
+
+##### 在定距等级绘制两列数据
+
+对美国每月的温度绘制散点图，其中横轴是年份，纵轴是温度。
+
+```{python}
+x = climate_sub_us['year']
+y = climate_sub_us['AverageTemperature']
+
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.scatter(x, y)
+fig.show()
+```
+
+因为里面很多噪声。考虑到每年每个城镇都会报告好几个平均气温，有很多点也是理所当然的。可用`groupby`清楚年份的大部分噪声：
+
+```{python}
+climate_sub_us.groupby('year').mean()['AverageTemperature'].plot()
+```
+
+可以看出气温随年份上升的趋势，但是可以使用滑动均值平滑一下：
+
+```{python}
+climate_sub_us.groupby('year').mean()['AverageTemperature'].rolling(
+    10).mean().plot()
+```
+
+### 定比等级
+
+在这个等级上，可以说我们拥有最高程度的控制 和数学运算能力。和定距等级一样，我们在定比等级上处理的也是定量数据。这里不仅继承了定 距等级的加减运算，而且有了一个绝对零点的概念，可以做乘除运算。
+
+#### 可执行的数学操作
+
+在定比等级，我们可以进行乘除运算。虽然看起来没什么大不了，但是这些运算可以让我们 对这个等级上的数据进行独特的观察，而这在低等级上是无法做到的。
+
+回到旧金山的工资数据，可以看到`Biweekly High Rate`处于定比等级，因此可进行新的观察。
+
+```{python}
+fig = plt.figure(figsize=(15,5))
+ax = fig.gca()
+
+salary_ranges.groupby('Grade')[['Biweekly High Rate']].mean().sort_values( 'Biweekly High Rate', ascending=False).head(20).plot.bar(stacked=False, ax=ax, color='darkorange')
+
+ax.set_title('Top 20 Grade by Mean Biweekly High Rate')
+```
+
+会发现，工资最高的是公共交通部总经理。用同样的方法查看下工资最低的工作：
+
+```{python}
+fig = plt.figure(figsize=(15,5))
+ax = fig.gca()
+
+salary_ranges.groupby('Grade')[['Biweekly High Rate']].mean().sort_values( 'Biweekly High Rate', ascending=False).tail(20).plot.bar(stacked=False, ax=ax, color='darkorange')
+
+ax.set_title('Bottom 20 Grade by Mean Biweekly High Rate')
+```
+
+因为金钱处于定比等级，所以可以计算最高工资和最低工资的比值：
+
+```{python}
+sorted_df = salary_ranges.groupby('Grade')[['Biweekly High Rate']].mean().sort_values( 'Biweekly High Rate', ascending=False) 
+sorted_df.iloc[0][0] / sorted_df.iloc[-1][0]
+```
+
+工资最高的员工比工资最低的员工多赚近 $13$ 倍。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

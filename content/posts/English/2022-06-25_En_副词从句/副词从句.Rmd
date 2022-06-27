@@ -1,0 +1,72 @@
+---
+title: "第十三章：副词从句"
+author: "Guangyao Zhao"
+date: '2022-06-25T21:09:12-05:00'
+image: english.jpg
+categories: language
+tags:
+- english
+- grammar
+---
+
+## 副词从句和形容词从句的比较
+
+- **Because** he needs the money, he works hard：because 为从属连接；he needs the money 为副词从句；works hard 为主要从句。
+- He needs the money, and he works hard：He needs the money 为对等从句；and 为连接词；works hard 为对等从句。
+
+## 副词从句和名词从句的比较
+
+- The witness said that **he saw the whole thing**：he saw the whole thing 为名词从句。
+- The witness said this, **though he didn’t really see it**：though 为连接词；he didn’t really see it 为副词从句。
+
+两者差别：
+
+- 名词从句连接词无意义；副词连接词有意义。
+- 名词从句放入从句中的名词位置，即原句中有不完整的成分；副词从句是修饰语的词类，要附在完整的主要从句上做修饰语。
+
+
+## 副词从句的种类
+
+副词从句的重点在于认识各种连接词来表达逻辑关系。
+
+**时间、地方**
+
+- He became more frugal **after** he got married.
+- I’ll be waiting for you **until** you’re married.
+- It was all over **when** I got there.
+- A small town grew **where** three roads met.
+
+**条件**
+
+- **If** he calls, I’ll say you’re sleeping.
+- He won’t have it his way, **as long as** I’m here.
+- Suppose you were ill, **where** would you go.
+
+
+**原因、结果**
+
+- **As** there isn’t much time left, we might as well call it a day.
+- There’s nothing to worry about, now **that** father is back.
+- He looked so sincere **that** no one doubted his story.
+- The mother locked the door from the outside, **so that** the kids couldn’t get out when they saw fire.
+
+
+**目的**
+
+- The mother locked away the drugs **so that** the kids wouldn’t swallow any by mistake
+- I’ve typed out the main points in boldface, **in order that** you won’t miss them
+- I’ve underlined the key points, **least** you miss them.
+- You’d better bring more money, **in case** you should need it.
+
+**让步**
+
+- **Although** you may object, I must give it a try.
+- **While** the disease is not fatal, it can be very dangerous.
+
+**限制**
+
+- **As far as** money is concerned, you needn’t worry.
+
+**方法、状态**
+
+- He played the piano **as** XXX would have.

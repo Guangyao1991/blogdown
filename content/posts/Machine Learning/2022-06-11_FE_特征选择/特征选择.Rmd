@@ -1,0 +1,183 @@
+---
+title: "特征选择：对坏属性说不"
+author: "Guangyao Zhao"
+date: '2022-06-11T21:09:12-05:00'
+image: FE.jpg
+categories: feature engineering
+tags:
+- feature engineering
+- machine learning
+---
+
+
+本章会讨论特征工程的一个子集，称为特征选择。特征选择是从原始数据中选择对于预测流水线而言最好的特征。特征选择的意义在于：尝试剔除数据中的噪声。为达到这个目的，需要解决：
+
+- 找到$k$特征子集的办法
+- 理解机器学习中对“更好”做出定义
+
+特征选择包括两大类：
+
+- 基于统计的特征选择
+- 基于模型的特征选择
+
+## 在特征工程中实现更好的性能
+
+在讨论特征工程的方法时，需要对**更好**下定义，也就是学习器的预测能力：
+
+对于分类：
+
+- 真阳性率和假阳性率
+- 灵敏度和特异性
+- 假阴性率和假阳性率
+
+对于回归：
+
+- 平均绝对误差
+- 决策系数：$\mathrm{R}^2$
+
+元指标指的是不直接与预测性能相关，但同时又很重要的一些指标，比如：
+
+- 模型训练所需时间
+- 拟合后的模型预测新实例的时间
+- 持久化的数据大小
+
+为了跟踪元指标，可以创建一个函数，通用到足以评估若干模型，同时精细到可以提供每个模型的指标：
+
+```{python}
+from sklearn.model_selection import GridSearchCV
+
+
+def get_best_model_and_accuracy(model, params, X, y):
+
+    grid = GridSearchCV(model, params, verbose=0, error_score=0)  # 如果报错，结果是 0
+
+    grid.fit(X, y)
+    print('Best accuracy: {}'.format(grid.best_score_))  # 最佳准确率
+    print('Best params: {}'.format(grid.best_params_))  # 最佳参数
+
+    print('Average time to fit (s) : {}'.format(
+        round(grid.cv_results_['mean_fit_time'].mean(), 3)))  # 训练时间
+
+    print('Average time to Score (s) : {}'.format(
+        round(grid.cv_results_['mean_score_time'].mean(), 3)))  # 预测时间
+```
+
+
+### 案例分析：信用卡逾期数据集
+
+特征选择的目的是提取有效信号并去除噪声，达到以下效果：
+
+- 提升模型性能：在去除噪声后，数据的质量更佳，模型的结果自然而然就会提升。
+- 减少训练和预测时间：数据量减少，模型一般在训练和预测上都会更快。
+
+以下使用$23$个特征和一个响应变量，试图分开有害特征和有益特征：
+
+```{python}
+import pandas as pd
+import numpy as np
+
+np.random.seed(1)
+
+credit_card_default = pd.read_csv('data/credit_card_default.csv')
+credit_card_default.shape
+
+credit_card_default.describe().T  # 描述性统计
+
+credit_card_default.isnull().sum()  # 检查下空值
+
+X = credit_card_default.drop('default payment next month', axis=1)
+y = credit_card_default['default payment next month']
+y.value_counts(normalize=True)  # 查看下空准确率
+
+```
+
+## 创建基准学习器流水线
+
+先导入四种模型：
+
+- 逻辑回归
+- KNN
+- 决策树
+- 随机森林
+
+```{python}
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+
+lr_params = {'C': [1e-1, 1e0, 1e1, 1e2], 'penalty': ['l1', 'l2']}
+knn_params = {'n_neighbors': [1, 3, 5, 7]}
+tree_params = {'max_depth': [None, 1, 3, 5, 7]}
+forest_params = {
+    'n_estimators': [10, 50, 100],
+    'max_depth': [None, 1, 3, 5, 7]
+}
+
+lr = LogisticRegression()
+knn = KNeighborsClassifier()
+d_tree = DecisionTreeClassifier()
+forest = RandomForestClassifier()
+
+get_best_model_and_accuracy(lr, lr_params, X, y)
+get_best_model_and_accuracy(knn, knn_params, X, y)
+get_best_model_and_accuracy(d_tree, tree_params, X, y)
+get_best_model_and_accuracy(forest, forest_params, X, y)
+```
+
+
+决策树的准确率最高，并且预测时间和逻辑回归并列第一，而带缩放的 KNN 拟合最快。总体而言，决策树是最合适下一步采用的模型。
+
+在此使用的办法是在特征选择之前选择模型，虽然不必要，但是在有限的情况下这样做一般很省时。当然了，也可以尝试多个模型。
+
+既然要选择决策树，那么目标如下：
+
+- 击败的新基准线为$0.8207$
+- 你再需要归一化了，因为决策树不受其影响
+
+## 特征选择的类型
+
+### 基于统计
+
+基于统计的特征选择一般使用以下两个概念：
+
+- 皮尔逊相关系数
+- 假设检验
+
+这两个都是单变量方法，意思是每一次都选择单一特征创建好的数据集。
+
+#### 皮尔逊相关系数
+
+```{python}
+credit_card_default.corr()
+```
+
+皮尔逊相关系数会测量列之间的线性关系，该系数哎$-1\sim 1$之间变化，$0$代表不相关，$-1,1$代表相关性很强。值得注意的是，皮尔逊相关系数要求每列是正态分布的，在很大程度上，可以忽略这个要求，因为数据集很大（超过$500$阈值）
+
+```{python}
+import seaborn as sns
+import matplotlib.style as style
+
+style.use('fivethirtyeight')
+sns.heatmap(credit_card_default.corr())
+
+credit_card_default.corr()['default payment next month']
+
+credit_card_default.corr()['default payment next month'].abs() > 0.2
+
+highly_correlated_features = credit_card_default.columns[
+    credit_card_default.corr()['default payment next month'].abs() > 0.2].drop(
+        'default payment next month')
+
+highly_correlated_features
+```
+
+留下了$5$个特征，用于预测响应变量：
+
+```{python}
+X_subsetted = X[highly_correlated_features]
+
+get_best_model_and_accuracy(d_tree, tree_params, X_subsetted, y)
+```
+
+虽然正确率略差一点，但是训练快了约$20$倍。

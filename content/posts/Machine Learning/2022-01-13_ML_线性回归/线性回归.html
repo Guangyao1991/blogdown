@@ -1,0 +1,241 @@
+---
+title: "线性回归(Linear Regression)"
+author: "Guangyao Zhao"
+date: '2022-01-13T21:09:12-05:00'
+image: ML.jpg
+categories: machine learning
+tags:
+- machine learning
+- algorithm
+---
+
+
+
+<div id="基本形式" class="section level2">
+<h2>基本形式</h2>
+<p>给定由<span class="math inline">\(n\)</span>个样本，<span class="math inline">\(m\)</span>个属性描述的示例<span class="math inline">\(D=\{(x_1,y_1), (x_2,y_2), (x_3,y_3), ..., (x_n,y_n)\}\)</span>，<span class="math inline">\(i\)</span>表示第<span class="math inline">\(i\)</span>个样本值。其中<span class="math inline">\(x_i \in \mathbb{R}^m\)</span>，每个样本又包含<span class="math inline">\(m\)</span>个维度，即<span class="math inline">\(x_i=\{x_{i1},x_{i1},...,x_{im}\}\)</span>；<span class="math inline">\(y \in \mathbb{R}\)</span>。</p>
+</div>
+<div id="非矩阵形式" class="section level2">
+<h2>非矩阵形式</h2>
+<p>线性模型试图学习到一个通过属性的线性组合来预测的函数，即：
+<span class="math display">\[
+\begin{aligned}
+f(x) &amp;=w_1x_1+w_2x_2+w_3x_3+...+w_mx_m+d\\
+&amp;=w^\mathrm{T}x+b
+\end{aligned}
+\]</span>
+其中：<span class="math inline">\(w=\{w_1;w_2;w_3;...;w_m\}\)</span>，<span class="math inline">\(x=\{x_1;x_2;x_3;...;x_m\}\)</span>。</p>
+<p>线性回归试图寻求：<span class="math inline">\(\left(w^{*}, b^{*}\right)=\arg \min \sum_{i=1}^{n}\left(f\left(x_{i}\right)-y_{i}\right)^{2}\)</span>。求解<span class="math inline">\(w\)</span>和<span class="math inline">\(b\)</span>使得均方误差最小的过程，称之为线性回归模型的最小二乘参数估计（parameter estimation），可将其求导得到：</p>
+<p><span class="math display">\[
+  \begin{aligned}
+    \frac{\partial E_{(w, b)}}{\partial w} &amp;=2\left( \sum_{i=1}^{n} w^\mathrm{T} x_{i}^2-\sum_{i=1}^{n}\left(y_{i}-b\right) x_{i}\right) \\
+    \frac{\partial E_{(w, b)}}{\partial b} &amp;=2\left(n b-\sum_{i=1}^{n}\left(y_{i}-w^\mathrm{T} x_{i}\right)\right)
+  \end{aligned}
+\]</span></p>
+<p>然后让两者为0 得到<span class="math inline">\(w\)</span>和<span class="math inline">\(b\)</span>的最优解的闭式（closed-form）解（注意：此处并未成功推导出<span class="math inline">\(w\)</span>）：</p>
+<p><span class="math display">\[
+  \begin{aligned}
+    w&amp;=\frac{\sum_{i=1}^{n} y_{i}\left(x_{i}-\bar{x}\right)}{\sum_{i=1}^{n} x_{i}^{2}-\frac{1}{n}\left(\sum_{i=1}^{n} x_{i}\right)^{2}} \\
+    b&amp;=\frac{1}{n} \sum_{i=1}^{n}\left(y_{i}-w^\mathrm{T} x_{i}\right)
+  \end{aligned}
+\]</span>
+其中<span class="math inline">\(\bar{x}=\frac{1}{m}\sum_{i=1}^{m}x_i\)</span>。</p>
+</div>
+<div id="矩阵形式" class="section level2">
+<h2>矩阵形式</h2>
+<p><span class="math inline">\(w\)</span>的表示如下：</p>
+<p><span class="math display">\[
+w=\{w_1;w_2;w_3,...,w_m\}
+\]</span></p>
+<p><span class="math inline">\(\mathbf{X}\)</span>的表示如下：</p>
+<p><span class="math display">\[
+    \mathbf{X}=\left(\begin{array}{ccccc}
+    x_{11} &amp; x_{12} &amp; \ldots &amp; x_{1 m} &amp; 1 \\
+    x_{21} &amp; x_{22} &amp; \ldots &amp; x_{2 m} &amp; 1 \\
+    \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \\
+    x_{n 1} &amp; x_{n 2} &amp; \ldots &amp; x_{n m} &amp; 1
+    \end{array}\right)=\left(\begin{array}{cc}
+    \boldsymbol{x}_{1} &amp; 1 \\
+    \boldsymbol{x}_{2} &amp; 1 \\
+    \vdots &amp; \vdots \\
+    \boldsymbol{x}_{n} &amp; 1
+    \end{array}\right)
+\]</span></p>
+<p><span class="math inline">\(y\)</span>的的标记如下：</p>
+<p><span class="math display">\[
+y_i=\{y_1;y_2;y_3,...,y_n\}
+\]</span></p>
+<p>目标函数的推导如下：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{L}(w) &amp;=\sum_{i=1}^{n}\Vert w^\mathrm{T}x_i-y_i \Vert^2\\
+&amp;= (w^\mathrm{T}x_1-y_1, w^\mathrm{T}x_2-y_2,..., w^\mathrm{T}x_n-y_n)\begin{pmatrix}
+w^\mathrm{T}x_1-y_1
+\\w^\mathrm{T}x_2-y_2
+\\\vdots
+\\w^\mathrm{T}x_n-y_n
+\end{pmatrix}\\
+&amp;=\left [   \left (w^\mathrm{T}x_1, w^\mathrm{T}x_2,...,w^\mathrm{T}x_n \right ) - \left ( y_1,y_2,...,y_n \right ) \right ]
+\left [ \begin{pmatrix}
+x_1
+\\x_2
+\\\vdots
+\\x_n
+\end{pmatrix}w-\begin{pmatrix}
+y_1
+\\y_2
+\\\vdots
+\\y_n
+\end{pmatrix} \right ] \\
+&amp;=\left ( w^\mathrm{T}\mathbf{X}^\mathrm{T}-y^\mathrm{T} \right ) \left ( \mathbf{X}w-y \right ) \\
+&amp;=\left ( \mathbf{X}w-y \right )^\mathrm{T} \left ( \mathbf{X}w-y \right )
+\end{aligned}
+\]</span></p>
+<p>则，目标函数为：</p>
+<p><span class="math display">\[
+\underset{w}{\mathrm{argmin}}\,(\mathbf{X}w-y)^\mathrm{T}(\mathbf{X}w-y)
+\]</span></p>
+<p>对于目标函数：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{L}(w) &amp;=\left ( \mathbf{X}w-y \right )^\mathrm{T} \left ( \mathbf{X}w-y \right ) \\
+&amp;= w^\mathrm{T}\mathbf{X}^\mathrm{T}\mathbf{X}w - w^\mathrm{T}\mathbf{X}^\mathrm{T}y-y^\mathrm{T}\mathbf{X}w+y^\mathrm{T}y\\
+&amp; =w^\mathrm{T}\mathbf{X}^\mathrm{T}\mathbf{X}w - 2w^\mathrm{T}\mathbf{X}^\mathrm{T}y+y^\mathrm{T}y  
+\end{aligned}
+\]</span></p>
+<p>对上式（即目标函数）求导：</p>
+<p><span class="math display">\[
+\frac{\partial\, \mathrm{L}(w)}{\partial\, w} = 2\mathbf{X} ^\mathrm{T}\mathbf{X}w-2\mathbf{X}^\mathrm{T}y=0
+\]</span></p>
+<p>求解可得到解析解：<span class="math inline">\(w=\left ( \mathbf{X}^\mathrm{T}\mathbf{X} \right )^{-1}\mathbf{X}^\mathrm{T}y\)</span>。在进行梯度下降的时候也是利用该公式，<span class="math inline">\(w\)</span>的更新公式为：</p>
+<p><span class="math display">\[
+w := w-\alpha \mathbf{X} ^\mathrm{T}\left( \mathbf{X}w-y\right)
+\]</span></p>
+<p>其中<span class="math inline">\(\alpha\)</span>为学习率。</p>
+</div>
+<div id="几何解释" class="section level2">
+<h2>几何解释</h2>
+<div id="第一种几何解释" class="section level3">
+<h3>第一种几何解释</h3>
+<p>第一种几何解释很直观，它将误差分给了每一个样本。就是预测值和真实值之差的平方和。</p>
+</div>
+<div id="第二种几何解释" class="section level3">
+<h3>第二种几何解释</h3>
+<p>第二种几何解释很新颖，它将误差分给了<span class="math inline">\(m\)</span>个维度上。将样本<span class="math inline">\(x_i\)</span>看作一个系数向量，即：</p>
+<p><span class="math display">\[
+f(w)=w^\mathrm{T}x_i=x_i^\mathrm{T}\beta
+\]</span></p>
+<p>其中<span class="math inline">\(w\)</span>和<span class="math inline">\(\beta\)</span>是未知的。由下图可知，当向量<span class="math inline">\(y_i\)</span>垂直于<span class="math inline">\(x_i\)</span>所形成的空间时（即投影），距离最小，即误差最小：</p>
+<p><span class="math display">\[
+\mathbf{X}^\mathrm{T}\left ( y-\mathbf{X}\beta \right ) =0\cdot\begin{pmatrix}
+0\\
+0 \\
+\vdots\\
+0
+\end{pmatrix}_m
+\]</span></p>
+<p>求解得：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf{X}^\mathrm{T}y &amp;= \mathbf{X}^\mathrm{T}\mathbf{X}\beta\\
+\beta &amp;= \left ( \mathbf{X}^\mathrm{T}\mathbf{X} \right ) ^{-1}\mathbf{X}^\mathrm{T}y
+\end{aligned}
+\]</span></p>
+<p>此结果和最小二乘法的结果一致。</p>
+</div>
+</div>
+<div id="代码" class="section level2">
+<h2>代码</h2>
+<pre class="python"><code>import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.datasets import load_boston
+
+
+def load_dataset():
+    X, y = load_boston(return_X_y=True)
+    return X, y
+
+
+def normalize(X):
+    return (X - np.mean(X, axis=0)) / np.std(X, axis=0)
+
+
+def cost_function(X, y, theta):
+    n = X.shape[0]
+    y_pre = h(X, theta)  # (m, 1)
+    return float(np.matmul((y - y_pre).T, (y - y_pre)) / (2 * n))
+
+
+def h(X, theta):
+    return np.matmul(X, theta)
+
+
+def gradient(X, y, theta, learning_rate=0.01, num=600):
+    J_all = []  # 存放 loss
+    n = X.shape[0]
+    for i in range(num):
+        y_pre = h(X, theta)
+        cost_ = np.matmul(X.T, y_pre - y) / n  # 重点
+        theta = theta - learning_rate * cost_
+        J_all.append(cost_function(X, y, theta))
+    return theta, J_all
+
+
+def plot_cost(J_all):
+    plt.xlabel(&#39;num&#39;)
+    plt.ylabel(&#39;cost&#39;)
+    plt.plot(J_all)
+    plt.show()
+
+
+# ===========
+X, y = load_dataset()  # 加载数据集</code></pre>
+<pre><code>## /Users/zhaoguangyao/anaconda3/lib/python3.9/site-packages/sklearn/utils/deprecation.py:87: FutureWarning: Function load_boston is deprecated; `load_boston` is deprecated in 1.0 and will be removed in 1.2.
+## 
+##     The Boston housing prices dataset has an ethical problem. You can refer to
+##     the documentation of this function for further details.
+## 
+##     The scikit-learn maintainers therefore strongly discourage the use of this
+##     dataset unless the purpose of the code is to study and educate about
+##     ethical issues in data science and machine learning.
+## 
+##     In this special case, you can fetch the dataset from the original
+##     source::
+## 
+##         import pandas as pd
+##         import numpy as np
+## 
+## 
+##         data_url = &quot;http://lib.stat.cmu.edu/datasets/boston&quot;
+##         raw_df = pd.read_csv(data_url, sep=&quot;\s+&quot;, skiprows=22, header=None)
+##         data = np.hstack([raw_df.values[::2, :], raw_df.values[1::2, :2]])
+##         target = raw_df.values[1::2, 2]
+## 
+##     Alternative datasets include the California housing dataset (i.e.
+##     :func:`~sklearn.datasets.fetch_california_housing`) and the Ames housing
+##     dataset. You can load the datasets as follows::
+## 
+##         from sklearn.datasets import fetch_california_housing
+##         housing = fetch_california_housing()
+## 
+##     for the California housing dataset and::
+## 
+##         from sklearn.datasets import fetch_openml
+##         housing = fetch_openml(name=&quot;house_prices&quot;, as_frame=True)
+## 
+##     for the Ames housing dataset.
+##     
+##   warnings.warn(msg, category=FutureWarning)</code></pre>
+<pre class="python"><code>X = np.array(X)
+y = np.array(y).reshape((y.size, 1))
+
+X = normalize(X)  # 标准化
+X = np.hstack((X, np.ones((X.shape[0], 1))))  # 变化X
+theta = np.ones((X.shape[1], 1))  # 初始化theta
+learning_rate = 0.1
+num = 200
+
+theta, J_all = gradient(X, y, theta, learning_rate, num)
+plot_cost(J_all)</code></pre>
+<p><img src="/posts/Machine Learning/2022-01-13_ML_线性回归/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>

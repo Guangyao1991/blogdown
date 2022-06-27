@@ -1,0 +1,90 @@
+---
+title: "最大似然估计(maximum likelihood estimation, MLE)"
+author: "Guangyao Zhao"
+date: '2022-02-25T21:13:14-05:00'
+image: ML.jpg
+categories: machine learning
+tags:
+- machine learning
+- method
+---
+
+
+
+<div id="似然函数" class="section level2">
+<h2>似然函数</h2>
+<p>似然性（likelihood）和概率（possibility）同样可以表示事件发生的可能性大小，但是两者有很大区别：</p>
+<ul>
+<li><p>概率：是在已知参数 <span class="math inline">\(\theta\)</span> 的情况下，发生观测结果<span class="math inline">\(x\)</span> 可能性大小。</p></li>
+<li><p>似然性：从观测结果 <span class="math inline">\(x\)</span> 出发，分布函数的参数 <span class="math inline">\(\theta\)</span> 的可能性大小。</p></li>
+</ul>
+<p>似然函数如下：</p>
+<p><span class="math display">\[
+\mathrm{L}(\theta|x)=p(x|\theta)
+\]</span></p>
+<p>其中： <span class="math inline">\(x\)</span> 已知， <span class="math inline">\(\theta\)</span> 未知。若对于两个参数 <span class="math inline">\(\theta_1\)</span> 和 <span class="math inline">\(\theta_2\)</span> ，有：
+<span class="math display">\[
+\mathrm{L}(\theta_1|x)=p(x|\theta_1) &gt; p(x|\theta_2) = \mathrm{L}(\theta_2|x)
+\]</span></p>
+<p>那么意味着 <span class="math inline">\(\theta=\theta_1\)</span> 的时候，随机变量 <span class="math inline">\(X\)</span> 生成 <span class="math inline">\(x\)</span> 的概率大于当参数 <span class="math inline">\(\theta=\theta_2\)</span> 。这也正是似然函数的意义所在。若观测数据为 <span class="math inline">\(x\)</span> ，那么 <span class="math inline">\(\theta_1\)</span> 比 <span class="math inline">\(\theta_2\)</span> 更有可能是分布函数的参数。</p>
+</div>
+<div id="最大似然估计" class="section level2">
+<h2>最大似然估计</h2>
+<p>最大似然函数的思想在于，对于给定观测数据 <span class="math inline">\(x\)</span> ，希望能反推出所有参数 <span class="math inline">\(\theta_1,\theta_2,...,\theta_k\)</span> 中找出能最大概率生成观测数据的参数 <span class="math inline">\(\theta^*\)</span> 作为估计结果。即，被估计的参数<span class="math inline">\(\theta^*\)</span>应该满足：</p>
+<p><span class="math display">\[
+\mathrm{L}(\theta^*|x)=p(x|\theta^*) &gt; p(x|\theta) = \mathrm{L}(\theta|x),\theta=\theta_1,...,\theta_k
+\]</span></p>
+<p>在实际运算中，将待估参数 <span class="math inline">\(\theta\)</span> 作为变量，计算生成观测数据 <span class="math inline">\(x\)</span> 的概率函数 <span class="math inline">\(p(x|\theta)\)</span> ，并通过求导找到最大概率函数的参数即可：</p>
+<p><span class="math display">\[
+\theta^* = \underset{\theta}{\mathrm{argmax}}\,p(x|\theta)
+\]</span></p>
+</div>
+<div id="离散型随机变量的最大似然估计" class="section level2">
+<h2>离散型随机变量的最大似然估计</h2>
+<p>在参数 <span class="math inline">\(\theta\)</span> 下，分布函数随机取到 <span class="math inline">\(x_1,x_2,...,x_n\)</span> 的概率为：</p>
+<p><span class="math display">\[
+P(X|\theta)=\prod_{i=1}^{n}p(x_i;\theta)
+\]</span>
+构造似然函数：</p>
+<p><span class="math display">\[
+\mathrm{L}(\theta|X) = p(X|\theta)=\prod_{i=1}^{n}p(x_i;\theta)
+\]</span></p>
+<p>似然函数是一个关于 <span class="math inline">\(\theta\)</span> 的函数，要找到最大概率生成 <span class="math inline">\(x\)</span> 的参数，即需要找到 <span class="math inline">\(\mathrm{L}(\theta|x)\)</span> 取最大值时的 <span class="math inline">\(\theta\)</span>。此时需要对其求导：</p>
+<p><span class="math display">\[
+\frac{d}{d\theta}\mathrm{L}(\theta|x)=0
+\]</span></p>
+<p>因为很一般情况下式子是累积形式(独立同分布)，所以可借助对数函数简化问题：</p>
+<p><span class="math display">\[
+\frac{d}{d\theta}\ln(\mathrm{L}(\theta|x))=0
+\]</span></p>
+<p>上式通常称作对数似然方程。如果包含多个参数 <span class="math inline">\(\theta_1, \theta_2,...,\theta_k\)</span>，则可对多个参数分别求导联立方程组。</p>
+</div>
+<div id="高斯分布下的最大似然函数" class="section level2">
+<h2>高斯分布下的最大似然函数</h2>
+<p>假设样本符合高斯分布，即 <span class="math inline">\(X\sim N(\mu,\sigma^2)\)</span>，其中 <span class="math inline">\(\mu\)</span> 为均值，<span class="math inline">\(\sigma\)</span> 为方差。<span class="math inline">\(x_1,x_2,...x_n\)</span> 为来自 <span class="math inline">\(X\)</span> 的一组观察值，求 <span class="math inline">\(\mu\)</span> 和 <span class="math inline">\(\sigma\)</span> 的最大似然估计。</p>
+<p><span class="math inline">\(X\)</span> 的概率密度函数：</p>
+<p><span class="math display">\[
+f(x;\mu,\sigma) = \frac{1}{\sqrt{2\pi}\sigma}\exp{-\frac{(x-\mu)^2}{2\sigma^2}}
+\]</span></p>
+<p>观察值 <span class="math inline">\(x_1,x_2,...x_n\)</span> 的似然函数为：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{L}(\theta|X) &amp;= \prod_{i=1}^{n}\frac{1}{\sqrt{2\pi}\sigma}\exp{-\frac{(x_i-\mu)^2}{2\sigma^2}}\\
+\ln{\mathrm{L}(\theta|X)} &amp;= -n\ln{\sqrt{2\pi}\sigma} - \frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\mu)^2
+\end{aligned}
+\]</span></p>
+<p>对其求导得：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d}{d\mu}\ln{\mathrm{L}(\theta|X)} &amp;= \frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\mu)=0\\
+\frac{d}{d\sigma}\ln{\mathrm{L}(\theta|X)} &amp;= -\frac{n}{\sigma}+\frac{1}{\sigma^3}\sum_{i=1}^{n}(x_i-\mu)^2=0
+\end{aligned}
+\]</span></p>
+<p>最后求解得：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mu &amp;= \bar{x}\\
+\sigma^2 &amp;= \frac{1}{n}\sum_{i=1}^{n}(x_i-\mu)^2
+\end{aligned}
+\]</span></p>
+</div>

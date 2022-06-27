@@ -1,0 +1,149 @@
+---
+title: "Oh my zsh & iterm2"
+author: "Guangyao Zhao"
+date: '2022-06-14T21:09:12-05:00'
+image: setting.jpg
+categories: setting
+tags:
+- setting
+- code
+---
+
+
+> Oh My Zsh is a delightful, open source, community-driven framework for managing your Zsh configuration. It comes bundled with thousands of helpful functions, helpers, plugins, themes, and a few things that make you shout...
+> 
+> iTerm2 is a replacement for Terminal and the successor to iTerm. It works on Macs with macOS 10.14 or newer. iTerm2 brings the terminal into the modern age with features you never knew you always wanted.
+
+
+## 安装oh my zsh
+
+### 安装方法1
+
+```bash
+# 下载oh my zsh 
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+# 改变位置
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+```
+
+如果报错：`curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused`，有两种解决办法：
+
+1. 将DNS设置为：`8.8.8.8`或者`114.114.114.114`（参考文章：[https://blog.csdn.net/bryong/article/details/108374261](https://blog.csdn.net/bryong/article/details/108374261) 
+2. 使用安装方法2
+
+
+### 安装方法2
+
+```bash
+# 下载oh my zsh
+git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+
+# 改变位置
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+
+# 清理缓存
+brew cleanup
+```
+
+## 基本配置
+
+### 修改主题
+
+- 主题文件位置：/Users/你的用户名/.oh-my-zsh/themes
+- 主题样式：[https://github.com/ohmyzsh/ohmyzsh/wiki/Themes](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fohmyzsh%2Fohmyzsh%2Fwiki%2FThemes)
+
+
+```bash
+# 下载主题
+/Users/daxiong/.oh-my-zsh/themes
+git clone https://github.com/bhilburn/powerlevel9k.git
+
+vim ~/.zshrc
+
+# 修改
+ZSH_THEME="agnoster"
+```
+
+![修改主题](https://tva1.sinaimg.cn/large/008eGmZEly1gocm0ppje4j30xc0lujw5.jpg)
+
+### 终端命令高亮和补全
+
+```bash
+cd ~/.oh-my-zsh/custom/plugins/
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ## 下载高亮
+git clone https://github.com/zsh-users/zsh-autosuggestions
+vim ~/.zshrc  ## 下载补全
+
+# 修改
+plugins=(git
+         zsh-autosuggestions 
+         zsh-syntax-highlighting)
+```
+
+![命令高亮和补全](https://tva1.sinaimg.cn/large/008eGmZEly1gocm2jxk4vj30xc0mx77e.jpg)
+
+## zsh下的环境变量配置
+
+Mac的环境变量配置文件如下：
+
+1. `/etc/profile`
+2. `/etc/paths`
+3. `~/.bash_profile`
+4. `~/.bash_login`
+5. `~/.profile`
+6. `~/.bashrc`
+   
+前两个是系统级别的，系统启动就会加载。后面3个是当前用户级别的环境变量。后面几个按照从前往后的顺序读取，如果`~/.bash_profile`存在，则后面的几个文件就会被忽略不读了，如果不存在，才会依次读取后面的文件。`~/.bashrc`没有上述规则，它是bash shell打开的时候载入的。  
+
+也就是说在当前用户的目录下，如果有了`.bash_profile`文件就不会去加载`.bashrc`文件。所以如果要能正常加载，需要在`.bash_profile`文件的最末尾上加入如下语句：
+
+```bash
+if [ -f ~/.bashrc ]; then
+   source ~/.bashrc
+fi
+```
+
+如果你没有修改过，上面的方法默认重启后就能生效。
+
+但是，现在的mac上有些使用zsh这个作为默认的，所以在启动shell时默认不会按上面的套路去加载。如果想要正常加载.bashrc文件时，就要找到用户目录下.zshrc文件加入如下代码：
+
+```bash
+if [ -f ~/.bashrc ]; then
+   source ~/.bashrc
+fi
+```
+
+## iterm2远程控制
+
+### 方法一
+
+```bash
+ssh -p22 root@slave1
+ssh -p22 root@192.168.247.133
+```
+
+### 方法二
+创建shell脚本文件：我的文件路径：`/Users/kuma/hadoop_cluster/login.sh`
+注意：要赋予文件执行权限：`chmod +x /Users/kuma/hadoop_cluster/login.sh`
+
+```bash
+#!/usr/bin/expect
+set timeout 30
+spawn ssh -p [lindex $argv 0] [lindex $argv 1]@[lindex $argv 2]
+expect {
+        "(yes/no)?"
+        {send "yes\n";exp_continue}
+        "password:"
+        {send "[lindex $argv 3]\n"}
+}
+interact
+```
+
+### 配置iterm2
+
+Send text at start的格式：脚本路径+端口号+服务器用户名+hostname+密码  
+
+例如：`/Users/kuma/hadoop_cluster/login.sh 22 yowai slave1 00000000`
+
+![iterm2设置](https://tva1.sinaimg.cn/large/008eGmZEly1gocm8i0p6uj30xc0i176l.jpg)

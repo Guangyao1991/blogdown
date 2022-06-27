@@ -1,0 +1,14 @@
+---
+title: "归一化"
+author: "Guangyao Zhao"
+date: '2022-04-09T21:09:12-05:00'
+image: FE.jpg
+categories: math
+tags:
+- feature engineering
+- machine learning
+---
+
+## $z-$score
+
+## Min Max

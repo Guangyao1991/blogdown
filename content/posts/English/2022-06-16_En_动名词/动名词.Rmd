@@ -1,0 +1,48 @@
+---
+title: "第五章：动名词"
+author: "Guangyao Zhao"
+date: '2022-06-16T21:09:12-05:00'
+image: english.jpg
+categories: language
+tags:
+- english
+- grammar
+---
+
+> 动名词和现在分词写法相同，动名词属于名词类，现在分词则是当作形容词用。
+
+
+## 动名词的特性
+
+### 动名词与普通名词的比较
+
+- Let me buy you a drink：drink 表示普通的一杯酒。
+- **Drinking** is his only vice：drinking 表示一种喝酒的习惯，动名词相对于普通名词而言，仍然保留若干程度的「动作」意味，而且是有「持续性」的暗示。如果只喝一杯，则为 have a drink，如果是习惯性则为 drinking。
+- I am not afraid of death, but I am scared of **dying**：death 表示死亡这件事，dying 表示死亡的持续过程。
+
+
+### 动名词短语与名词从句的比较
+
+- I really enjoyed **teaching English** to school children at night：teaching English 是一个复合名词。
+- I really enjoyed that I taught English to school children at night：从句的主语和主句相同，则 「I」可以省略，如果将动词去掉，就可以成功地拆除这个从句，不需要连接词 that 了。taught 是有意义的不可以直接去掉。四种动状词中只有不定词和动名词可以充当名词使用，因为想表达的意思很明确，而不定词有不确定的语气，所以直接使用动名词。
+
+
+### 动名词的一些变化
+
+主语不能省略：
+
+- I don’t like that John calls my girlfriend day after day.
+- I don’t like that John’s calling my girlfriend day after day：动名词的主语与主句的主语不同时，处理方式就是用所有格形式保存下来。
+
+
+动名词的被动语态：
+
+- That I was invited here is a great honor：主语的名词从句有简化的空间。
+- ~~That invited here is a great honor~~：过去分词短语只能作为形容词，不可作为名词。所以这样的表达是错误的。此时应该需要做词类变化或者需要用being了。
+- Being invited here is a great honor：being 中 be 是无意义的，being的意义在于 -ing 部分，being 是现在分词，表示持续；或者是动名词，可做名词。上句子中，invited 不可做主语，除了变为 invitation外，还有一个办法就是利用 was 做词类变化，变成 being invited here，一方面保留了被动语态，一方面符合了词性。
+
+
+动名词和现在分词的分辨：
+
+- That **flying bird **is a black-faced spoonbill：现在分词。因为有强烈暗示「进行」的动作。为了验证，可以将它移动到形容词的另一个位置 — 补语来看看，That bird is flying，完全说得通嘛。
+- That **flying jacket** looks smart on you：动名词。假如将它视为现在分词，将其放在形容词的位置，则变为：The jacket is flying，是完全不对的。如果要检验动名词的话，应该将它放在动名词位置 -- 介系词后面：That’s a jacket for flying，这就说得通了，因为 a flying jacket 和 a jacket for flying 相同。

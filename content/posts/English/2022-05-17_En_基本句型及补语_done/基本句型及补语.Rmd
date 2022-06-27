@@ -1,0 +1,94 @@
+---
+title: "第一章：基本句型及补语"
+author: "Guangyao Zhao"
+date: '2022-05-17T21:09:12-05:00'
+image: english.jpg
+categories: language
+tags:
+- English
+- grammar
+---
+
+
+## 五种简单句型
+
+- 主谓：S + V 
+- 主谓宾：S + V + O
+- 主谓补： S + V + C
+- 主谓宾宾：S + V + O + O
+- 主谓宾补：S + V + O + C
+
+<!--more-->
+
+
+其中：
+
+- S: subject
+- V: verb
+- O: object
+- C: complement
+
+
+## 及物动词和不及物动词
+
+- 及物动词：不牵涉别的人或物，比如 die
+- 不及物动词：牵涉别的人或物，比如 kill
+
+
+## 补语
+
+解释为「是」的动词没有叙述能力，只能把主语和后面构成叙述的部分连接起来，所以称之为「连缀动词（linking verb）」。跟在这种动词后面的部分，因为替代了动词所扮演的叙述角色，补足句子使它获得完整的意思，所以称之为补语（complement）
+
+凡是接补语的动词，都可以解释为各种各样的「是」（「为」是文言的「是」）：
+- Look：看起来是
+- Seem：似乎是
+- Appear：显得是
+- Sound：听起来是
+- Feel：摸起来是
+- Taste：尝起来是
+- Turn：转变为
+- Prove：证实为
+- Become：成为
+- Make：做为
+
+- That dress looks pretty.
+- The dog seems friendly.
+- His demands appear reasonable.
+- His trip sounds exciting.
+- I feel sick.
+- The drug tastes bitter.
+- The story proved false.
+- He become a teacher.
+- A nurse makes a good wife.
+
+将以上句子的动词全部换成 be 动词，意思没有太多差别，这就是「主语+动词+补语」的句型，即 S + V + C 句型。
+
+
+## 宾语补语的句型
+
+补语告诉读者宾语是什么，中间暗示有个「是」的关系存在。
+- I find the dress pretty.
+- The meat made the dog friendly.
+- They consider his demands reasonable.
+
+比如第一个例子，宾语 the dress 和补语 pretty 之间虽然没有「是」字，但有这种暗示存在。
+
+
+## 补语的类型
+
+以上的补语都是名词，补语也可以是形容词。比如： I consider John Smith courageous. 中 courageous 为宾语的补语。
+
+
+## 没有补语的 be 动词
+
+笛卡尔说的「我思故我在」翻译成英语是「I think, therefore I am」。不能只看到「I am」就翻译成「我是」，这是没有意义的，必须需要补语来交代是什么，在没有补语的情形下，「I am」就得翻译成「我存在」了。
+
+另外一个例子是：To be or not to be, that is a question. 此处的 be 动词也需要翻译为「存在」，即，「要存在还是不存在，这是一个问题。」结合当初的情景，可翻译为「要不要活下去，这是一个问题。」
+
+
+## 有两个宾语的句型
+
+John’s father gave him a dog. 其中「him」和「dog」都是宾语，且都是名词，一个是给的对象，一个是给的东西。
+
+John’s father called him a dog. 此时句型是 S + V + O + C。其中dog 是补语。
+

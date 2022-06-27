@@ -1,0 +1,135 @@
+---
+title: "第十二章：名词从句"
+author: "Guangyao Zhao"
+date: '2022-06-24T21:09:12-05:00'
+image: english.jpg
+categories: language
+tags:
+- english
+- grammar
+---
+
+
+## 什么是合句
+
+如果两个各自能独立的简单句，中间以 and、but、or 等连接词连起来，两句之间维持平行、对称的关系，没有主从之分，就称之为合句：
+
+Girls like dolls, but boys like robots.
+
+
+## 什么是复句
+
+如果将一个句子改造成名词、形容词或副词，放到另一个句子中使用，就称之为从属从句，另一句则称之为主要从句。合并而成的句子有主从之分，就成为复句(complex sentence)。
+
+
+## 名词从句
+
+1. I know something.
+2. I am right.
+
+合并：I know **that** I am right.
+
+## 形容词从句
+
+1. My father is a man.
+2. He always keeps his word.
+
+合并：My father is **a man who** always keeps his word.
+
+形容词从句又称关系从句。两个各自独立的句子之间必须要有关系，也就是要有一个重复的元素存在。比如 am 和 he 就是重复元素，可建立关系。
+
+## 副词从句
+
+1. He works hard.
+2. He’s in need of money.
+
+He works hard **because** he’s in need of money.
+
+两者之间有因果关系，所以用 because 连接起来。
+
+
+## 典型的名词从句
+
+1. 本身原本就是完整独立的简单句。
+2. 前面加上连接词 that，无意义，只有语法功能，表示后面跟着一个名词从句。
+3. 名词从句必须放在主要从句的名词位置(主语、宾语、补语、同位语)。
+
+
+主语位置
+
+1. Something is strange.
+2. He didn’t show up on time.
+
+合并：
+
+1. **That** he didn’t show up on time is strange.
+2. **It is strange that** he didn’t show up on time.
+
+名词从句如果很长(he didn’t show up on time)，直接放入主语位置使用时，可能会让读者看不清楚，这个时候需要用 it 这个虚词填入主语位置。
+
+### 宾语从句
+
+1. The defendant said something.
+2. He didn’t do it.
+
+合并：The defendant said **that** he didn’t do it.
+
+That 没有意义，只有语法标记功能，所以有时可以省略。如果名词从句放在及物动词后面的宾语位置，就可以很清楚的知道是名词从句，that 可以省略：
+
+- The defendant said **that** he didn’t do it：可省略。
+- **That** he didn’t show up is strange：不可省略。
+
+总之，能不能省略，需要看省略后能不能维持原来的意思：
+
+1. I find something strange.
+2. He didn’t show up on time.
+
+合并：
+
+- I find it strange **that** he didn’t show up on time.
+- I find **that** he didn’t show up on time strange：造成补语 strange 不清晰。
+
+
+### 补语位置
+
+The car is ruined. The important thing is **that** we’re all right：此处 we’re all right 是补语。因为 that 去掉后意思仍然清晰，所以可以直接去掉。
+
+
+### 同位语位置
+
+同位语就是形容词从句简化之后留下的补语。
+
+- The story **that he once killed a man** might just be true：he once killed a man 是一个完整的句子，但是加上 that 后就是一个从句，放在 story 的后面作为它的同位语，就是和它是同等的东西。其实就是补语嘛。
+- I am afraid that I can't help you： I can't help 是完整的句子，加上 that 就是名词从句，但是主句中 I am afraid 中看不出来有任何名词位置，这是因为原句中省略了。原句为 I am afraid of that thing。此处用I can't help 替代无意义的 of that thing。
+
+### 名词从句的放大
+
+名词从句的内容，有时候比主句还重要。这个时候就需要颠倒位置：
+
+- This is your last offer, I suppose：重要的在前。
+- I suppose that this is your last offer.
+
+
+### 疑问句改装的名词从句
+
+典型的名词从句是外加连接词 that，表示那件事情(that thing)。另外，疑问词(who, what, when)引导的疑问句也可以改装：
+
+1. I know question.
+2. Who are you.
+
+合并：I know who you are.
+
+
+#### Whether 和 if
+
+Whether 并不能独立当作疑问词来引导一个带问号的疑问句，可是能引导代表一个问题的名词从句：
+
+1. I can’t tell which.
+2. Either he’s telling the truth or he’s not.
+
+合并：I can’t tell whether he’s telling the truth or not.
+
+在表示是否时，whether 和 if 都可以互换，但是在句首位置和介系词后面就只能用 whether：
+
+- The treatment will be decided by whether the tumor is malignant or not.
+- Whether the stock market will improve or not is impossible to say now.

@@ -1,0 +1,505 @@
+---
+title: "特征增强：数据清洗"
+author: "Guangyao Zhao"
+date: '2022-04-15T21:09:12-05:00'
+image: FE.jpg
+categories: machine learning
+tags:
+- machine learning
+- feature engineering
+---
+
+数据的清洗和增强指的是：
+
+- 清洗：调整已有的行和列。
+- 增强：数据集中删除和添加新的列。
+
+## 识别数据中的缺失值
+
+分析数据并了解缺失的数据是什么至关重要，这样才可以进一步处理缺失值。首先，先了解下本章使用的数据集：皮马印第安人糖尿病预测数据集。
+
+### 皮马印第安人糖尿病预测数据集
+
+这个数据集和机器学习的二分类问题相对于。目标是判断判断**此人五年内会不会得糖尿病？**每列的含义如下：
+
+1. 怀孕次数
+2. 口服葡萄糖耐量实验中的两小时血浆葡萄糖浓度
+3. 舒张压
+4. 两小时血清胰岛素浓度
+5. 体重指数
+6. 糖尿病家族函数
+7. 年龄
+8. 类变量（0或1，代表无或有糖尿病）
+
+### 探索性数据分析（exploratory data analysis, EDA）
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.style.use('fivethirtyeight')  # 可视化主题
+
+pima = pd.read_csv('data/pima.data')  # 导入数据
+pima.head()
+```
+
+观察前几行数据，但是表格没有列名。下面手动添加：
+
+```{python}
+pima_column_names = [
+    'times_pregnant', 'plasma_glucose_concentration',
+    'diastolic_blood_pressure', 'triceps_thickness', 'serum_insulin', 'bmi',
+    'pedigree_function', 'age', 'onset_diabetes'
+] # 列名称
+
+pima = pd.read_csv('data/pima.data', names=pima_column_names) # 读取数据
+pima.head()
+```
+
+这样看起来好多了。先算一下空准确率：
+
+```{python}
+pima['onset_diabetes'].value_counts(normalize=True)
+```
+
+由此可看出，空准确率为$65\%$，所以模型的目标必须超过此值。下面做一些可视化操作，来了解下此数据集：
+
+```{python}
+col = 'plasma_glucose_concentration'
+
+plt.hist(pima[pima['onset_diabetes'] == 0][col],
+         10,
+         alpha=0.5,
+         label='non-diabetes')
+plt.hist(pima[pima['onset_diabetes'] == 1][col],
+         10,
+         alpha=0.5,
+         label='diabetes')
+plt.legend(loc='upper right')
+plt.xlabel('col')
+plt.ylabel('Frequency')
+plt.title('Histogram of {x}'.format(x=col))
+plt.show()
+```
+
+看起来是否患有糖尿病和血浆葡萄糖浓度有很大关系。继续绘制其它列的直方图：
+
+```{python}
+for col in ['bmi', 'diastolic_blood_pressure', 'plasma_glucose_concentration']:
+    plt.hist(pima[pima['onset_diabetes'] == 0][col],
+             10,
+             alpha=0.5,
+             label='non-diabetes')
+    plt.hist(pima[pima['onset_diabetes'] == 1][col],
+             10,
+             alpha=0.5,
+             label='diabetes')
+    plt.legend(loc='upper right')
+    plt.xlabel('col')
+    plt.ylabel('Frequency')
+    plt.title('Histogram of {x}'.format(x=col))
+    plt.show()
+```
+
+从以上结果可看出，两类人在不同的特征下有很大的差别。为了量化这些特征和观察值之间的关系，引入相关矩阵：
+
+```{python}
+sns.heatmap(pima.corr())  #! Tip：在 plt 中无 heatmap
+```
+
+相关矩阵显示，血浆葡萄糖浓度和糖尿病有很强的相关性，下面显示出具体数值：
+
+```{python}
+pima.corr()
+```
+
+查看下数据集中有没有缺失值：
+
+```{python}
+pima.isnull().sum()  #! Tip:自动按列计算
+
+pima.describe()
+```
+
+仔细查看下统计量，能发现其实有异常。比如 BMI 的最小值为$0$这是违反常识的。原因可能为在数据集中的缺失值或者异常值都用了$0$填充。继续观察，以下特征最小值为$0$：
+
+- times_pregnant
+- plasma_glucose_concentration
+- diastolic_blood_pressure
+- triceps_thickness
+- serum_insulin
+- bmi
+- onset_diabetes
+
+其中，onset_diabetes的$0$代表没有糖尿病，人也可以怀孕$0$次，所以可知以下缺失值用$0$填充：
+
+- plasma_glucose_concentration
+- diastolic_blood_pressure
+- triceps_thickness
+- serum_insulin
+- bmi
+
+至此可知，数据集中还是存在缺失值，只不过用$0$填充过了。数据集一般会用以下方式填充：
+
+- $0$
+- `unknown`
+- `?`
+
+## 处理数据集中的缺失值
+
+大部分的算法不能处理缺失值，所以需要提前对其进行特殊处理：
+
+- 删除含有缺失值的行
+- 填充缺失值
+
+在进一步处理之前，先用 Python 中的`None`填充所有的数字$0$。这样 Pandas 中的`fillna`和`dropna`方法就可以正常工作了：
+
+```{python}
+columns = [
+    'plasma_glucose_concentration', 'diastolic_blood_pressure',
+    'triceps_thickness', 'serum_insulin', 'bmi'
+]
+
+for col in columns:
+    pima[col].replace([0], [None], inplace=True)
+
+pima.isnull().sum()
+```
+
+可以看出triceps_thickness和serum_insulin中的缺失值还是很多的。查看下前几行数据：
+
+```{python}
+pima.head()
+```
+
+做一些描述统计：
+
+```{python}
+pima.describe()
+```
+
+注意`describe`方法不包括缺失值的列。
+
+### 删除有害行
+
+在处理缺失值中，最常见的办法就是无脑式删除存在缺失值的行：
+
+```{python}
+pima_dropped = pima.dropna()  # 删除缺失值的行
+num_rows_lost = round(100 * (pima.shape[0] - pima_dropped.shape[0]) /
+                      pima.shape[0]) # 查看下删除的比例
+
+print('retained {x}% of rows.'.format(x=num_rows_lost))
+```
+
+竟然损失了元数据集中$51\%$的行。这真的是代价太大了。比较下转换前后的统计数据：
+
+```{python}
+pima.mean()
+
+pima_dropped.mean()
+```
+
+为了更好的了解其变化，创建一个新图表，将每列均值变化百分比可视化。
+
+```{python}
+(pima_dropped.mean() - pima.mean()) / pima.mean()
+
+ax = ((pima_dropped.mean() - pima.mean()) / pima.mean()).plot(
+    kind='bar', title='change in average column values')
+
+ax.set_ylabel('% change')
+```
+
+
+可以看到均值在删除缺失值后的改变很大，即删除行会严重影响数据分布。下面进行一些简单的机器学习。
+
+```{python}
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import GridSearchCV
+
+# 准备数据集
+X_dropped = pima_dropped.drop('onset_diabetes', axis=1)
+print("learning from {} rows".format(X_dropped.shape[0]))
+y_dropped = pima_dropped['onset_diabetes']
+
+# 需要试验的 KNN 模型参数
+knn_params = {'n_neighbors': [1, 2, 3, 4, 5, 6, 7]}
+knn = KNeighborsClassifier()
+
+# 网格搜索
+grid = GridSearchCV(knn, knn_params)
+grid.fit(X_dropped, y_dropped)
+
+# 输出最佳参数
+print(grid.best_score_, grid.best_params_)
+```
+
+
+从以上可看出最佳正确率为$73\%$，最佳邻居数为$7$。但是这种直接删除缺失值的方法不太妥当。
+
+### 填充缺失值
+
+填充数据是处理缺失值的一种更复杂的方法。**填充**指的是利用现有知识和数据来确定缺失的数值，并填充的行为。常用的方法是用此列非空值部分的均值填充：
+
+```{python}
+pima.isnull().sum()
+```
+
+接下来看一下`plasma_glucose_concentration`的缺失值：
+
+```{python}
+empty_plasma_index = pima[
+    pima['plasma_glucose_concentration'].isnull()].index  # 空值的 index
+
+pima.loc[empty_plasma_index]['plasma_glucose_concentration']
+```
+
+现在可以用`fillna`方法，将其填充为均值：
+
+```{python}
+pima['plasma_glucose_concentration'].fillna(
+    pima['plasma_glucose_concentration'].mean(), inplace=True)
+
+pima.isnull().sum()
+```
+
+可以看到`plasma_glucose_concentration`无缺失值，查看下填充后的值是什么：
+
+```{python}
+pima.loc[empty_plasma_index]['plasma_glucose_concentration']
+```
+
+在 sklearn 中有专门填补缺失值的方法：
+
+```{python}
+from sklearn.impute import SimpleImputer
+
+imputer = SimpleImputer(strategy='mean')
+pima_imputed = imputer.fit_transform(pima)
+```
+
+
+此处有一个小问题要处理，sklearn 输出的不是 DataFrame，而是 Numpy 数组，此处将其转化为 DataFrame：
+
+```{python}
+pima_imputed = pd.DataFrame(pima_imputed, columns=pima_column_names)
+pima_imputed.head()
+```
+
+检查一下`plasma_glucose_concentration`列的填充值是否和我们手动计算的一样：
+
+```{python}
+pima_imputed.loc[empty_plasma_index]['plasma_glucose_concentration']
+```
+
+最后检查一下是否含有缺失值：
+
+```{python}
+pima_imputed.isnull().sum()
+```
+
+接下来尝试填充一下其他值，看看对 KNN 的影响。首先采用$0$填充：
+
+```{python}
+pima_zero = pima.fillna(0)
+
+X_zero = pima_zero.drop('onset_diabetes', axis=1)
+y_zero = pima_zero['onset_diabetes']
+
+knn_params = {'n_neighbors': range(1, 8)}
+grid = GridSearchCV(knn, knn_params)
+grid.fit(X_zero, y_zero)
+
+print(grid.best_score_, grid.best_params_)
+```
+
+### 在机器学习流水线中填充值
+
+首先谈论下什么是机器学习流水线，在机器学习中谈论**流水线**的时候，一般指的是在被解读为最终输出之前，原始数据不仅仅进入一种学习算法，而是经过各种预处理步骤，乃至多种学习算法。
+
+`Impute`类就是为了流水线而存在的，**这是因为学习算法的目标是泛化训练集的模式并将其应用于测试集。** 如果在划分数据集和应用算法之前直接对整个数据集填充值，那就是在作弊。
+
+```{python}
+from sklearn.model_selection import train_test_split
+
+X = pima.iloc[:, :-1]
+y = pima.iloc[:, -1]
+
+X_train, X_test, y_train, y_test = train_test_split(X,
+                                                    y,
+                                                    random_state=1,
+                                                    test_size=0.3)
+
+# 注意此处的填充方式
+X_train = X_train.fillna(X_train.mean())
+X_test = X_test.fillna(X_test.mean())
+```
+
+为了分别保持训练集和测试集的纯净性，应该分别进行数值填充，而不应该一起。下面进行模型训练：
+
+```{python}
+knn = KNeighborsClassifier()
+
+knn.fit(X_train, y_train)
+print(knn.score(X_test, y_test))
+```
+
+
+以下介绍利用流水线的整个机器学习的流程：
+
+```{python}
+from sklearn.pipeline import Pipeline
+
+knn_params = {
+    'classify__n_neighbors': range(1, 8)
+}  # 注意，classify 和 n 的中间为两条下划线
+knn = KNeighborsClassifier()
+
+X = pima.iloc[:,:-1]
+y = pima.iloc[:,-1]
+
+mean_impute = Pipeline([('imputer', SimpleImputer(strategy='mean')),
+                        ('classify', knn)])
+
+grid = GridSearchCV(mean_impute, knn_params)
+grid.fit(X_train, y_train)
+print(grid.best_score_, grid.best_params_)
+```
+
+
+## 标准化和归一化
+
+到目前为止，已经知道了如何识别数据类型和缺失值，以及怎么处理缺失值。下面学习下怎么处理数据（特征），以进一步增强机器学习流水线。下面查看下数据分布：
+
+```{python}
+impute = SimpleImputer(strategy='mean')
+
+pima_imputed_mean = pd.DataFrame(impute.fit_transform(pima),
+                                 columns=pima_column_names)
+
+pima_imputed_mean.hist(figsize=(15, 15))
+```
+
+从上图可看出，每列的均值、最小值、最大值和标准差的差别都很大。这有什么影响呢？机器学习模型受尺度的影响很大，尤其是训练速度。
+
+在统一尺度下观察下数据分布：
+
+```{python}
+pima_imputed_mean.hist(figsize=(15, 15), sharex=True)
+```
+
+很明显所有的数据尺度都不相同，所以需要归一化操作。**归一化的操作的目的在于行和列对其并转化为一致的规则。** 例如归一化常常将所有定量列转化为同一个静态范围中的值，常用的归一化操作有以下三种：
+
+- $z$分数标准化
+- min-max 标准化
+- 行归一化。
+
+### $z$分数标准化
+
+$z$分数标准化的公式如下：
+
+$$
+z = \frac{(x-\mu)}{\sigma}
+$$
+
+代码如下：
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+
+scale = StandardScaler()
+
+pima_imputed_mean_scaled = pd.DataFrame(scale.fit_transform(pima_imputed_mean),
+                                        columns=pima_column_names)
+
+pima_imputed_mean_scaled.hist(figsize=(15, 15), sharex=True)
+```
+
+从上图可看出，整个数据集都更加紧密了，现在将`StandarScaler`方法插入之前的机器学习流水线中：
+
+```{python}
+knn_params = {
+    'imputer__strategy': ['mean', 'median'],
+    'classify__n_neighbors': range(1, 7)
+}
+
+mean_imputed_standardize = Pipeline([('imputer', SimpleImputer()),
+                                     ('stadardize', StandardScaler()),
+                                     ('classify', knn)])
+
+X = pima.drop('onset_diabetes', axis=1)
+y = pima['onset_diabetes']
+
+grid = GridSearchCV(mean_imputed_standardize, knn_params)
+grid.fit(X, y)
+
+print(grid.best_score_, grid.best_params_)
+```
+
+
+### min-max 标准化
+
+min-max 标准化的公式如下：
+
+$$
+m = \frac{x-x_{min}}{x_{max}-x_{min}}
+$$
+
+```{python}
+from sklearn.preprocessing import MinMaxScaler
+
+min_max = MinMaxScaler()
+pima_min_maxed = pd.DataFrame(min_max.fit_transform(pima_imputed),
+                              columns=pima_column_names)
+
+pima_min_maxed.hist(figsize=(15, 15), sharex=True)
+```
+
+### 行归一化
+
+行归一化不是计算每列的统计值，而是保证每行有**单位范数**，即每行的向量长度相同，即每行的：
+
+$$
+\Vert x\Vert=\sqrt[]{x_1^2+x_2^2+...,x_n^2}
+$$
+
+在此处我们使用 **L2 范数**。
+
+```{python}
+from sklearn.preprocessing import Normalizer
+
+normalize = Normalizer()
+pima_normalized = pd.DataFrame(normalize.fit_transform(pima_imputed),
+                               columns=pima_column_names)
+
+pima_normalized.hist(figsize=(15, 15), sharey=True)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
