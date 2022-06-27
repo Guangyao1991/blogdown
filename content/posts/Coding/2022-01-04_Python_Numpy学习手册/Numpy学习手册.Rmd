@@ -1,0 +1,848 @@
+---
+title: "Numpy学习手册"
+author: "Guangyao Zhao"
+date: '2022-01-04T21:09:12-05:00'
+image: code.jpg
+categories: 
+- Python
+tags:
+- Python
+- Numpy
+---
+
+## Array object
+
+### Calculation
+
+```{python}
+import numpy as np
+
+x = np.random.randint(100, size=(3, 5))
+print('x = ', x)
+
+x_ptp = x.ptp(axis=0)  # ptp: peak to peak (maximum - minimum)
+print('x_ptp = ', x_ptp)
+
+x_clip = x.clip(min=40, max=80)  # 小于 min 的使其为 min，max 同理
+print('x_clip = ', x_clip)
+
+y = np.random.randn(3, 5)
+y_round = y.round(decimals=2)  # 保留两位小数
+print('y_round = ', y_round)
+
+z = np.eye(3)
+z_trace = z.trace() # 矩阵的迹
+print('z_trace = ', z_trace)
+
+a = np.arange(9).reshape((3, 3))
+a_sum = a.sum(axis=0)  # 可以不指定 axis，此时为整体的 sum
+print('a_sum = ', a_sum)
+
+a_cumsum = a.cumsum(axis=0) # 连加
+print('a_cumsum = ', a_cumsum)
+
+a_min = a.min(axis=0) # 最小值
+print('a_min = ', a_min)
+
+a_max = a.max(axis=0) # 最大值
+print('a_max = ', a_max)
+
+a_argmax = a.argmax(axis=0) # 最大值索引
+print('a_argmax = ', a_argmax)
+
+a_prod = a.prod(axis=0) # 乘法
+print('a_prod = ', a_prod)
+
+a_cumprod = a.cumprod(axis=0) # 连乘
+print('a_cumprod = ', a_cumprod)
+
+a_var = a.var(axis=0) # 方差
+print('a_var = ', a_var)
+
+a_std = a.std(axis=0) # 标准差
+print('a_std = ', a_std)
+
+b = np.array([[1, 1], [1, 0]])
+b_all = b.all(axis=0) # 判断是否全为 1
+b_any = b.any(axis=0) # 判断是否有 1
+print('b_all = ', b_all)
+print('b_any = ', b_any)
+```
+
+### Item selection and manipulation
+
+```{python}
+import numpy as np
+
+x = np.random.randint(10, size=(3, 5)) # ! 取元素
+x_take = x.take([11, 12])  # 将原数组展开，取第 11，12 个元素
+print('x = ', x)
+print('x_take = ', x_take)
+
+x_put = np.arange(9).reshape(3, 3) # ! 替换元素
+x_put.put([0, 1], [11, 22]) # 将 0,1处的元素替换
+print('x_put = ', x_put)
+x_put.put(7,3, mode='clip')  # mode: raise, wrap, clip。TODO:undone
+print('x_put = ', x_put)
+
+x1 = np.array([[1, 2, 3], [4, 5, 6]]) # repeat 重复元素
+x1_repeat = x1.repeat([1, 2], axis=0) # 在竖直方向上第一行重复一次，第二行重复两次
+x2 = np.arange(3)
+x2_repeat = x2.repeat(3) # 当数据是一维的时候
+print('x1_repeat = ', x1_repeat) 
+print('x2_repeat = ', x2_repeat) 
+
+x_sort = np.array([[2, 3, 1], [9, 5, 6]]) # ! sort 排序，无返回
+x_sort.sort(axis=1)  # 就地更改
+print('x_sort = ', x_sort)
+
+x = np.array([[1, 3, 9], [9, 1, 8], [6, 5, 4]]) # ! argsort 返回 index.
+x_argsort = x.argsort(axis=0) # 返回正序时该元素的索引
+print('x_argsort = ', x_argsort)
+
+x_partition = np.random.randint(100, size=(3, 10)) 
+# partition 返回数组沿指定轴分区部分排序的索引数组。
+# 索引数组中位置k的索引对应的元素不小于位置k之前索引对应的元素（k 之前的顺序无所谓），
+# 不大于位置k之后索引对应的元素。就地修改。
+print('x_partition = ', x_partition)
+x_partition.partition(kth=[4, 7], axis=1)  # 第4,7 个位置的元素位于正确有序元素
+print('x_partition = ', x_partition)
+
+x = np.array([1, 3, 5, 7]) 
+# searchsorted 给定升序数组以及待插入元素，返回保持序列有序的插入位置
+x_searchsorted = x.searchsorted(4, side='left') # 返回的是 index
+print('x_searchsorted = ', x_searchsorted)  
+
+x = np.array([[1, 0, 0], [4, 3, 0]]) # ! nonzero, 返回非零元素索引
+x_nonzero = x.nonzero() # 返回的是两个数组，行数组和列数组
+print('x_nonzero = ', x_nonzero)
+
+x = np.array([[1, 2], [3, 4], [5, 6]]) # ! compress, 提取数组
+x_compress1 = x.compress([False, True, True], axis=0)
+x_compress2 = x.compress([1, 0, 0], axis=0)
+x_compress3 = x.compress([1], axis=0)  # 条件个数也可以和原数组的某个维度长度不完全相等
+print('x_compress1 = ', x_compress1)
+print('x_compress2 = ', x_compress2)
+print('x_compress3 = ', x_compress3)
+
+x = np.array([[1, 2], [3, 4], [5, 6]]) # ! diagonal 取出斜对角线元素
+x_diagonal = x.diagonal(offset=0)
+print('x_diagonal = ', x_diagonal)
+```
+
+### Memory layout
+
+```{python}
+import numpy as np
+x = np.array([[1, 2, 3], [4, 5, 6]], np.int64)
+shape = x.shape # 形状
+ndim = x.ndim # 维度
+size = x.size # 元素个数
+
+print('shape =', shape)
+print('ndim =', ndim)
+print('size =', size)
+```
+
+### Other attributes
+
+```{python}
+import numpy as np
+x = np.array([[1, 2, 3], [4, 5, 6]], np.int64)
+transpose = x.T  # 转置
+flat = x.flat  # 将矩阵展开
+print('transpose =', transpose)
+print('flat =', list(flat))
+```
+
+### Shape manipulation
+
+```{python}
+import numpy as np
+
+x = np.arange(15) # 更改 shape
+x.shape = (3, 5)
+print('x.shape=', x.shape)
+
+x = np.arange(15) # reshape: 创建副本
+x_reshape = x.reshape((5, 3))
+print('x_reshape.shape=', x_reshape.shape)
+
+x = np.arange(15) # resize: 不创建副本
+x.resize((3, 5))
+print('x.resize=', x.shape)
+
+x = np.arange(15).reshape((3,5)) # transpose: 不创建副本
+x_transpose = x.transpose()
+print('x_transpose.shape=', x_transpose.shape)
+
+x = np.arange(15).reshape((3, 5)) # swapaxes: 不创建副本
+x_swapaxes = x.swapaxes(0, 1) # 交换0，1轴，前后两个的位置没有关系。
+print('x_swapaxes=', x_swapaxes)
+
+x = np.arange(15).reshape((3, 5)) # flatten: 创建副本
+x_flatten = x.flatten()
+print('x_flatten=', x_flatten)
+
+x = np.arange(15).reshape((3, 5)) # ravel: 不创建副本
+x_ravel = x.ravel()
+print('x_ravel.shape=', x_ravel.shape) # (15,)
+
+x_1 = np.array([[1, 2, 3]]) # squeeze: 不创建副本
+x_2 = np.array([[1],[2],[3]])
+x1_squeeze = x_1.squeeze()
+x2_squeeze = x_2.squeeze()
+print('x_1.shape=', x_1.shape)
+print('x_2.shape=', x_2.shape)
+print('x1_squeeze =', x1_squeeze)
+print('x2_squeeze =', x2_squeeze)
+print('x_1_squeeze.shape=', x1_squeeze.shape)
+print('x_2_squeeze.shape=', x2_squeeze.shape)
+```
+
+# Constants
+
+```{python}
+import numpy as np
+
+np_inf = np.inf # ! inf: Inf, Infinity, PINF, infty
+print('np_inf = ', np_inf)
+
+np_NINF = np.NINF # ! NINF: negative infinity
+print('np_NINF = ', np_NINF)
+
+np_PINF = np.PINF # !PINF: positive infinity
+print('np_PINF = ', np_PINF)
+
+np_nan = np.nan # ! nan: NAN, NaN. not a number
+print('np_nan = ', np_nan)
+
+np_NZERO = np.NZERO # ! NZERO: negative zero
+print('np_NZERO = ', np_NZERO) # np_PZERO =  -0.0
+
+np_PZERO = np.PZERO # ! PZERO: positive zero
+print('np_PZERO = ', np_PZERO) # np_PZERO =  0.0
+
+np_e = np.e # ! e: euler constant
+print('np_e = ', np_e)
+
+np_euler_gamma = np.euler_gamma # ! euler_gamma
+print('np_euler_gamma = ', np_euler_gamma)
+
+np_pi = np.pi # ! pi
+print('np_pi = ', np_pi)
+```
+
+## Universal functions (ufunc)
+
+## Availible ufuncs
+
+```{python}
+import numpy as np
+
+x = np.random.randint(10, size = (3, 5))
+y = np.random.randint(10, size = (3, 5))
+
+x_add = np.add(x, y) # 矩阵相加
+print('x_add = ', x_add)
+
+x_sub = np.subtract(x, y) # 矩阵相减
+print('x_sub = ', x_sub)
+
+x_mul = np.multiply(x, y) # 对应相乘
+print('x_mul = ', x_mul)
+
+x_div = np.divide(x, y) # 对应相除
+print('x_div = ', x_div)
+
+x_abs = np.absolute(x) # 绝对值
+print('x_abs = ', x_abs)
+
+x_sign = np.sign(x) # 符号函数
+print('x_sign = ', x_sign)
+
+x_exp = np.exp(x) # 指数函数
+print('x_exp = ', x_exp)
+
+x_log = np.log(x)  # 底数为 e
+print('x_log = ', x_log)
+
+x_log2 = np.log2(x) # 底数为 2
+print('x_log2 = ', x_log2)
+
+x_log10 = np.log10(x) # 底数为 10
+print('x_log10 = ', x_log10)
+
+x_sqrt = np.sqrt(x) # 开方
+print('x_sqrt = ', x_sqrt)
+
+x_square = np.square(x) # 二次方
+print('x_square = ', x_square)
+
+x_mat = np.matmul(x, y.T) # ! 矩阵相乘
+print('x_mat = ', x_mat)
+
+x = np.array([30, 45, 60, 90]) # ! 三角函数
+x_sin = np.sin(x)
+x_cos = np.cos(x)
+x_tan = np.tan(x)
+
+print('x_sin = ', x_sin)
+print('x_cos = ', x_cos)
+print('x_tan = ', x_tan)
+```
+
+### Broadcasting
+
+1.  If `a.shape` is `(5,1)`, `b.shape` is`(1,6)`, `c.shape` is `(6,)` and `d.shape` is `()` so that *d* is a scalar, then *a*, *b*, *c*, and *d* are all broadcastable to dimension `(5,6)`.
+2.  **a**: acts like a `(5,6)` array where `a[:,0]` is broadcast to the other columns.
+3.  **b**: acts like a `(5,6)` array where `b[0,:]` is broadcast to the other rows.
+4.  **c**: acts like a `(1,6)` array and therefore like a `(5,6)` array where `c[:]` is broadcast to every row, and finally.
+5.  **d**: acts like a `(5,6)` array where the single value is repeated.
+
+```{python}
+import numpy as np
+
+x = np.arange(15).reshape((3, 5))
+x1 = np.array([2, 2, 2, 2, 2])  # 请注意这种情况(5,)
+x2 = np.array([[3], [3], [3]])
+x3 = np.array([[2, 2, 2, 2, 2]])
+x4 = 10
+
+print('x1.shape = ', x1.shape)
+x1 = x1 * x
+print('x1.shape = ', x1.shape)
+
+print('x2.shape = ', x2.shape)
+x2 = x2 * x
+print('x2.shape = ', x2.shape)
+
+print('x3.shape = ', x3.shape)
+x3 = x3 * x
+print('x3.shape = ', x3.shape)
+
+x4 = x4 * x  # 全部扩大 10 倍
+print('x4.shape = ', x4.shape)
+```
+
+## Routines
+
+### Array manipulation routines
+
+#### Adding and removing elements
+
+```{python}
+import numpy as np
+
+x = np.arange(15).reshape((3, 5))
+
+x_delete = np.delete(x, obj=[0, 1], axis=1) # 会创建副本，不直接在原矩阵上修改
+print('x_delete = ', x_delete)
+
+x_insert = np.insert(x, values=3, obj=[0, 0], axis=1) # 插入元素
+print('x_insert = ', x_insert)
+x_insert = np.insert(x, values=[[2], [4], [2]], obj=[0], axis=1)
+print('x_insert = ', x_insert)
+
+x = np.array([0, 1, 1, 2, 1, 0]) 
+# return_index: 返回留下的元素 index; 
+# return_inverse:返回原矩阵中的翻转 ;
+# return_counts: 返回原矩阵中元素出现的次数
+x_unique = np.unique(x,
+                     return_index=True,
+                     # return_inverse=True,
+                     return_counts=True,
+                     axis=None)
+print('x_unique = ', x_unique)
+
+x1 = np.array([[1, 2, 3], [1, 2, 3], [1, 2, 4]])
+x2 = np.array([[1, 1, 1], [2, 2, 2], [3, 3, 1]])
+x1_unique = np.unique(x1, axis=0)  
+x2_unique = np.unique(x2, axis=1)  
+print('x1_unique = ', x1_unique)
+print('x2_unique = ', x2_unique)
+
+x = np.array([0, 0, 0, 1, 1, 0, 1, 0]) # ! trim_zeros，只能修剪一维数组
+x_trim_zeros = np.trim_zeros(x, trim='fb')  # f:front; b:back;默认为 fb
+print('x_trim_zeros = ', x_trim_zeros)
+```
+
+#### Array creation routines
+
+```{python}
+import numpy as np
+
+x_empty = np.empty(shape=(3, 5)) # ! from shape or value
+print('x_empty = ', x_empty)
+
+x_ones = np.ones(shape=(3, 5), dtype=np.int64)
+print('x_ones = ', x_ones)
+
+x_zeros = np.zeros(shape=(3, 5), dtype=np.int64)
+print('x_zeros = ', x_zeros)
+
+x_full = np.full(shape=(3, 5), fill_value=3)
+print('x_full = ', x_full)
+
+x_empty_like = np.empty_like(x_empty)
+print('x_empty_like = ', x_empty_like)
+
+x_ones_like = np.ones_like(x_ones)
+print('x_ones_like = ', x_ones_like)
+
+x_zeros_like = np.zeros_like(x_zeros)
+print('x_zeros_like = ', x_zeros_like)
+
+x_full_like = np.full_like(x_full, fill_value=10)
+print('x_full_like = ', x_full_like)
+
+x_eye = np.eye(N=5, M=4, k=1)  # N 行 M 列 k 偏移
+print('x_eye = ', x_eye)
+
+x_identity = np.identity(n=5)  # 只能创建方阵
+print('x_identity = ', x_identity)
+
+li = np.arange(15).reshape(3, 5) # ! from existing data
+x_arr = np.array(li)  # 数据源是 ndarray 的时候， 会copy 出副本。list 时不 copy
+print('x_arr = ', x_arr)
+
+x_asarr = np.asarray(li)  # 不 copy 出副本
+print('x_asarr = ', x_asarr)
+
+x_arange = np.arange(start=0, stop=15, step=1)  # ! numeric ranges
+print('x_arange = ', x_arange)
+
+x_linspace = np.linspace(start=0,
+                         stop=10,
+                         num=11,
+                         endpoint=True,
+                         dtype=np.int64)
+print('x_linspace = ', x_linspace)
+
+x_logspace = np.logspace(start=5, stop=10, num=10, base=2,
+                         dtype=np.int64)  # base 的 start 次方到 stop 次方
+print('x_logspace = ', x_logspace)
+
+x_geomspace = np.geomspace(start=1, # 对该序列取对数后，构成等差数列。TODO:undone
+                           stop=10000,
+                           endpoint=True,
+                           num=5,
+                           dtype=np.int64)
+print('x_geomspace = ', x_geomspace)
+
+X = np.linspace(1, 10, 10)  
+Y = np.linspace(2, 6, 5)  
+x_mesh, y_mesh = np.meshgrid(X, Y) # 注意：X，Y 的位置会影响最终形状
+print('x_mesh = ', x_mesh)
+print('y_mesh = ', y_mesh)
+
+x = np.arange(6).reshape((2, 3)) # ! building matrices
+x_diag = np.diag(v=x, k=0)  # 将 x 的对角线提取出来，偏移为 k
+print('x_diag = ', x_diag)
+
+x_diagflat = np.diagflat(x, k=0)  # 将 x 所有元素展开，然后设置为对角线元素
+print('diagflat = ', x_diagflat)
+```
+
+#### Changing array shape
+
+```{python}
+import numpy as np
+
+x = np.arange(15)
+x_reshape = np.reshape(a=x, newshape=(3, 5))  # 返回原始数组的视图
+print('x_reshape = ', x_reshape)
+
+x = np.arange(15).reshape((3, 5))
+x_ravel = np.ravel(x)  
+print('x_ravel = ', x_ravel)
+
+x_flat = x.flatten()  # 返回副本
+print('x_flat = ', x_flat)
+```
+
+#### Changing number of dimensions
+
+```{python}
+import numpy as np
+
+x = np.array([[1, 2, 3]])
+x_squeeze = np.squeeze(x)  # 将无用的维度去除。(1,3) -> (3,)，返回的是 view
+print('x_squeeze = ', x_squeeze)
+
+x = np.array([1, 2, 3])
+x_expand_dims = np.expand_dims(x, axis=(0, 1))  # 将增加的维度放在 0,1 处
+print('x_expand_dims.shape', x_expand_dims.shape)
+```
+
+#### Joining array
+
+```{python}
+import numpy as np
+
+x = np.arange(24).reshape((4, 6))
+x1, x2 = np.split(x, indices_or_sections=2, axis=1) # 将矩阵分割
+
+x_concatenate = np.concatenate((x1, x2, x2), axis=0)  # 可同时在纵轴合并两次以上的数组
+print('x_concatenate.shape = ', x_concatenate.shape)
+
+a = np.arange(0, 9).reshape((3, 3)) # ! block
+b = np.arange(3)
+b1 = np.expand_dims(b, axis=0)  # [[1,2,3]]
+b2 = np.expand_dims(b, axis=1)  # [[1],[2],[3]]
+
+block1 = np.block([[a], [b1]])  # 按行
+block2 = np.block([a, b2])  # 按列
+print('block1 = ', block1)
+print('block2 = ', block2)
+
+a = np.eye(2)
+b = np.eye(3)
+c = np.block([[a, np.zeros((2, 3))], [np.zeros((3, 2)), b]])  # 一个比较有意思的玩法
+print('c = ', c)
+
+x_vstack = np.vstack((x1, x2, x2)) # ! vstack
+print('x_vstack = ', x_vstack)
+
+x_hstack = np.hstack((x1, x2, x2)) # ! hstack
+print('x_hstack = ', x_hstack)
+```
+
+#### Rearranging elements
+
+```{python}
+import numpy as np
+
+x = np.arange(15).reshape((3, 5))
+
+x_flip = np.flip(x, axis=1) # ! flip
+print('x_flip = ', x_flip)
+
+x_fliplr = np.fliplr(x) # ! fliplr
+print('x_fliplr = ', x_fliplr)
+
+x_flipud = np.flipud(x) # ! flipud
+print('x_flipud = ', x_flipud)
+
+x_roll = np.roll(x, shift=2, axis=1) # ! roll
+print('x_roll = ', x_roll)
+
+x_rot = np.rot90(x, k=2) # k>0: 逆时针；k<0: 顺时针
+print('x_rot = ', x_rot)
+```
+
+#### Split
+
+```{python}
+import numpy as np
+
+x = np.arange(8).reshape((2, 4))
+
+x_split1, x_split2 = np.split(x, indices_or_sections=2, axis=0) # ! 均分
+print('x_split1 = ', x_split1)
+print('x_split2 = ', x_split2)
+
+x_array_split = np.array_split(x, indices_or_sections=2, axis=1) # ! 可以不均分
+print('x_array_split = ', x_array_split)
+
+x_hsplit = np.hsplit(x, indices_or_sections=2) # ! hsplit
+print('x_hsplit = ', x_hsplit)
+
+x_vsplit = np.vsplit(x, indices_or_sections=2) # ! vsplit
+print('x_hsplit = ', x_vsplit)
+```
+
+#### Tilling array
+
+```{python}
+import numpy as np
+
+x = np.arange(6).reshape((3, 2))
+
+x_tile = np.tile(A=x, reps=(2, 1))  # ! 复制整个数组, y轴三次，x轴二次
+print('x_tile = ', x_tile)
+
+x_repeat1 = np.repeat(x, repeats=2)  # ! 复制元素，如果不指定 axis，就将数组先拉平，再复制
+print('x_repeat1 = ', x_repeat1)
+
+x_repeat2 = np.repeat(x, repeats=[2, 1], axis=1)  # 水平方向：第一列 2 次，第二列 3 次
+print('x_repeat2 = ', x_repeat2)
+
+x_repeat3 = np.repeat(x, repeats=[2, 1, 4], axis=0)  # 水平方向：第一列 2 次，第二列 3 次
+print('x_repeat3 = ', x_repeat3)
+```
+
+#### Transpose-like operations
+
+```{python}
+import numpy as np
+
+x = np.arange(210).reshape((2, 3, 5, 7))
+x_moveaxis = np.moveaxis(a=x, source=0,
+                         destination=2)  # 将一个数组的轴移动到新的位置。其他轴保持原来的顺序。
+print('x_moveaxis.shape = ', x_moveaxis.shape)
+
+x_rollaxis = np.rollaxis(a=x, axis=2, start=1)  # 函数向后滚动特定的轴到一个特定位置
+print('x_rollaxis.shape = ', x_rollaxis.shape)
+
+x_swapaxis = np.swapaxes(x, axis1=0, axis2=2)  # 交换两个维度
+print('x_swapaxis.shape = ', x_swapaxis.shape)
+
+x_transpose = np.transpose(a=x, axes=(1, 0, 2, 3))  # 重新排序
+print('x_transpose.shape = ', x_transpose.shape)
+
+x1 = np.arange(15).reshape((3, 5))
+x1_transpose = np.transpose(x1)  # 当数组是二维的时候可以省略 axes
+print('x1_transpose.shape = ', x1_transpose.shape)
+```
+
+### Functional programming
+
+```{python}
+import numpy as np
+
+def func1(x): # ! apply along axis
+    return (x[0] + x[1]) * 1
+
+x = np.arange(15).reshape((3, 5))
+x_apply_along_axis = np.apply_along_axis(func1d=func1, axis=0, arr=x)
+print('x_apply_along_axis = ', x_apply_along_axis)
+
+def func2(a, b):
+    if a > b:
+        return False
+    else:
+        return True
+
+vfunc = np.vectorize(pyfunc=func2)
+x_vfunc = vfunc(x, 3)  # 逐个元素比较
+print('x_vfunc = ', x_vfunc)
+
+def func3(x): 
+    return x + 1, x - 1
+
+x = np.arange(6).reshape((2, 3))
+# 将计算单个值的函数转换为能对数组的每个元素进行计算的 ufunc 函数; 可以返回多个值
+x_frompyfunc = np.frompyfunc(func3, nin=1,
+                             nout=2)  # nin:input 个数；nou:output 个数
+x_result = x_frompyfunc(x)
+print('x_result = ', x_result)
+
+x = np.arange(15).reshape((3, 5))
+x_piecewise = np.piecewise(x=x, condlist=[x < 2, x > 10], funclist=[-1, 15])
+print('x_piecewise = ', x_piecewise)
+```
+
+### Linear algebra
+
+```{python}
+import numpy as np
+
+x = np.array([[1, 2], [3, 4]])
+
+x_det = np.linalg.det(x)
+print('x_det = ', x_det)
+
+x_eig_values, x_eig_vectors = np.linalg.eig(x) # ! 特征值和特征向量
+print('x_eig_values =', x_eig_values)
+print('x_eig_vectors = ', x_eig_vectors)
+
+x_eigvals = np.linalg.eigvals(x) # ! 特征值
+print('x_eigvals =', x_eigvals)
+
+x_inv = np.linalg.inv(x) # ! 逆矩阵
+print('x_inv = ', x_inv)
+
+x_norm = np.linalg.norm(x, ord=2, axis=1, keepdims=True) # ! 范数
+print('x_norm = ', x_norm)
+
+x_pinv = np.linalg.pinv(x) # ! 伪逆
+print('x_pinv = ', x_pinv)
+
+y = np.array([1, 2]) # ! 求解线性方程
+x_solve = np.linalg.solve(x, y)
+print('x_solve = ', x_solve)
+```
+
+### Logic function
+
+```{python}
+import numpy as np
+
+x = np.arange(15).reshape((3, 5))
+
+x_all = np.all(a=x, axis=1, keepdims=False)
+print('x_all = ', x_all)
+
+x_any = np.any(a=x > 2, axis=1)
+print('x_any = ', x_any)
+
+x_isfinite = np.isfinite(x) # ! 是否是有限数字
+print('x_isfinite = ', x_isfinite)
+
+x_isinf = np.isinf(x) # ! 是否是无限数字
+print('x_isinf = ', x_isinf)
+
+x_neginf = np.isneginf(x)
+print('x_neginf = ', x_neginf)
+
+x_posinf = np.isposinf(x)
+print('x_posinf = ', x_posinf)
+
+x_isnan = np.isnan(x) # ! 是否是空值
+print('x_isnan = ', x_isnan)
+```
+
+### Random Sampling
+
+```{python}
+from numpy import random
+
+random.seed(0) # 随便写
+x = random.rand(3) # ! rand: (0,1)均匀分布
+print('x = ', x)
+
+y = random.rand(2, 3)
+print('y = ', y)
+
+z = random.randn(2, 3) # ! randn: rand + normorlization 标准正态分布
+print('z = ', z)
+
+x = random.randint(low=10, high=100, size=(3, 5)) # ! randint: 整数
+print('x = ', x)
+```
+
+### Sorting searching and counting
+
+```{python}
+import numpy as np
+
+np.random.seed(0)
+x = np.random.randint(low=1, high=100, size=(4, 5))
+x_sort = np.sort(x, axis=0)  # copy
+print('x_sort = ', x_sort)
+
+x_argsort = np.argsort(x, axis=0) # ! argsort
+print('x_argsort = ', x_argsort)
+
+x_partition = np.partition(x, kth=2, axis=0) 
+print('x_partition = ', x_partition)
+
+x_argpartition = np.argpartition(x, kth=2, axis=0)
+print('x_argpartition = ', x_argpartition)
+
+np.random.seed(0)
+x = np.random.randint(low=1, high=100, size=(2, 3))
+
+x_argmax = np.argmax(x, axis=0) # ! argmax
+print('x_argmax = ', x_argmax)
+
+x_nanargmax = np.nanargmax(x, axis=0) # ! nanargmax
+print('x_nanargmax = ', x_nanargmax)
+
+x_argwhere = np.argwhere(x) # ! argwhere: return indices of nonzero, group by elements
+print('x_argwhere = ', x_argwhere)
+
+x_nonzero = np.nonzero(x) # ! nonzero，注意和 argwhere 的区别
+print('x_nonzero = ', x_nonzero)
+
+x_where = np.where(x > 30, 0, x) # ! where
+print('x_where = ', x_where)
+
+x = np.array([1, 4, 5, 6, 8, 9]) # ! searchsorted: 数组必须是已经排序好的
+x_searchsorted = np.searchsorted(a=x, v=4, side='left')
+print('x_searchsorted = ', x_searchsorted)
+
+x = np.arange(12).reshape((3, 4)) # ! extract, where 也能将其过滤出来，但是无法抽取
+cond = np.mod(x, 3) == 0  # 返回的是 True, False 数组
+x_extraction = np.extract(condition=cond, arr=x)
+print('x_extraction = ', x_extraction)
+
+x = np.array([[0,1,2],[4,3,0]])
+x_count_nonzero = np.count_nonzero(x,axis=0)
+print('x_count_nonzero = ', x_count_nonzero)
+```
+
+### Statistics
+
+```{python}
+import numpy as np
+
+x = np.arange(15).reshape((3, 5))
+
+x_amin1 = np.amin(x)
+print('x_amin1 = ', x_amin1)
+
+x_amin2 = np.amin(x, axis=1)
+print('x_amin2 = ', x_amin2)
+
+x_amax = np.amax(x, axis=1)
+print('x_amax = ', x_amax)
+
+x_nanmin = np.nanmin(x, axis=1) # ! 无视空值
+print('x_nanmin = ', x_nanmin)
+
+x_nanmax = np.nanmax(x, axis=1)
+print('x_nanmax = ', x_nanmax)
+
+x_ptp = np.ptp(x, axis=0) # ! ptp
+print('x_ptp = ', x_ptp)
+
+x = np.array([[10, 7, 4], [3, 2, 1]]) # ! percentile
+x_percentile = np.percentile(x, 50, axis=0)
+print('x_percentile = ', x_percentile)
+
+x = np.array([[10, 7, 4], [3, 2, 1]]) # ! quantile
+x_quantile = np.quantile(x, 0.5, axis=0)
+print('x_quantile = ', x_quantile)
+
+
+x = np.arange(15).reshape((3, 5))
+x_median = np.median(x, axis=0)
+print('x_median = ', x_median)
+
+x_average = np.average(x, axis=0)
+print('x_average = ', x_average)
+
+x_mean = np.mean(x, axis=0)
+print('x_mean = ', x_mean)
+
+x_std = np.std(x, axis=0)
+print('x_std = ', x_std)
+
+x_var = np.var(x, axis=0)
+print('x_var = ', x_var)
+
+x_nanmedian = np.nanmean(x, axis=0)
+print('x_nanmedian = ', x_nanmedian)
+
+x_nanmean = np.nanmean(x, axis=0)
+print('x_nanmean = ', x_nanmean)
+
+x_nanstd = np.nanstd(x, axis=0)
+print('x_nanstd = ', x_nanstd)
+
+x_nanvar = np.nanvar(x, axis=0)
+print('x_nanvar = ', x_nanvar)
+
+
+x = np.random.randint(100, size=(50, 3))
+y = np.random.randint(100, size=(1, 50))
+x_corrcoef1 = np.corrcoef(x=x,
+                          rowvar=False) # rowvar: 每行代表一个变量
+print('x_corrcoef1 = ', x_corrcoef1)
+
+x_corrcoef2 = np.corrcoef(x=x, y=y, rowvar=False)  # 分别计算 x的特征 和 y 的相关性
+print('x_corrcoef2 = ', x_corrcoef2)
+
+x_correlate = np.correlate([1, 2, 3], [0, 1, 0.5])
+print('x_correlate = ', x_correlate)
+
+x = np.random.randint(100, size=(50, 3))
+x_cov = np.cov(m=x, rowvar=False)
+print('x_cov = ', x_cov)
+```
+
+
+
+
