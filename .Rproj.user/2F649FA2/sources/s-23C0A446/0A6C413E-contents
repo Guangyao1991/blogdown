@@ -1,25 +1,28 @@
 baseURL: https://example.com/
-languageCode: en-gb
-title: Hugo Theme - Prav
+languageCode: en-us
+title: Guangyao's blog
 theme: hugo-theme-prav
-pygmentsCodeFences: 'true'
-pygmentsStyle: perldoc
+# pygmentsCodeFences: 'true'
+# pygmentsStyle: perldoc
 ignoreErrors:
   "error-missing-instagram-accesstoken"
 params:
-  author: Pravin Paratey
-  authorBlurb: Something about me
+  author: Guangyao Zhao
+  authorBlurb: To err is human, to forgive is divine.
   authorImgPath: /img/author.png
-  tagline: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  title: Hugo Theme - Prav
 social:
-  email: mailto:example@example.com
-  facebook: https://www.facebook.com/example
-  github: https://github.com/example
-  linkedin: http://uk.linkedin.com/in/example
-  medium: https://www.medium.com/@example
-  twitter: http://twitter.com/example
+  email: zhaoguangyao1991@163.com
 markup:
   goldmark:
     renderer:
       unsafe: yes
+  highlight: 
+    codeFences: true
+    guessSyntax: true
+    hl_Lines: ""
+    lineNoStart: 1
+    lineNos: true
+    lineNumbersInTable: true
+    noClasses: true
+    style: xcode
+    tabWidth: 4
